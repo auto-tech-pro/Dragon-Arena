@@ -2499,14 +2499,22 @@ const rnd1=(k,v)=>typeof v==='number'?Math.round(v*10)/10:v;
 function netSend(o){try{if(NET.dc&&NET.dc.readyState==='open')NET.dc.send(JSON.stringify(o,rnd1))}catch(e){}}
 // ---- signalling codes ----
 const b64=u=>{let s='';u.forEach(c=>s+=String.fromCharCode(c));return btoa(s)},unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
-async function encCode(d){const s=JSON.stringify({s:d.sdp,t:d.type});
- if(window.CompressionStream){const cs=new CompressionStream('deflate-raw'),w=cs.writable.getWriter();w.write(new TextEncoder().encode(s));w.close();return 'D'+b64(new Uint8Array(await new Response(cs.readable).arrayBuffer()))}
- return 'R'+btoa(unescape(encodeURIComponent(s)))}
-async function decCode(c){c=c.replace(/\s+/g,'');let s;
+function packSDP(d){const L=d.sdp.split(/\r?\n/),g=p=>{const l=L.find(x=>x.startsWith(p));return l?l.slice(p.length):''};
+ const uf=g('a=ice-ufrag:'),pw=g('a=ice-pwd:'),fp=g('a=fingerprint:sha-256 ').replace(/:/g,''),su=g('a=setup:'),tm={host:'h',srflx:'s',prflx:'p',relay:'r'},cs=[];
+ for(const l of L){const m=/^a=candidate:(\S+) (\d+) udp (\d+) (\S+) (\d+) typ (\w+)/i.exec(l);if(m&&m[2]==='1'&&tm[m[6]])cs.push([m[1],m[3],m[4],m[5],tm[m[6]]].join(','))}
+ return 'N'+[d.type==='offer'?'o':'a',uf,pw,fp,su==='actpass'?'A':su==='active'?'a':'p',cs.join(';')].join('|')}
+function unpackSDP(c){const [t,uf,pw,fp,su,cs]=c.slice(1).split('|'),tp={h:'host',s:'srflx',p:'prflx',r:'relay'};
+ const cands=cs?cs.split(';').map(x=>{const [f,pr,ip,po,ty]=x.split(',');return 'a=candidate:'+f+' 1 udp '+pr+' '+ip+' '+po+' typ '+tp[ty]+(ty!=='h'?' raddr 0.0.0.0 rport 0':'')+' generation 0'}):[];
+ const sdp=['v=0','o=- '+Date.now()+' 2 IN IP4 127.0.0.1','s=-','t=0 0','a=group:BUNDLE 0','a=msid-semantic: WMS','m=application 9 UDP/DTLS/SCTP webrtc-datachannel','c=IN IP4 0.0.0.0'].concat(cands,['a=ice-ufrag:'+uf,'a=ice-pwd:'+pw,'a=fingerprint:sha-256 '+fp.match(/../g).join(':').toUpperCase(),'a=setup:'+({A:'actpass',a:'active',p:'passive'}[su]||'actpass'),'a=mid:0','a=sctp-port:5000','a=max-message-size:262144']).join('\r\n')+'\r\n';
+ return{type:t==='o'?'offer':'answer',sdp}}
+async function encCode(d){return packSDP(d)}
+async function decCode(c){c=(c||'').replace(/[\s"'<>`]/g,'');
+ if(c[0]==='N'){if(c.split('|').length!==6||c.length<80)throw new Error('not a valid code, '+c.length+' characters');return unpackSDP(c)}
+ c=c.replace(/-/g,'+').replace(/_/g,'/');if(c.length<60||!/^[DR][A-Za-z0-9+\/=]+$/.test(c))throw new Error('not a valid code, '+c.length+' characters');let s;
  if(c[0]==='D'){const ds=new DecompressionStream('deflate-raw'),w=ds.writable.getWriter();w.write(unb64(c.slice(1)));w.close();s=new TextDecoder().decode(await new Response(ds.readable).arrayBuffer())}
  else s=decodeURIComponent(escape(atob(c.slice(1))));const o=JSON.parse(s);return{sdp:o.s,type:o.t}}
 function mkPC(){const pc=new (window.RTCPeerConnection||window.webkitRTCPeerConnection)({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});NET.pc=pc;
- pc.onconnectionstatechange=()=>{if(['failed','closed'].includes(pc.connectionState))netLost('Connection lost')};return pc}
+ pc.oniceconnectionstatechange=()=>{if(NET.live)return;const s=pc.iceConnectionState;if(s==='failed')lStat('Could not connect. Both phones must be on the SAME Wi-Fi (turn off cellular data and any VPN, and avoid guest Wi-Fi). Tap Cancel and start over.');else if(s==='checking')lStat('Connecting\u2026 (checking the network)')};pc.onconnectionstatechange=()=>{if(['failed','closed'].includes(pc.connectionState))netLost('Connection lost')};return pc}
 function waitIce(pc){return new Promise(res=>{if(pc.iceGatheringState==='complete')return res();const t=setTimeout(res,4000);pc.addEventListener('icegatheringstatechange',()=>{if(pc.iceGatheringState==='complete'){clearTimeout(t);res()}})})}
 function setupDc(dc){NET.dc=dc;dc.onopen=()=>{NET.live=true;$('lan').classList.remove('on');sfx('perfect');NET.mine=NET.opp=undefined;toMenu();sel.mode=MODES.findIndex(m=>m.lan);sel.P=[];renderMenu()};
  dc.onclose=()=>netLost('Opponent disconnected');dc.onmessage=e=>{try{netMsg(JSON.parse(e.data))}catch(x){console.error(x)}}}
@@ -2519,9 +2527,11 @@ $('hOnline').onclick=()=>{aud();sfx('ui');if(!(window.RTCPeerConnection||window.
 $('lBack').onclick=()=>{sfx('ui');lanClose()};
 $('lHost').onclick=async()=>{sfx('ui');NET.role='host';$('lChoose').style.display='none';$('lH').classList.add('on');lStat('Creating your game code…');
  try{const pc=mkPC();setupDc(pc.createDataChannel('g'));await pc.setLocalDescription(await pc.createOffer());await waitIce(pc);$('lHo').value=await encCode(pc.localDescription);lStat('Send the code below to the other device, then paste its reply.')}catch(e){lStat('Could not create a game: '+e.message)}};
-$('lHgo').onclick=async()=>{sfx('ui');try{await NET.pc.setRemoteDescription(await decCode($('lHa').value));lStat('Connecting…')}catch(e){lStat('That reply code did not work. Check you pasted all of it.')}};
+let connT=0;function armConn(){clearTimeout(connT);connT=setTimeout(()=>{if(!NET.live&&NET.pc)lStat('Still not connected. Both phones must be on the SAME Wi-Fi (turn off cellular data and any VPN, no guest Wi-Fi). Tap Cancel and start over.')},15000)}
+$('lHgo').onclick=async()=>{sfx('ui');const raw=$('lHa').value;if(!NET.pc||NET.pc.signalingState!=='have-local-offer'){lStat('Your host code is no longer active (the page may have reloaded). Tap Cancel, then Host a game again and send the NEW code.');return}
+ try{await NET.pc.setRemoteDescription(await decCode(raw));lStat('Connecting...');armConn()}catch(e){lStat('That reply code did not work ('+(e.message||e.name)+'). It must be pasted whole ('+raw.trim().length+' characters received), or scan it again.')}};
 $('lJoin').onclick=()=>{sfx('ui');NET.role='client';$('lChoose').style.display='none';$('lJ').classList.add('on');lStat('Paste the code the host sent you.')};
-$('lJgo').onclick=async()=>{sfx('ui');try{const pc=mkPC();pc.ondatachannel=e=>setupDc(e.channel);await pc.setRemoteDescription(await decCode($('lJo').value));await pc.setLocalDescription(await pc.createAnswer());lStat('Creating reply…');await waitIce(pc);$('lJa').value=await encCode(pc.localDescription);lStat('Send the reply code to the host. It connects when they paste it.')}catch(e){lStat('That host code did not work. Check you pasted all of it.')}};
+$('lJgo').onclick=async()=>{sfx('ui');try{const pc=mkPC();pc.ondatachannel=e=>setupDc(e.channel);await pc.setRemoteDescription(await decCode($('lJo').value));await pc.setLocalDescription(await pc.createAnswer());lStat('Creating reply…');await waitIce(pc);$('lJa').value=await encCode(pc.localDescription);lStat('Send the reply code to the host. It connects when they paste it.');armConn()}catch(e){lStat('That host code did not work. Check you pasted all of it.')}};
 const cp=id=>{const t=$(id);t.select();try{navigator.clipboard.writeText(t.value)}catch(e){try{document.execCommand('copy')}catch(x){}}sayToast('Copied')};
 const sh=id=>{const v=$(id).value;if(navigator.share)navigator.share({text:v}).catch(()=>{});else cp(id)};
 $('lHc').onclick=()=>cp('lHo');$('lHs').onclick=()=>sh('lHo');$('lJc').onclick=()=>cp('lJa');$('lJs').onclick=()=>sh('lJa');
