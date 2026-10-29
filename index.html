@@ -206,7 +206,7 @@ F.push(
   outfit(d){d('#c8940c',8,11,8,3);d('#c8940c',5,11,3,2);d('#c8940c',16,11,3,2);d('#c8940c',8,17,8,1);d('#e0486a',11,12,2,1);d('#fff6b0',9,12,1,1)}},
  ab:[BLS(['#e08aff','#f0c0ff','#ffffff']),
  {nm:'Death Beam',t:'beam',c:['#c020ff','#ff7ae0','#ffffff'],charge:.3,dur:.8,w:7,r:4,dmg:230,tick:.1,shake:2,cd:2.5,lock:1.2},
- {nm:'Destructo Disc',t:'slash',c:['#ff3aa0','#ff9ad8','#ffffff'],hw:20,spd:250,dmg:200,boom:16,cd:3,lock:.5},
+ {nm:'Destructo Disc',t:'slash',c:['#ff3aa0','#ff9ad8','#ffffff'],hw:20,spd:250,dmg:200,boom:16,cd:3,lock:.5,hom:9},
  {nm:'Death Ball',t:'orb',ult:1,c:['#b020ff','#ff5ac0','#ffe8ff'],charge:1.2,r:24,hw:24,spd:80,dmg:560,boom:36,cd:7,lock:1.3}],
  fab:[BAR(['#ffe14a','#fff08a','#ffffff']),
  {nm:'Golden Rush',t:'bstrike',combo:4,fin:'kick',c:['#ffd83a','#fff3a0','#ffffff'],dmg:300,boom:20,cd:3.5,lock:1.6},
@@ -272,6 +272,7 @@ const qBs=(nm,c,n,dmg,o)=>Object.assign({nm,t:'bstrike',combo:n,fin:'kick',c,dmg
 const qDs=(nm,c,dmg,o)=>Object.assign({nm,t:'dash',c,dmg,boom:22,cd:3,lock:.9},o||{});
 const qSk=(nm,c,dmg,o)=>Object.assign({nm,t:'shock',c,dmg,cd:3.5,lock:.7},o||{});
 const qUBS=(nm,c,n,dmg)=>qBs(nm,c,n,dmg,{ult:1,boom:32,cd:7,lock:2});
+const qWr=(nm,c,dmg,o)=>Object.assign({nm,t:'wrap',c,dmg,hold:1.5,k:30,cd:4,lock:2,boom:20},o||{});
 const qUD=(nm,c,dmg)=>qDs(nm,c,dmg,{ult:1,boom:32,cd:7});
 const sw5=(p,b,m,u)=>({proj:p,beam:b,melee:m,ult:u});
 const qHair=(set,H,h,ix)=>(s,d)=>{set.forEach(r=>s(H,...r));(ix||[2,3]).forEach(i=>{const r=set[i];d(h,r[0],r[1]+1,1,2)})};
@@ -388,7 +389,7 @@ F.push(
  hair(s,d){s('#f4f4f4',9,9,6,4);s('#f4f4f4',7,5,2,3);s('#f4f4f4',15,5,2,3)},
  outfit(d){d('#111111',9,6,6,3);d('#6ac8ff',9,6,1,1);d('#2a6a3a',10,12,4,3);d('#f4f4f4',8,16,8,1)},
  form:{name:'Max Power',aura:'#ffe45a',eye:'#ffffff',skin:'#e8a070',skinD:'#b87040',top:'#e8761a',sleeve:'#e8a070'},
- ab:[BLS(c3('#6ac8ff','#d8f4ff')),qBm('Kamehameha',c3('#2a8bff','#5cc6ff'),20,260,{charge:.7}),qSk('Solar Flare',c3('#ffffff','#fff8c0'),170,{cd:4}),qUB('Max Power Kamehameha',c3('#2a8bff','#8ad8ff'),38,600)],
+ ab:[BLS(c3('#6ac8ff','#d8f4ff')),qBm('Kamehameha',c3('#2a8bff','#5cc6ff'),20,260,{charge:.7}),qSk('Solar Flare',c3('#ffffff','#fff8c0'),170,{cd:4,fx:'blind'}),qUB('Max Power Kamehameha',c3('#2a8bff','#8ad8ff'),38,600)],
  fab:[BAR(c3('#6ac8ff','#d8f4ff')),qBs('Turtle Hermit Rush',c3('#6ac8ff','#d8f4ff'),4,290),qBm('Kamehameha MAX',c3('#2a8bff','#8fe0ff'),32,390,{k:35,cd:4.5,lock:2}),qUO('Max Power Blast',c3('#8a4aff','#d0b0ff'),24,640)],
  mel:[['Staff Strike',c3('#6ac8ff','#d8f4ff'),3,110],['Turtle Combo',c3('#ffe45a','#ffffff'),4,160]],swd:sw5('block','counter','block','dodge')}
 );
@@ -417,14 +418,14 @@ F.push(
  hair(s,d){s('#f4a0b8',10,-2,3,6);s('#f4a0b8',12,-4,4,3);s('#f4a0b8',15,-3,2,5)},
  outfit(d){d('#f4a0b8',6,12,12,5);d('#1a1a1a',7,16,10,2);d('#e8c040',11,16,2,2);d('#f4f4f4',3,10,3,9);d('#f4f4f4',18,10,3,9);d('#f4f4f4',6,18,12,2)},
  form:{name:'Super Buu',aura:'#ff6aa0',eye:'#e02030',sparks:true,spark:'#ffc0d8',skin:'#f08ca8',top:'#f08ca8',sleeve:'#f08ca8',hair(s,d){s('#f08ca8',10,-3,3,7);s('#f08ca8',11,-6,3,4);s('#f08ca8',14,-8,3,6);s('#f08ca8',15,-3,2,8)}},
- ab:[BLS(c3('#ff9ab8','#ffd8e4')),qBm('Chocolate Beam',c3('#ff6aa0','#ffd0e0'),10,245,{charge:.4,dur:.9,cd:2.6,lock:1.3}),qSk('Angry Explosion',c3('#ff4a7a','#ffc0d0'),205,{cd:3.5}),qUO('Vanishing Ball',c3('#ff6aa0','#ffe0ec'),24,600)],
- fab:[BAR(c3('#ff8ab0','#ffe0ec'),{nm:'Super Barrage'}),qBs('Rubber Rush',c3('#ff6aa0','#ffd0e0'),4,310),qBm('Chocolate Blitz',c3('#ff3a8a','#ffc0d8'),30,400,{k:35,cd:4.5,lock:2}),qUO('Planet Eraser',c3('#ff2a7a','#ffd0e4'),30,720)],
+ ab:[BLS(c3('#ff9ab8','#ffd8e4')),qBm('Chocolate Beam',c3('#ff6aa0','#ffd0e0'),10,245,{charge:.4,dur:.9,cd:2.6,lock:1.3,fx:'choc',aim:80}),qSk('Angry Explosion',c3('#ff4a7a','#ffc0d0'),205,{cd:3.5}),qUO('Vanishing Ball',c3('#ff6aa0','#ffe0ec'),24,600)],
+ fab:[BAR(c3('#ff8ab0','#ffe0ec'),{nm:'Super Barrage'}),qWr('Rubber Rush',c3('#ff6aa0','#ffd0e0'),310,{hold:1.8}),qBm('Chocolate Blitz',c3('#ff3a8a','#ffc0d8'),30,400,{k:35,cd:4.5,lock:2,fx:'choc',aim:80}),qUO('Planet Eraser',c3('#ff2a7a','#ffd0e4'),30,720)],
  mel:[['Belly Bump',c3('#ff9ab8','#ffd8e4'),2,150],['Rubber Smash',c3('#ff6aa0','#ffd0e0'),3,195]],swd:sw5('tank','block','counter','tank')},
 {n:'KID BUU',s:'KID BUU',sh:'#ff6a9a',g:'VILLAINS',skin:'#f2879e',skinD:'#b85870',pants:'#2a2a2a',boots:'#f2879e',top:'#f2879e',sleeve:'#f2879e',hp:1300,eye:'#c01030',
  hair(s,d){s('#f2879e',11,-3,2,6);s('#f2879e',13,-6,2,5);s('#f2879e',15,-9,2,5);s('#f2879e',17,-8,2,3)},
  outfit(d){d('#e8e8e8',8,16,8,1);d('#2a2a2a',8,17,8,2);d('#1a1a1a',9,11,6,1)},
  form:{name:'Berserk Buu',aura:'#ff2a6a',eye:'#ff2a2a',sparks:true,spark:'#ff9ac0',skin:'#e8607e',top:'#e8607e',sleeve:'#e8607e',boots:'#e8607e'},
- ab:[BLS(c3('#ff6a9a','#ffd0e0')),qDs('Rubber Rush',c3('#ff6a9a','#ffd0e0'),195),qOb('Energy Bomb',c3('#ff4a8a','#ffc0d8'),13,225),qUO('Planet Burst',c3('#ff2a6a','#ffd8e8'),30,650)],
+ ab:[BLS(c3('#ff6a9a','#ffd0e0')),qWr('Rubber Rush',c3('#ff6a9a','#ffd0e0'),230),qOb('Energy Bomb',c3('#ff4a8a','#ffc0d8'),13,225),qUO('Planet Burst',c3('#ff2a6a','#ffd8e8'),30,650)],
  fab:[BAR(c3('#ff4a8a','#ffd0e0'),{nm:'Rain of Destruction'}),qBs('Chaos Combo',c3('#ff2a6a','#ffd0e0'),5,320),qBm('Death Wave',c3('#ff2a6a','#ffc0d8'),30,400,{k:35,cd:4.5,lock:2}),qUO('Planet Burst: Final',c3('#ff1a5a','#ffe0ec'),34,740)],
  mel:[['Wild Kick',c3('#ff6a9a','#ffd0e0'),3,125],['Chaos Combo',c3('#ff2a6a','#ffc0d8'),4,180]],swd:sw5('dodge','dodge','counter','dodge')},
 {n:'UUB',s:'UUB',sh:'#ff9a3a',g:'HEROES',skin:'#a8703c',skinD:'#7a4a28',pants:'#e85a1a',boots:'#2f6fd6',top:'#f0a020',sleeve:'#f0a020',hp:1150,eye:'#111',
@@ -575,7 +576,7 @@ const me=()=>TM[0][ACT[0]];
 let BR=false,MYT=0;const opp=f=>{if(BR)return nearE(f);const t=1-f.team,o=TM[t][ACT[t]];return o&&!o.out?o:null};
 const FP=(f,k,d)=>{const v=F[f.id].form[k];return v!==undefined?v:d};
 const AU=f=>(f.sk&&skinAura(f))||(f.form?F[f.id].form.aura:F[f.id].sh);
-const curSpr=(f,b)=>{if(f.sk){const s=skinSpr(f);if(s)return s[b||0]}return (f.form?sprF:spr)[f.id][b||0]};
+const curSpr=(f,b)=>{if(f.chocT>0)return chocSpr()[b||0];if(f.sk){const s=skinSpr(f);if(s)return s[b||0]}return (f.form?sprF:spr)[f.id][b||0]};
 function mkF(id,team){const HP=F[id].hp||HPS[id];return{id,team,dir:team?-1:1,x:0,y:0,hp:HP,max:HP,ki:100,g:100,gl:0,gd:0,form:false,sz:1,fcd:0,ft:0,unl:false,spdT:0,spdM:1,lock:0,inv:0,hide:false,block:false,sAge:9,charging:false,down:0,fl:0,bcd:0,sFlash:0,stun:0,
 cd:[0,0,0,0,0],glow:null,sw:null,out:false,dead:false,ent:0,atk:null,fcd:0,ai:{at:2.2,tele:0,sk:-1,mv:0,ty:90,tx:0,blk:0,chg:0}}}
 function sayN(x,y,s,c,b){if(DEMO&&/^(NO KI|LOW GUARD|NEED |UNLOCKS|RECHARGING)/.test(s))return;NUM.push({x,y,t:0,s,c,b:b||0})}
@@ -630,7 +631,7 @@ function shot(f,a,delay,oy){let t=0,x=f.x,y=f.y,s=a.t==='volley'?a.r:0;const ch=
 if(ch)sfx('beamCharge',ch);
 E.push({u(dt){if(f.down>0||f.out||f.stun>0)return false;t+=dt;if(t<delay)return true;const tt=t-delay;
 if(tt<ch){x=f.x+f.dir*10;y=f.y+2;s=a.r*tt/ch;chargeFx(x,y,a.c);f.glow=a.c[0];return true}
-PR.push({vy:0,hom:a.hom!==undefined?a.hom:a.ult?7:a.t==='orb'?2.2:a.t==='slash'?1.4:2.8,team:f.team,src:f,x:f.x+f.dir*10,y:f.y+2+(oy||0),vx:f.dir*a.spd,r:a.r,hw:a.hw,dmg:a.dmg,c:a.c,kind:a.t==='slash'?'slash':a.t==='orb'?'orb':'shot',pow:a.dmg*(a.t==='slash'?1.4:1),ult:!!a.ult,boom:a.boom||10,pass:false,tt:0,prem:a.prem?1:0});
+PR.push({vy:0,hom:a.hom!==undefined?a.hom:a.ult?7:a.t==='orb'?2.2:a.t==='slash'?1.4:2.8,team:f.team,src:f,x:f.x+f.dir*10,y:f.y+2+(oy||0),vx:f.dir*a.spd,r:a.r,hw:a.hw,dmg:a.dmg,c:a.c,kind:a.t==='slash'?'slash':a.t==='orb'?'orb':'shot',pow:a.dmg*(a.t==='slash'?1.4:1),ult:!!a.ult,boom:a.boom||10,pass:false,tt:0,prem:a.prem?1:0,fx:a.fx});
 sfx(a.t==='orb'?'big':'blast');return false},
 d(){if(t<delay||t-delay>=ch)return;orb(x,y,Math.max(2,s),a.c)}})}
 function updPR(dt){
@@ -644,7 +645,7 @@ for(const tg of (BR?enemies(p.team):[act(1-p.team)])){
  if(BR){if(!tg||(p.ps&&p.ps.has(tg)))continue}else if(p.pass)continue;
  if(tg&&tg.down<=0&&((p.vx>0&&p.x>=tg.x-6)||(p.vx<0&&p.x<=tg.x+6))){if(BR)(p.ps||(p.ps=new Set())).add(tg);else p.pass=true;
   if(tg.inv>0){if(!BR||tg===p.tg)miss(tg.x,tg.y)}
-  else if(Math.abs(p.y-tg.y)<=p.hw+9){dmg(p.src,tg,p.dmg,p.x,p.y,p.c,{kind:'proj',ult:p.ult,big:p.dmg>300,proj:p});boom(p.x,p.y,p.c,p.boom>12?p.boom:9);p.dead=true;break}
+  else if(Math.abs(p.y-tg.y)<=p.hw+9){dmg(p.src,tg,p.dmg,p.x,p.y,p.c,{kind:'proj',ult:p.ult,big:p.dmg>300,proj:p});boom(p.x,p.y,p.c,p.boom>12?p.boom:9);if(p.fx)fxHit(p.src,tg,p);p.dead=true;break}
   else if(!BR||tg===p.tg)miss(tg.x,tg.y)}}
 if(p.dead)continue;
 // beams cancel weaker blasts, strong orbs break beams
@@ -685,7 +686,7 @@ for(const b of BM){const f=b.f;
  else{if(b.on&&b.lastHit&&b.lastHit.down<=0)boom(b.lastHit.x,b.lastHit.y,b.a.c,b.a.w>25?22:12);b.on=false;b.fade+=dt;if(b.cl)endClash(b.cl);if(b.fade>.3)b.done=true;continue}
  if(!b.cl){b.ex=f.dir>0?W:0;let tg=opp(f);b.lastHit=null;if(BR){let bd=1e9,bt=null;for(const e of enemies(f.team)){if(e.down>0||(e.x-b.mx)*f.dir<=0)continue;let h=false;for(const o of b.offs)if(Math.abs(e.y-(bY(b)+o))<b.a.w/2+9)h=true;if(h&&Math.abs(e.x-b.mx)<bd){bd=Math.abs(e.x-b.mx);bt=e}}if(bt)tg=bt}
   if(tg&&tg.down<=0){let hl=false;for(const o of b.offs)if(Math.abs(tg.y-(bY(b)+o))<b.a.w/2+9&&(tg.x-b.mx)*f.dir>0)hl=true;
-   if(hl){b.ex=tg.x;b.lastHit=tg;b.tk+=dt;if(b.tk>=b.a.tick){b.tk=0;dmg(f,tg,b.a.dmg*b.a.tick/b.a.dur,tg.x,tg.y,b.a.c,{kind:'beam',ult:b.ult,tick:1})}
+   if(hl){b.ex=tg.x;b.lastHit=tg;b.tk+=dt;if(b.a.fx&&!b.fxd){b.fxd=1;fxHit(f,tg,b.a)}if(b.tk>=b.a.tick){b.tk=0;dmg(f,tg,b.a.dmg*b.a.tick/b.a.dur,tg.x,tg.y,b.a.c,{kind:'beam',ult:b.ult,tick:1})}
     if(Math.random()<.7)burst(tg.x,tg.y,b.a.c,2,80,.3,1)}
    else if(!b.ms&&b.t-b.fs>.15){b.ms=true;miss(tg.x,tg.y)}}}}
 for(let i=0;i<BM.length;i++)for(let j=i+1;j<BM.length;j++){const a=BM[i],b=BM[j];
@@ -1327,6 +1328,10 @@ SAVE.mx=SAVE.mx||{};SAVE.lo=SAVE.lo||{};
 function mxXp(id){return SAVE.mx[id]||0}
 function mxLv(id){const x=mxXp(id);let l=1;MXT.forEach((t,i)=>{if(x>=t)l=i+1});return l}
 const PM=(m,o)=>{const k0=m.k!==undefined?m.k:kc(m);const r=Object.assign({},m,{prem:1,dmg:Math.round(m.dmg*1.12),cd:+(m.cd*.9).toFixed(2),k:Math.max(5,Math.round(k0*.9))},o||{});if(r.r)r.r=Math.round(r.r*1.1);if(r.w)r.w=Math.round(r.w*1.1);return r};
+const qDc=(nm,c,cnt,dmg,o)=>Object.assign({nm,t:'discs',c,cnt,hw:16,spd:230,dmg,boom:14,spread:12,gap:.14,hom:9,k:30,cd:4.5,lock:.9},o||{});
+const qUWr=(nm,c,dmg,o)=>qWr(nm,c,dmg,Object.assign({ult:1,hold:2.2,k:50,cd:7,lock:2.5,boom:32},o||{}));
+Object.assign(TD,{wrap:'Stretches out, wraps around the target and squeezes, then slams them. Dodge the arms with a blink.',discs:'Fires several tracking discs in a fan.'});Object.assign(TYPEN,{wrap:'GRAB',discs:'DISCS'});
+Object.assign(FL,{'Rubber Rush':'Buu stretches his arms to the target, wraps around them and squeezes.','Chocolate Beam':'Hit by this beam, the target is turned into a small piece of chocolate for 2 seconds. Buu heals when he eats it.','Chocolate Blitz':'A heavy beam that turns the target into chocolate for 2 seconds.','Solar Flare':'A blinding flash that stuns whoever it touches.','Destructo Disc':'A razor-sharp tracking disc that chases the target.','Time Freeze Burst':'A wave that freezes the target in place.'});
 const qPl=(nm,c,rad,dmg,o)=>Object.assign({nm,t:'pillar',c,rad,dmg,tel:.75,hits:1,k:28,cd:3.8,lock:1.2,boom:22},o||{});
 const qUPl=(nm,c,rad,dmg,o)=>qPl(nm,c,rad,dmg,Object.assign({ult:1,hits:3,tel:1,k:50,cd:7,lock:1.8,boom:34},o||{}));
 Object.assign(TD,{pillar:'A glowing ring appears under the target, then erupts into a pillar of energy. Move or blink to dodge it.'});Object.assign(TYPEN,{pillar:'ERUPTION'});
@@ -1404,6 +1409,10 @@ A('UUB','u_sw',4,1,qUB('Spirit Wave Max',c3('#ff8ac0','#ffffff'),44,720),'A pink
 A('CUMBER','cu_eb',2,0,qBs('Evil Blitz',c3('#c01030','#ffa0b0'),4,310,{k:30,cd:3}),'A dark ki combo.');
 A('CUMBER','cu_de',4,1,qUO('Dark Crimson Eruption',c3('#a0102a','#ffd0d8'),34,780),'The Evil Aura explodes.');
 
+// ---- batch 4: status / grab / disc abilities ----
+A('FAT BUU','fb_cc',4,1,qUWr('Candy Crush',c3('#ff6aa0','#ffe0ec'),780),'Buu wraps the target in his elastic body and crushes them.');
+A('KID BUU','kb_cr',4,1,qUWr('Elastic Crush',c3('#ff2a6a','#ffd8e8'),800),'A long, brutal squeeze that ends in a slam.');
+A('FRIEZA','f_dss',4,1,qDc('Death Saucer Storm',c3('#ff3aa0','#ffd0f0'),7,150,{ult:1,hw:20,k:50,cd:7,lock:1.4,spread:14,gap:.12}),'Seven tracking Destructo Discs fan out and close in.');
 // ---- batch 3: pillar eruptions ----
 A('BEERUS','be_he',4,1,qUPl('Hakai Eruption',DKP,24,840),'A ring of destruction forms under the target and erupts in three black-purple pulses.');
 A('TOPPO','tp_jp',2,0,qPl('Justice Pillar',c3('#ff3a8a','#ffd0e8'),20,270),'A ring of justice erupts under the target.');
@@ -1422,16 +1431,18 @@ const UNI=[
  {key:'u_sf',lv:99,u:false,shop:'SHOP',m:PM(qSk('Solar Flare',c3('#ffffff','#fff8c0'),170,{cd:4})),txt:'A blinding flash. Anyone can equip it once you own it.'},
  {key:'u_dd',lv:99,u:false,shop:'SHOP',m:PM(qSl('Destructo Disc',c3('#ff9a2a','#ffe0a0'),20,230,{boom:20})),txt:'A razor-sharp disc of ki. Anyone can equip it once you own it.'},
  {key:'u_ge',lv:99,u:false,shop:'SHOP',m:PM(qPl('Ki Geyser',c3('#7ad8ff','#ffffff'),20,270)),txt:'A ring erupts under the target. Anyone can equip it once you own it.'},
+ {key:'u_dm',lv:99,u:false,shop:'SHOP',m:PM(qDc('Destructo Disc Barrage',c3('#ff9a2a','#ffe0a0'),4,125)),txt:'Fires four tracking Destructo Discs in a fan. Anyone can equip it once you own it.'},
  {key:'u_tf',lv:99,u:false,shop:'SHOP',m:PM(qSk('Time Freeze Burst',c3('#7ad8ff','#ffffff'),225,{cd:3.4})),txt:'A burst that freezes the air around you.'},
  {key:'u_kt',lv:99,u:false,shop:'SHOP',m:PM(BAR(c3('#7ad8ff','#e8fbff'),{nm:'Ki Tsunami',cnt:12,spread:26,dmg:34,gap:.045,cd:3.8,k:28})),txt:'A flood of ki shots.'},
  {key:'u_sc',lv:99,u:true,shop:'SHOP',m:PM(qUB('Supernova Cannon',c3('#ff9a2a','#ffffff'),46,740)),txt:'A universal ultimate beam. Anyone can equip it once you own it.'},
  {key:'u_sp',lv:99,u:true,shop:'SHOP',m:PM(qUO('Spirit Bomb Supreme',c3('#7ec8ff','#ffffff'),38,800)),txt:'A universal ultimate ball of gathered energy.'}];
 const ABM={};ABL.forEach(a=>{a.fid=F.findIndex(f=>f.n===a.fn);if(a.fid<0)throw new Error('ability fighter '+a.fn);ABM[a.key]=a});UNI.forEach(a=>ABM[a.key]=a);
 // tracking / swivel / curve / homing variants (only some abilities have these)
-const TW={g_k20:{aim:90},ug_tm:{aim:70},ug_mb:{sweep:30,swp:4},tg_cg:{sweep:32,swp:4},v2_gm:{aim:110},vb_ff:{aim:100},vb_fb:{aim:120,curve:1},v4_fs:{aim:130,curve:1},b_ob:{aim:110,curve:1},gb_bk:{aim:100,curve:1},
+const TW={fb_cr:{fx:'choc'},f_ds:{hom:8},g_k20:{aim:90},ug_tm:{aim:70},ug_mb:{sweep:30,swp:4},tg_cg:{sweep:32,swp:4},v2_gm:{aim:110},vb_ff:{aim:100},vb_fb:{aim:120,curve:1},v4_fs:{aim:130,curve:1},b_ob:{aim:110,curve:1},gb_bk:{aim:100,curve:1},
  g2_lk:{sweep:24,swp:5},g4_pk:{sweep:30,swp:4.2},gg_kb:{aim:110},w_sc:{sweep:36,swp:3.6},bg_bm:{aim:120,curve:1},a_eb:{aim:90},r_mk:{aim:80},u_sw:{sweep:26,swp:4.5},u_ks:{aim:100,curve:1},
  v4_bi:{hom:4.5},kb_ec:{hom:5},gb_sb:{hom:8},be_sd:{hom:6},f_sn:{hom:5},f_ds:{hom:5},p_hg:{hom:6}};
 Object.keys(TW).forEach(k=>{Object.assign(ABM[k].m,TW[k])});
+Object.assign(ABM.u_sf.m,{fx:'blind'});Object.assign(ABM.u_dd.m,{hom:9});Object.assign(ABM.u_tf.m,{fx:'freeze'});
 
 Object.assign(FL,...ABL.concat(UNI).map(a=>({[a.m.nm]:a.txt})));
 F.forEach(f=>{f.ab0=f.ab.slice()});
@@ -1451,6 +1462,32 @@ afterBattle=function(win){const main=TM[MYT]&&TM[MYT][0];let g=0,up=null;
 masteryStr=function(id){const w=SAVE.wins[id]||0;return ' • MASTERY Lv '+mxLv(id)+' • WINS '+w+(w>=15?' ★★★':w>=5?' ★★':w>=1?' ★':'')};
 // ---- premium visuals ----
 const orun=run;
+const CHS=[];
+function chocSpr(){if(CHS.length)return CHS;for(let b=0;b<2;b++){const k=document.createElement('canvas');k.width=SW;k.height=SH;const g=k.getContext('2d'),y=OY+13+b;g.fillStyle='#14141f';g.fillRect(5,y-1,14,12);g.fillStyle='#4a2410';g.fillRect(6,y,12,10);g.fillStyle='#6a3a1a';for(let i=0;i<3;i++)for(let j=0;j<3;j++)g.fillRect(7+i*4,y+1+j*3,3,2);g.fillStyle='#a8703a';g.fillRect(7,y+1,3,1);g.fillRect(11,y+1,3,1);g.fillStyle='#d8b070';g.fillRect(7,y+1,1,1);g.fillStyle='#e8d8a0';g.fillRect(16,y+2,2,3);CHS.push(k)}return CHS}
+function fxHit(f,tg,a){const fx=a.fx;if(!fx||!tg||tg.down>0||tg.out||tg.dead||T<(tg.fxImm||0))return;
+ const dur=fx==='choc'?2:fx==='freeze'?1.6:1.4;tg.fxImm=T+dur+2.5;tg.stun=Math.max(tg.stun,dur);let t=0;
+ if(fx==='choc'){tg.chocT=dur;sayN(tg.x,tg.y-34,'CHOCOLATE!','#c88a4a',2);sfx('big');boom(tg.x,tg.y,['#6a3a1a','#c88a4a','#ffe0b0'],14)}
+ else if(fx==='blind'){sayN(tg.x,tg.y-34,'BLINDED!','#ffffff',2);flash=Math.max(flash,.5);flashC='#ffffff';sfx('big')}
+ else{sayN(tg.x,tg.y-34,'FROZEN!','#9adcff',2);sfx('clash')}
+ E.push({u(dt){t+=dt;if(tg.down>0||tg.out){tg.chocT=0;return false}if(t<dur){tg.stun=Math.max(tg.stun,.12);if(fx==='choc')tg.chocT=dur-t;return true}tg.chocT=0;
+   if(fx==='choc'&&f&&f.hp>0&&f.down<=0){f.hp=Math.min(f.max,f.hp+f.max*.06);sayN(f.x,f.y-34,'YUM!','#ffb0c8',1);burst(tg.x,tg.y,['#c88a4a','#ffe0b0'],12,100,.4,2)}return false},
+  d(){if(t>=dur)return;if(fx==='blind'){const k=1-t/dur;disc(tg.x,tg.y-4,16*(.6+.4*k),'#ffffff',.5*k+.2);star(tg.x,tg.y-4,16,'#fff8c0',T*8)}
+   else if(fx==='freeze'){ctx.globalAlpha=.5;disc(tg.x,tg.y,14,'#9adcff');ctx.globalAlpha=.85;ctx.fillStyle='#e8fbff';ctx.fillRect(Math.round(tg.x)-11,Math.round(tg.y)-18,3,26);ctx.fillRect(Math.round(tg.x)+8,Math.round(tg.y)-18,3,26);ctx.globalAlpha=1}}})}
+function wrapAtk(f,a){const tg=opp(f);if(!tg)return .5;const hold=a.hold||1.5,c=a.c,N=Math.max(3,Math.round(hold/.3));let t=0,ph=0,tk=0;f.atk={kind:'melee',ult:!!a.ult,start:T,tg};sfx('whoosh');
+ const hand=()=>[f.x+f.dir*8,f.y+4];
+ E.push({u(dt){if(f.down>0||f.out||f.stun>0){f.atk=null;return false}t+=dt;
+  if(ph===0){if(t>=.28){if(tg.inv>0||tg.down>0||tg.out||T<(tg.fxImm||0)){miss(tg.x,tg.y);ph=3;t=0}else{ph=1;t=0;tg.fxImm=T+hold+2.5;tg.stun=Math.max(tg.stun,hold+.1);sayN(tg.x,tg.y-34,'SQUEEZED!',c[1],1);sfx('big')}}}
+  else if(ph===1){if(tg.down>0||tg.out){ph=3;t=0;return true}tg.stun=Math.max(tg.stun,.12);tg.x+=(f.x+f.dir*16-tg.x)*Math.min(1,2.5*dt);tg.y+=(f.y-tg.y)*Math.min(1,2.5*dt);
+   tk+=dt;while(tk>=hold/N){tk-=hold/N;dmg(f,tg,a.dmg*.55/N,tg.x,tg.y,c,{kind:'melee',tick:1});burst(tg.x,tg.y,c,4,60,.25,2);shake=Math.max(shake,2)}
+   if(t>=hold){ph=2;t=0;dmg(f,tg,a.dmg*.45,tg.x,tg.y,c,{kind:'melee',big:true,ult:!!a.ult});boom(tg.x,tg.y,c,a.boom||20);sfx('hit')}}
+  else if(t>=.25){f.atk=null;return false}
+  return true},
+  d(){const[hx,hy]=hand();let ex=tg.x,ey=tg.y;
+   if(ph===0){const k=Math.min(1,t/.28);ex=hx+(tg.x-hx)*k;ey=hy+(tg.y-hy)*k}else if(ph>=2){const k=1-Math.min(1,t/.25);ex=hx+(tg.x-hx)*k;ey=hy+(tg.y-hy)*k}
+   [-3,3].forEach((off,ai)=>{for(let i=0;i<=14;i++){const q=i/14,x=hx+(ex-hx)*q,y=hy+(ey-hy)*q+off*(1-Math.abs(q*2-1)*.2)+Math.sin(q*9+T*18+ai*2)*(ph===1?1:2);disc(x,y,3,'#14141f',.55);disc(x,y,2,c[1])}});
+   if(ph===1){for(let k=0;k<4;k++){const y=tg.y-9+k*6,r=9-Math.sin(T*16+k)*1.5;ctx.fillStyle='#14141f';ctx.fillRect(Math.round(tg.x-r-1),Math.round(y-1),Math.round(r*2+2),4);ctx.fillStyle=c[1];ctx.fillRect(Math.round(tg.x-r),Math.round(y),Math.round(r*2),2);ctx.fillStyle=c[2];ctx.fillRect(Math.round(tg.x-r+1),Math.round(y),Math.round(r*2-2),1)}}}});
+ return .28+hold+.55}
+window.fxHit=fxHit;window.chocSpr=chocSpr;
 function pillar(f,a){const tg=opp(f);if(!tg)return .4;const n=a.hits||1,tel=a.tel||.75,c=a.c,R=a.rad||18;let t=0,tx=tg.x,ty=tg.y,ph=0,hit=0;sfx('beamCharge',tel);
  const ell=(x,y,r,col,al)=>{ctx.globalAlpha=al;ctx.fillStyle=col;const er=Math.max(2,Math.round(r*.45));x=Math.round(x);y=Math.round(y);for(let j=-er;j<=er;j++){const w=Math.floor(r*Math.sqrt(1-(j*j)/(er*er)));ctx.fillRect(x-w,y+j,w*2+1,1)}ctx.globalAlpha=1};
  const dots=(x,y,r,col,n,rot)=>{ctx.fillStyle=col;for(let i=0;i<n;i++){const an=rot+i/n*6.283;ctx.fillRect(Math.round(x+Math.cos(an)*r),Math.round(y+Math.sin(an)*r*.45),2,2)}};
@@ -1473,7 +1510,12 @@ function pillar(f,a){const tg=opp(f);if(!tg)return .4;const n=a.hits||1,tel=a.te
     for(let i=0;i<3;i++){const yy=ty+8-ht*Math.random();bolt(x-w,yy,x-w-rnd(6,16),yy-rnd(3,10),c[0],3);bolt(x+w,yy,x+w+rnd(6,16),yy-rnd(3,10),c[0],3)}}
    ctx.globalAlpha=1}});
  return a.lock||1.2}
-run=function(f,a){if(a.prem)premFx(f,a);if(a.t==='pillar'){f.lock=Math.max(f.lock,pillar(f,a));return}return orun(f,a)};
+run=function(f,a){if(a.prem)premFx(f,a);
+ if(a.t==='pillar'){f.lock=Math.max(f.lock,pillar(f,a));return}
+ if(a.t==='wrap'){f.lock=Math.max(f.lock,wrapAtk(f,a));return}
+ if(a.t==='discs'){const n=a.cnt||4;sfx('whoosh');for(let q=0;q<n;q++)shot(f,Object.assign({},a,{t:'slash'}),q*(a.gap||.14),(q-(n-1)/2)*(a.spread||12));return}
+ if(a.t==='shock'&&a.fx){orun(f,a);const tg=opp(f);if(tg){const dl=Math.hypot(tg.x-f.x,tg.y-f.y)*.8/230;let t=0;E.push({u(dt){t+=dt;if(t>=dl){if(tg.inv<=0)fxHit(f,tg,a);return false}return true},d(){}})}return}
+ return orun(f,a)};
 function premFx(f,a){const c=a.c,dur=(a.charge||0)+.5;let t=0;flash=Math.max(flash,.15);flashC=c[0];ring(f.x,f.y+14,52,c,.4);if(a.ult)ring(f.x,f.y+14,80,[c[1],c[2],c[2]],.6);
  E.push({u(dt){t+=dt;if(f.down>0||f.out)return false;if(t<dur){for(let q=0;q<2;q++){const an=rnd(0,6.28);PT.push({x:f.x+Math.cos(an)*16,y:f.y+18,vx:Math.cos(an+1.57)*34,vy:rnd(-110,-55),l:.6,m:.6,c:q?c[1]:c[2],z:2})}}return t<dur},
   d(){const k=Math.min(1,t/.2),fd=t>dur-.2?Math.max(0,(dur-t)/.2):1;ctx.globalAlpha=.8*k*fd;
@@ -1549,7 +1591,7 @@ function loPanel(){const id=CV.id,sl=CV.slot;let h='<div class="lo">'+lvBar(id)+
  else if(sl===0)h+='<div class="lom">Melee cannot be swapped.</div>';
  else{const cur=getAb(id),curNm=cur[sl-1].nm;h+='<div class="loh">CHANGE '+SLOTN[sl]+'</div>';
   opts(id,sl).forEach(o=>{const m=o.m,on=m.nm===curNm,lock=!UNLOCK_ALL&&(o.shop||mxLv(id)<o.lv),inUse=!on&&cur.some((c,k)=>k!==sl-1&&c.nm===m.nm),ds=descMove(m,sl,false,id);
-   h+='<div class="lor'+(on?' on':'')+(lock?' lk':'')+'" style="--c:'+m.c[1]+'"><div class="lot"><b>'+m.nm+'</b>'+(m.prem?'<span class="pm">★ PREMIUM</span>':'')+'<small>DMG '+ds.dmg+' • KI '+ds.k+' • CD '+ds.cd+'s'+(m.t==='pillar'?' • ERUPTION':'')+(m.sweep?' • SWIVEL':m.aim?(m.curve?' • CURVING':' • TRACKING'):'')+(m.hom>=4?' • HOMING':'')+'</small></div><div class="lob"><button data-pv="'+o.key+'">TRY</button>'+(on?'<span class="eq">EQUIPPED</span>':lock&&o.shop?'<span class="lkd">SHOP • COMING SOON</span>':lock?'<span class="lkd">LOCKED • Lv '+o.lv+'</span>':inUse?'<span class="lkd">IN OTHER SLOT</span>':'<button data-eq="'+o.key+'" class="go">EQUIP</button>')+'</div></div>'});
+   h+='<div class="lor'+(on?' on':'')+(lock?' lk':'')+'" style="--c:'+m.c[1]+'"><div class="lot"><b>'+m.nm+'</b>'+(m.prem?'<span class="pm">★ PREMIUM</span>':'')+'<small>DMG '+ds.dmg+' • KI '+ds.k+' • CD '+ds.cd+'s'+(m.t==='pillar'?' • ERUPTION':'')+(m.sweep?' • SWIVEL':m.aim?(m.curve?' • CURVING':' • TRACKING'):'')+(m.hom>=4?' • HOMING':'')+(m.fx==='choc'?' • CHOCOLATE':m.fx==='blind'?' • BLINDS':m.fx==='freeze'?' • FREEZES':'')+(m.t==='wrap'?' • GRAB':'')+(m.t==='discs'?' • MULTI-DISC':'')+'</small></div><div class="lob"><button data-pv="'+o.key+'">TRY</button>'+(on?'<span class="eq">EQUIPPED</span>':lock&&o.shop?'<span class="lkd">SHOP • COMING SOON</span>':lock?'<span class="lkd">LOCKED • Lv '+o.lv+'</span>':inUse?'<span class="lkd">IN OTHER SLOT</span>':'<button data-eq="'+o.key+'" class="go">EQUIP</button>')+'</div></div>'});
   if(!ABL.some(a=>a.fid===id))h+='<div class="lom">More abilities for this fighter are coming soon.</div>'}
  return h+'</div>'}
 const orender=renderInfo;
