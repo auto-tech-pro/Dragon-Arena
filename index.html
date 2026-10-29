@@ -2999,7 +2999,7 @@ $('lJscan').onclick=()=>scanQR(async v=>{$('lJo').value=v;await $('lJgo').onclic
  try{if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
  const standalone=()=>window.matchMedia&&matchMedia('(display-mode: standalone),(display-mode: fullscreen)').matches||navigator.standalone;
  if(standalone())return;
- const b=document.createElement('button');b.id='hInstall';b.className='big g hb';b.textContent='INSTALL APP';b.style.cssText='position:absolute;left:.8em;bottom:.6em;font-size:.7em;padding:.35em .9em;display:none';
+ const b=document.createElement('button');b.id='hInstall';b.className='big g hb';b.textContent='INSTALL APP';b.style.cssText='position:absolute;right:.8em;bottom:.6em;font-size:.7em;padding:.35em .9em;display:none';
  $('home').appendChild(b);let dp=null;
  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;b.style.display=''});
  window.addEventListener('appinstalled',()=>{b.style.display='none'});
