@@ -596,7 +596,8 @@ fx.fillStyle='rgba(255,70,70,.08)';fx.fillRect(W/2,0,W/2,H);fx.fillStyle='rgba(7
 function scorch(x,y,r){fx.fillStyle='rgba(0,0,0,.22)';x=Math.round(x);y=Math.round(y);r=Math.round(r);for(let j=-r;j<=r;j++){const w=Math.floor(Math.sqrt(r*r-j*j));fx.fillRect(x-w,y+j,w*2+1,1)}}
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
-function dspr(im,x,y,sc){if(im.hd){sc=sc||1;const w=im.width*im.hd*sc,h=im.height*im.hd*sc,sm=ctx.imageSmoothingEnabled;ctx.imageSmoothingEnabled=true;try{ctx.imageSmoothingQuality='high'}catch(e){}ctx.drawImage(im,Math.round(x-w/2),Math.round(y+14*sc-h*.93),Math.round(w),Math.round(h));ctx.imageSmoothingEnabled=sm;return}if(sc&&sc!==1)ctx.drawImage(im,Math.round(x-12*sc),Math.round(y-20*sc),Math.round(24*sc),Math.round(34*sc));else ctx.drawImage(im,Math.round(x)-12,Math.round(y)-20)}
+function dspr(im,x,y,sc){if(im.hd){sc=sc||1;const k=im.hd,sm=ctx.imageSmoothingEnabled;ctx.imageSmoothingEnabled=true;try{ctx.imageSmoothingQuality='high'}catch(e){}ctx.drawImage(im,Math.round(x-12*sc+im.hx*sc),Math.round(y-20*sc+im.hy*sc),Math.round(im.width*k*sc),Math.round(im.height*k*sc));ctx.imageSmoothingEnabled=sm;return}
+if(sc&&sc!==1)ctx.drawImage(im,Math.round(x-12*sc),Math.round(y-20*sc),Math.round(24*sc),Math.round(34*sc));else ctx.drawImage(im,Math.round(x)-12,Math.round(y)-20)}
 function txt(s,x,y,col,sz,al){ctx.font='bold '+sz+'px monospace';ctx.textAlign=al||'center';ctx.fillStyle='#14141f';ctx.fillText(s,Math.round(x)+1,Math.round(y)+1);ctx.fillStyle=col;ctx.fillText(s,Math.round(x),Math.round(y))}
 function disc(x,y,r,col,al=1){ctx.globalAlpha=al;ctx.fillStyle=col;x=Math.round(x);y=Math.round(y);r=Math.max(1,Math.round(r));for(let j=-r;j<=r;j++){const w=Math.floor(Math.sqrt(r*r-j*j));ctx.fillRect(x-w,y+j,w*2+1,1)}ctx.globalAlpha=1}
 function orb(x,y,r,c){disc(x,y,r+3,c[0],.3);disc(x,y,r+1,c[0],.6);disc(x,y,r,c[1]);disc(x,y,r*.55,c[2]);if(r>=6){ctx.globalAlpha=.55;ctx.fillStyle='#0a0a14';circ(x,y,r+3,1);ctx.globalAlpha=.85;ctx.fillStyle=c[0];circ(x,y,r,1);ctx.globalAlpha=1}}
@@ -1367,8 +1368,11 @@ const SRC={'UI':'iVBORw0KGgoAAAANSUhEUgAAADgAAABYCAYAAACgcjREAAAHyElEQVR42u1bUWg
 const MAP={'GOKU UI':['UI','UIf'],'VEGETA EGO':['EG','EGf'],'BEAST GOHAN':['BG','BGf']};
 window.HDS={};
 for(const nm in MAP){const id=F.findIndex(f=>f.n===nm);if(id<0)continue;
- window.HDS[id]=MAP[nm].map(k=>{const im=new Image(),cs=[0,1].map(()=>{const c=document.createElement('canvas');c.width=56;c.height=88;c.hd=.5;return c});
-  im.onload=()=>{cs[0].getContext('2d').drawImage(im,0,0);cs[1].getContext('2d').drawImage(im,0,1)};im.src='data:image/png;base64,'+SRC[k];return cs})}
+ window.HDS[id]=MAP[nm].map(k=>{const im=new Image(),cs=[0,1].map(()=>{const c=document.createElement('canvas');c.width=56;c.height=88;c.hd=.4;c.hx=0;c.hy=0;return c});
+  im.onload=()=>{cs[0].getContext('2d').drawImage(im,0,0);cs[1].getContext('2d').drawImage(im,0,1);
+   const bb=c=>{const d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let x0=1e9,x1=-1,y0=1e9,y1=-1;for(let y=0;y<c.height;y++)for(let x=0;x<c.width;x++)if(d[(y*c.width+x)*4+3]>40){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}return{x0,x1,y0,y1}};
+   const o=bb(spr[id][0]),n=bb(cs[0]),k=(o.y1-o.y0+1)/(n.y1-n.y0+1);
+   cs.forEach(c=>{c.hd=k;c.hx=(o.x0+o.x1+1)/2-(n.x0+n.x1+1)/2*k;c.hy=(o.y1+1)-(n.y1+1)*k})};im.src='data:image/png;base64,'+SRC[k];return cs})}
 Object.assign(FL,{'Silver Kamehameha':'A spiraling silver beam that tracks and sweeps toward the target.','Silver Fist Barrage':'Dozens of afterimage fists rain on the target.','Afterimage Counter':'Slips the attack and strikes from behind in a six-hit combo.','Mastered Instinct Rush':'A twelve-hit teleport combo that ends in a burst of silver light.','Hakai Galick Gun':'A destructive purple Galick Gun that curves into the target.'});
 const PR=(m,o)=>Object.assign(m,{prem:1,hd:1},o||{});
 // ---- Goku Ultra Instinct ----
