@@ -3307,7 +3307,9 @@ const ANN={q:[],cur:null,t:0,last:-99,started:false,idle:0,combo:0,cT:0,lowSaid:
 const nm=f=>F[f.id].s;
 const R=a=>a[Math.floor(Math.random()*a.length)];
 let VOX=null;function pickVox(){try{const v=speechSynthesis.getVoices();if(!v.length)return;VOX=v.find(x=>/^en[-_]US/i.test(x.lang)&&/male|david|daniel|alex|fred|google us/i.test(x.name))||v.find(x=>/^en/i.test(x.lang))||null}catch(e){}}
-function speak(text){if(SAVE.annv===0||!window.speechSynthesis||muted)return;try{if(!VOX)pickVox();if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();speechSynthesis.resume();const u=new SpeechSynthesisUtterance(text.replace(/!/g,'.'));if(VOX)u.voice=VOX;u.lang=VOX?VOX.lang:'en-US';u.rate=1.05;u.pitch=.8;u.volume=Math.max(.3,Math.min(1,AUDV.ma*Math.max(AUDV.fx,.5)));setTimeout(()=>{try{speechSynthesis.speak(u)}catch(e){}},60)}catch(e){}}
+const PHON=[['CAULIFLA','Cow-lee-flah'],['GOGETA','Go-jeh-tah'],['VEGETO','Veh-jeh-toe'],['VEGETA','Veh-jeh-tah'],['GOKU','Go-koo'],['GOHAN','Go-hahn'],['FRIEZA','Free-zuh'],['BROLY','Bro-lee'],['BEERUS','Beer-us'],['WHIS','Wiss'],['JIREN','Jee-ren'],['DYSPO','Dis-poh'],['KALE','Kah-leh'],['TOPPO','Toh-poh'],['UUB','Oob'],['BUU','Boo'],['ROSHI','Roh-shee'],['TRUNKS','Trunks'],['PICCOLO','Pick-oh-loh'],['KAKAROT','Kah-kah-rot']];
+function phon(t){PHON.forEach(p=>{t=t.replace(new RegExp('\\b'+p[0]+'\\b','gi'),p[1])});return t}
+function speak(text){if(SAVE.annv===0||!window.speechSynthesis||muted)return;try{if(!VOX)pickVox();if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();speechSynthesis.resume();const u=new SpeechSynthesisUtterance(phon(text).replace(/!/g,'.'));if(VOX)u.voice=VOX;u.lang=VOX?VOX.lang:'en-US';u.rate=1.05;u.pitch=.8;u.volume=Math.max(.3,Math.min(1,AUDV.ma*Math.max(AUDV.fx,.5)));setTimeout(()=>{try{speechSynthesis.speak(u)}catch(e){}},60)}catch(e){}}
 window.annSpeak=speak;
 try{speechSynthesis.onvoiceschanged=pickVox;pickVox()}catch(e){}
 // unlock speech on first touch (iOS/Chrome require a gesture)
