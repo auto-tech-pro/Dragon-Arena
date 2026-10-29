@@ -57,6 +57,7 @@ body:not(.fight) #fs{left:auto;right:calc(46px*var(--s))}body:not(.fight) #mu{le
 #lStat{color:#9fb4e8;font-size:.9em}.lrow{display:flex;gap:.5em}.lrow .big{flex:1}.lp{display:none;flex-direction:column;gap:.35em}.lp.on{display:flex}
 #lan textarea{width:100%;background:rgba(16,22,44,.9);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:.4em;font:10px monospace;padding:.3em;user-select:text;-webkit-user-select:text;resize:none}
 #qrv,#scn{position:absolute;inset:0;z-index:12;display:none;flex-direction:column;align-items:center;justify-content:center;gap:.4em}#qrv{background:#fff;color:#000}#qrv.on,#scn.on{display:flex}#qrc{image-rendering:pixelated}#qrt{font-size:.7em;font-weight:800}#scn{background:#000}#scv{max-width:100%;max-height:70%}#scs{font-size:.8em;color:#ffe45a}
+#lRbig{font-size:3.2em;font-weight:900;letter-spacing:.3em;text-align:center;color:#ffe45a;font-family:monospace}#lan input{background:rgba(16,22,44,.9);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:.4em;font:700 1.2em monospace;padding:.4em;text-transform:uppercase;user-select:text;-webkit-user-select:text;width:100%}#lRu{text-transform:none!important;font-size:.9em!important}#lan summary{color:#9fb4e8;font-size:.9em;margin:.3em 0}
 #res h2{margin:0 0 .3em;font-size:3em;font-style:italic;letter-spacing:.1em;text-shadow:0 0 .6em currentColor}
 
 #home,#chars{position:absolute;inset:0;z-index:7;display:none;pointer-events:none}
@@ -108,6 +109,8 @@ body:not(.fight) #fs{left:auto;right:calc(46px*var(--s))}body:not(.fight) #mu{le
 <div id="chars"><div class="cl" id="cList"></div><div class="cr" id="cInfo"></div></div>
 <div id="lan"><div class="lbox"><h2>LAN BATTLE</h2><div id="lStat">Play against someone on the same Wi-Fi. One device hosts, the other joins.</div>
 <div class="lrow" id="lChoose"><button class="big" id="lHost">HOST A GAME</button><button class="big g" id="lJoin">JOIN A GAME</button></div>
+<div class="lrow" id="lChoose2"><button class="big" id="lRHost">CREATE ONLINE ROOM</button><button class="big" id="lRJoin">JOIN ONLINE ROOM</button></div>
+<div id="lR" class="lp"><div id="lRbig"></div><input id="lRi" maxlength="6" placeholder="ENTER ROOM CODE" autocapitalize="characters" autocomplete="off"><button class="big" id="lRgo">JOIN ROOM</button><details id="lRset"><summary>Server settings</summary><input id="lRu" placeholder="https://dragon-arena-relay.NAME.workers.dev" autocapitalize="none"><button class="big g" id="lRsave">SAVE</button></details></div>
 <div id="lH" class="lp"><div>1. Send this code to the other device</div><textarea id="lHo" readonly rows="3"></textarea><div class="lrow"><button class="big" id="lHq">SHOW QR CODE</button><button class="big g" id="lHc">Copy</button><button class="big g" id="lHs">Share</button></div><div>2. Scan their reply QR, or paste their reply code here</div><textarea id="lHa" rows="3"></textarea><div class="lrow"><button class="big" id="lHscan">SCAN REPLY QR</button><button class="big g" id="lHgo">CONNECT</button></div></div>
 <div id="lJ" class="lp"><div>1. Scan the host's QR code, or paste their code here</div><textarea id="lJo" rows="3"></textarea><div class="lrow"><button class="big" id="lJscan">SCAN HOST QR</button><button class="big g" id="lJgo">CREATE REPLY</button></div><div>2. Send this reply code back to the host</div><textarea id="lJa" readonly rows="3"></textarea><div class="lrow"><button class="big" id="lJq">SHOW REPLY QR</button><button class="big g" id="lJc">Copy</button><button class="big g" id="lJs">Share</button></div></div>
 <button class="big g" id="lBack">Cancel</button></div></div>
@@ -2496,7 +2499,7 @@ blink=function(f,x,y){if(cli(f)){netSend({t:'c',k:'blink',x,y});return}return _b
 toggleForm=function(f){if(cli(f)){netSend({t:'c',k:'form'});return}return _tf(f)};
 endBattle=function(w){if(NET.role==='host'&&NET.play)netSend({t:'end',w});return _end(w)};
 const rnd1=(k,v)=>typeof v==='number'?Math.round(v*10)/10:v;
-function netSend(o){try{if(NET.dc&&NET.dc.readyState==='open')NET.dc.send(JSON.stringify(o,rnd1))}catch(e){}}
+function netSend(o){try{if(NET.dc&&(NET.dc.readyState==='open'||NET.dc.readyState===1))NET.dc.send(JSON.stringify(o,rnd1))}catch(e){}}
 // ---- signalling codes ----
 const b64=u=>{let s='';u.forEach(c=>s+=String.fromCharCode(c));return btoa(s)},unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 function packSDP(d){const L=d.sdp.split(/\r?\n/),g=p=>{const l=L.find(x=>x.startsWith(p));return l?l.slice(p.length):''};
@@ -2523,20 +2526,36 @@ function netLost(msg){if(!NET.pc&&!NET.dc)return;const was=NET.live||NET.play;ne
 async function ensureCam(){try{if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){const s=await navigator.mediaDevices.getUserMedia({video:true,audio:false});s.getTracks().forEach(t=>t.stop())}}catch(e){}}
 function addrInfo(code){const m=/^N[^|]*\|[^|]*\|[^|]*\|[^|]*\|[^|]*\|(.*)$/.exec(code);if(!m)return '';const ips=m[1].split(';').map(x=>x.split(',')).filter(a=>a[4]==='h').map(a=>a[2]);const real=ips.filter(i=>!/\.local$/.test(i)&&!/^fe80/i.test(i));return real.length?'  [this phone: '+real.join(', ')+']':'  [this phone: address hidden, '+ips.length+' found]'}
 function lStat(s){$('lStat').textContent=s}
-function lanOpen(){NET.role=null;$('lan').classList.add('on');$('lChoose').style.display='flex';$('lH').classList.remove('on');$('lJ').classList.remove('on');['lHo','lHa','lJo','lJa'].forEach(i=>$(i).value='');lStat('Play against someone on the same Wi-Fi. One device hosts, the other joins.')}
+function lanOpen(){NET.role=null;$('lan').classList.add('on');$('lChoose').style.display='flex';$('lChoose2').style.display='flex';$('lR').classList.remove('on');$('lH').classList.remove('on');$('lJ').classList.remove('on');['lHo','lHa','lJo','lJa'].forEach(i=>$(i).value='');lStat('Play against someone on the same Wi-Fi. One device hosts, the other joins.')}
 function lanClose(){$('lan').classList.remove('on');if(!NET.live)netLeave()}
 $('hOnline').onclick=()=>{aud();sfx('ui');if(!(window.RTCPeerConnection||window.webkitRTCPeerConnection)){lanOpen();$('lChoose').style.display='none';lStat('LAN play is blocked here (WebRTC unavailable'+(window.top!==window.self?', page is embedded':'')+'). Open this game link directly in Safari or Chrome, not inside another app, then try again.');return}lanOpen()};
 $('lBack').onclick=()=>{sfx('ui');lanClose()};
-$('lHost').onclick=async()=>{sfx('ui');NET.role='host';$('lChoose').style.display='none';$('lH').classList.add('on');lStat('Allow the camera if asked (needed to find your Wi-Fi address and to scan QR codes)...');await ensureCam();lStat('Creating your game code...');
+$('lHost').onclick=async()=>{sfx('ui');NET.role='host';$('lChoose').style.display='none';$('lChoose2').style.display='none';$('lH').classList.add('on');lStat('Allow the camera if asked (needed to find your Wi-Fi address and to scan QR codes)...');await ensureCam();lStat('Creating your game code...');
  try{const pc=mkPC();setupDc(pc.createDataChannel('g'));await pc.setLocalDescription(await pc.createOffer());await waitIce(pc);$('lHo').value=await encCode(pc.localDescription);lStat('Send the code below to the other device, then paste its reply.')}catch(e){lStat('Could not create a game: '+e.message)}};
 let connT=0;function armConn(){clearTimeout(connT);connT=setTimeout(()=>{if(!NET.live&&NET.pc)lStat('Still not connected. Both phones must be on the SAME Wi-Fi (turn off cellular data and any VPN, no guest Wi-Fi). Tap Cancel and start over.')},15000)}
 $('lHgo').onclick=async()=>{sfx('ui');const raw=$('lHa').value;if(!NET.pc||NET.pc.signalingState!=='have-local-offer'){lStat('Your host code is no longer active (the page may have reloaded). Tap Cancel, then Host a game again and send the NEW code.');return}
  try{await NET.pc.setRemoteDescription(await decCode(raw));lStat('Connecting...');armConn()}catch(e){lStat('That reply code did not work ('+(e.message||e.name)+'). It must be pasted whole ('+raw.trim().length+' characters received), or scan it again.')}};
-$('lJoin').onclick=()=>{sfx('ui');NET.role='client';$('lChoose').style.display='none';$('lJ').classList.add('on');lStat('Paste the code the host sent you.')};
+$('lJoin').onclick=()=>{sfx('ui');NET.role='client';$('lChoose').style.display='none';$('lChoose2').style.display='none';$('lJ').classList.add('on');lStat('Paste the code the host sent you.')};
 $('lJgo').onclick=async()=>{sfx('ui');try{await ensureCam();const pc=mkPC();pc.ondatachannel=e=>setupDc(e.channel);await pc.setRemoteDescription(await decCode($('lJo').value));await pc.setLocalDescription(await pc.createAnswer());lStat('Creating reply…');await waitIce(pc);$('lJa').value=await encCode(pc.localDescription);lStat('Send the reply code to the host. It connects when they paste it.'+addrInfo($('lJa').value));armConn()}catch(e){lStat('That host code did not work. Check you pasted all of it.')}};
 const cp=id=>{const t=$(id);t.select();try{navigator.clipboard.writeText(t.value)}catch(e){try{document.execCommand('copy')}catch(x){}}sayToast('Copied')};
 const sh=id=>{const v=$(id).value;if(navigator.share)navigator.share({text:v}).catch(()=>{});else cp(id)};
 $('lHc').onclick=()=>cp('lHo');$('lHs').onclick=()=>sh('lHo');$('lJc').onclick=()=>cp('lJa');$('lJs').onclick=()=>sh('lJa');
+// ---- online relay (room codes, works across any network) ----
+const RELAY_DEFAULT='';
+function relayUrl(){let u=RELAY_DEFAULT;try{u=localStorage.getItem('da_relay')||u}catch(e){}try{const q=new URLSearchParams(location.search).get('relay');if(q)u=q}catch(e){}return (u||'').trim().replace(/\/+$/,'').replace(/^http/,'ws')}
+function genRoom(){const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<4;i++)s+=a[Math.floor(Math.random()*a.length)];return s}
+function relayLive(){NET.live=true;$('lan').classList.remove('on');sfx('perfect');NET.mine=NET.opp=undefined;toMenu();sel.mode=MODES.findIndex(m=>m.lan);sel.P=[];renderMenu()}
+function relayConnect(role,room){const base=relayUrl();if(!base){$('lRset').open=true;lStat('Enter your relay server address under Server settings first.');return false}
+ let ws;try{ws=new WebSocket(base+'/?room='+encodeURIComponent(room)+'&role='+role)}catch(e){lStat('That relay address is not valid.');return false}
+ NET.role=role==='host'?'host':'client';NET.dc=ws;NET.pc=null;let opened=false;
+ ws.onopen=()=>{opened=true;lStat(role==='host'?'Room is open. Tell the other player the code, and wait...':'Joined. Connecting...')};
+ ws.onmessage=e=>{let m;try{m=JSON.parse(e.data)}catch(x){return}if(m.t==='peer'){if(!NET.live)relayLive()}else if(m.t==='bye')netLost('Opponent left');else netMsg(m)};
+ ws.onerror=()=>{};ws.onclose=()=>{if(!opened){lStat(role==='host'?'Could not reach the relay server. Check the address and your internet.':'Could not join. Check the room code (and that the host has made the room).');NET.dc=null;NET.role=null}else netLost('Connection closed')};return true}
+$('lRHost').onclick=()=>{aud();sfx('ui');$('lChoose').style.display='none';$('lChoose2').style.display='none';$('lR').classList.add('on');$('lRi').style.display='none';$('lRgo').style.display='none';const c=genRoom();$('lRbig').style.display='block';$('lRbig').textContent=c;lStat('Connecting to the relay...');if(!relayConnect('host',c))$('lRbig').textContent=''};
+$('lRJoin').onclick=()=>{aud();sfx('ui');$('lChoose').style.display='none';$('lChoose2').style.display='none';$('lR').classList.add('on');$('lRbig').style.display='none';$('lRi').style.display='';$('lRgo').style.display='';lStat('Type the 4-letter room code from the host.')};
+$('lRgo').onclick=()=>{const c=$('lRi').value.toUpperCase().replace(/[^A-Z0-9]/g,'');if(c.length<3){lStat('Enter the room code first.');return}lStat('Joining...');relayConnect('guest',c)};
+$('lRsave').onclick=()=>{try{localStorage.setItem('da_relay',$('lRu').value.trim())}catch(e){}$('lRset').open=false;lStat(relayUrl()?'Server saved.':'Server cleared.')};
+try{$('lRu').value=localStorage.getItem('da_relay')||''}catch(e){}
 // ---- lobby / match start ----
 function netPick(id){NET.mine=id;netSend({t:'pick',id});$('go').disabled=true;$('hint').textContent='Ready! Waiting for the other player…';netCheck()}
 function netCheck(){if(NET.role==='host'&&NET.mine!==undefined&&NET.opp!==undefined&&!NET.play)hostStart()}
@@ -2548,6 +2567,7 @@ function netMsg(m){switch(m.t){
  case 'i':NET.inp=m;NET.inT=performance.now();break;
  case 'c':if(NET.role==='host'&&scene==='battle'){const f=TM[1][0];if(m.k==='cast')cast(f,m.i);else if(m.k==='blink')blink(f,m.x,m.y);else if(m.k==='form')toggleForm(f)}break;
  case 'end':if(NET.role==='client')RAWEND(m.w===0?1:0);break;
+ case 'bye':netLost('Opponent left');break;
  case 'rematch':if(NET.role==='host'&&scene==='over')hostStart();break}}
 const RAWEND=_end;
 function remoteCtl(p,dt){const I=performance.now()-NET.inT>1200?{mx:0,my:0,b:0,ch:0}:NET.inp,ok=p.lock<=0&&p.stun<=0&&p.ent<=0&&p.down<=0;
