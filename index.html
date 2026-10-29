@@ -3087,7 +3087,7 @@ var AUDV=Object.assign({ma:1,mu:1,fx:1},(typeof SAVE!=='undefined'&&SAVE.aud)||{
 (function(){
 const css=document.createElement('style');css.textContent='#aset{position:absolute;inset:0;z-index:12;display:none;align-items:center;justify-content:center;background:rgba(4,6,15,.88)}#aset.on{display:flex}.sbox{max-width:30em;width:92%;max-height:100%;overflow:auto;padding:.7em;font-size:.85em;display:flex;flex-direction:column;gap:.55em;background:rgba(14,18,38,.96);border:1px solid rgba(255,255,255,.25);border-radius:.6em}.sbox h2{margin:0;font-style:italic;color:#ffe45a;letter-spacing:.1em}.srow{display:flex;align-items:center;gap:.6em}.srow label{width:5.5em;font-weight:700}.srow input[type=range]{flex:1;height:2em;accent-color:#ffe45a}.srow output{width:2.8em;text-align:right;color:#ffe45a;font-weight:700}#aTog{font-size:.8em}';document.head.appendChild(css);
 const d=document.createElement('div');d.id='aset';
-d.innerHTML='<div class="sbox"><h2>SETTINGS</h2><h2 style="font-size:1em">SOUND</h2>'+[['ma','Master'],['mu','Music'],['fx','Effects']].map(r=>'<div class="srow"><label>'+r[1]+'</label><input type="range" min="0" max="100" step="1" id="aS_'+r[0]+'"><output id="aO_'+r[0]+'"></output></div>').join('')+'<h2 style="font-size:1em">AI DIFFICULTY</h2><div class="srow" id="dRow"></div><div id="dNote" style="font-size:.8em;color:#8f9fd0"></div><h2 style="font-size:1em">STORY & ANNOUNCER</h2><button class="big g" id="aScn"></button><button class="big g" id="aAnn"></button><button class="big g" id="aTog"></button><button class="big g" id="aTest">TEST SOUND</button><button class="big" id="aClose">DONE</button></div>';
+d.innerHTML='<div class="sbox"><h2>SETTINGS</h2><h2 style="font-size:1em">SOUND</h2>'+[['ma','Master'],['mu','Music'],['fx','Effects']].map(r=>'<div class="srow"><label>'+r[1]+'</label><input type="range" min="0" max="100" step="1" id="aS_'+r[0]+'"><output id="aO_'+r[0]+'"></output></div>').join('')+'<h2 style="font-size:1em">AI DIFFICULTY</h2><div class="srow" id="dRow"></div><div id="dNote" style="font-size:.8em;color:#8f9fd0"></div><h2 style="font-size:1em">STORY & ANNOUNCER</h2><button class="big g" id="aScn"></button><button class="big g" id="aAnn"></button><button class="big g" id="aAT">TEST ANNOUNCER VOICE</button><button class="big g" id="aTog"></button><button class="big g" id="aTest">TEST SOUND</button><button class="big" id="aClose">DONE</button></div>';
 document.getElementById('stage')?document.getElementById('stage').appendChild(d):document.body.appendChild(d);
 const $$=id=>document.getElementById(id);
 function apply(){if(typeof MG!=='undefined'&&MG)MG.gain.value=.55*AUDV.ma*AUDV.fx;if(window.THEME_APPLY)window.THEME_APPLY();
@@ -3102,6 +3102,7 @@ function dPaint(){const r=$$('dRow');r.innerHTML='';DN.forEach((n,i)=>{const b=d
 function tPaint(){$$('aScn').textContent='OPENING SCENES: '+(SAVE.scn===0?'OFF':'ON');$$('aAnn').textContent='ANNOUNCER VOICE: '+(SAVE.annv===0?'OFF':'ON')}
 $$('aScn').onclick=()=>{SAVE.scn=SAVE.scn===0?1:0;try{save()}catch(x){}tPaint();aud();sfx('ui')};
 $$('aAnn').onclick=()=>{SAVE.annv=SAVE.annv===0?1:0;try{save()}catch(x){}tPaint();aud();sfx('ui')};
+$$('aAT').onclick=()=>{aud();SAVE.annv=1;tPaint();if(window.annSpeak)annSpeak('WELCOME TO THE TOURNAMENT OF POWER!')};
 function open(){aud();paint();tPaint();dPaint();apply();d.classList.add('on');window.ASET_OPEN=true}
 function close(){d.classList.remove('on');window.ASET_OPEN=false;sfx('ui')}
 $$('aClose').onclick=close;
@@ -3305,9 +3306,15 @@ window.drawCrowd=function(){if(!isTop())return;if(!CROWD.seed.length||CROWD.W!==
 const ANN={q:[],cur:null,t:0,last:-99,started:false,idle:0,combo:0,cT:0,lowSaid:{}};
 const nm=f=>F[f.id].s;
 const R=a=>a[Math.floor(Math.random()*a.length)];
+let VOX=null;function pickVox(){try{const v=speechSynthesis.getVoices();if(!v.length)return;VOX=v.find(x=>/^en[-_]US/i.test(x.lang)&&/male|david|daniel|alex|fred|google us/i.test(x.name))||v.find(x=>/^en/i.test(x.lang))||null}catch(e){}}
+function speak(text){if(SAVE.annv===0||!window.speechSynthesis||muted)return;try{if(!VOX)pickVox();if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();speechSynthesis.resume();const u=new SpeechSynthesisUtterance(text.replace(/!/g,'.'));if(VOX)u.voice=VOX;u.lang=VOX?VOX.lang:'en-US';u.rate=1.05;u.pitch=.8;u.volume=Math.max(.3,Math.min(1,AUDV.ma*Math.max(AUDV.fx,.5)));setTimeout(()=>{try{speechSynthesis.speak(u)}catch(e){}},60)}catch(e){}}
+window.annSpeak=speak;
+try{speechSynthesis.onvoiceschanged=pickVox;pickVox()}catch(e){}
+// unlock speech on first touch (iOS/Chrome require a gesture)
+const unl=()=>{try{const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u)}catch(e){}removeEventListener('pointerdown',unl,true);removeEventListener('touchend',unl,true)};addEventListener('pointerdown',unl,true);addEventListener('touchend',unl,true);
 function ann(text,pri){if(!isTop()||DEMO||scene!=='battle'&&pri<2)return;const now=performance.now()/1000;if(pri<2&&now-ANN.last<2.6)return;if(ANN.cur&&pri<ANN.cur.pri&&now-ANN.last<3)return;
  ANN.cur={text,pri,t0:now};ANN.last=now;ANN.idle=0;CROWD.ex=Math.min(1,CROWD.ex+(pri>=2?.7:.3));
- if(SAVE.annv!==0&&window.speechSynthesis&&!muted){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.replace(/!/g,'.'));u.rate=1.08;u.pitch=.85;u.volume=Math.min(1,AUDV.ma*AUDV.fx);speechSynthesis.speak(u)}catch(e){}}}
+ speak(text)}
 window.ann=ann;
 // hooks
 {const od=dmg;dmg=function(s,tg,amt,x,y,c,o){const hp0=tg&&tg.hp,r=od.apply(this,arguments);if(isTop()&&scene==='battle'&&tg&&s&&r!==false&&!(o&&o.tick)){CROWD.ex=Math.min(1,CROWD.ex+(amt>250?.35:.08));const now=performance.now()/1000;if(now-ANN.cT>2.2)ANN.combo=0;ANN.cT=now;ANN.combo++;
