@@ -634,8 +634,7 @@ function banner(s,c,sub,dur){BAN={s,c,sub:sub||'',t:0,dur:dur||1.6}}
 let ZL=12;const zoneX=f=>BR?[12,W-12]:f.team?[W*.54,W-12]:[ZL,W*.46];
 let YMIN=28,YMAX=H-12;
 function counterShot(f,src){const c=['#9ff2ff','#e8fbff','#ffffff'];
-PR.push({team:f.team,src:f,x:f.x+f.dir*10,y:f.y,vx:f.dir*300,r:7,hw:10,dmg:170,c,kind:'orb',pow:220,ult:false,boom:16,pass:false,tt:0});
-if(src&&src.stun!==undefined){src.stun=Math.max(src.stun,1.3);src.ai.tele=0}
+PR.push({team:f.team,src:f,x:f.x+f.dir*10,y:f.y,vx:f.dir*300,r:7,hw:10,dmg:170,c,kind:'orb',pow:220,ult:false,boom:16,pass:false,tt:0,cstun:1.3});
 sfx('counter');ring(f.x,f.y,34,c,.3);burst(f.x,f.y,['#9ff2ff','#ffffff'],18,110,.4,2);hs=Math.max(hs,.14);flash=.18;flashC='#ffffff'}
 function swNeg(tg,src,x,y,c){const sw=tg.sw;
 if(sw.mode==='counter'&&!sw.used){sw.used=1;sayN(tg.x,tg.y-32,SWT.counter,'#ffffff',2);counterShot(tg,src)}
@@ -686,7 +685,7 @@ for(const tg of (BR?enemies(p.team):[act(1-p.team)])){
  if(BR){if(!tg||(p.ps&&p.ps.has(tg)))continue}else if(p.pass)continue;
  if(tg&&tg.down<=0&&((p.vx>0&&p.x>=tg.x-6)||(p.vx<0&&p.x<=tg.x+6))){if(BR)(p.ps||(p.ps=new Set())).add(tg);else p.pass=true;
   if(tg.inv>0){if(!BR||tg===p.tg)miss(tg.x,tg.y)}
-  else if(Math.abs(p.y-tg.y)<=p.hw+9){dmg(p.src,tg,p.dmg,p.x,p.y,p.c,{kind:'proj',ult:p.ult,big:p.dmg>300,proj:p});boom(p.x,p.y,p.c,p.boom>12?p.boom:9);if(p.fx)fxHit(p.src,tg,p);p.dead=true;break}
+  else if(Math.abs(p.y-tg.y)<=p.hw+9){const wb=tg.block;dmg(p.src,tg,p.dmg,p.x,p.y,p.c,{kind:'proj',ult:p.ult,big:p.dmg>300,proj:p});if(p.cstun&&!wb&&tg.stun!==undefined){tg.stun=Math.max(tg.stun,p.cstun);if(tg.ai)tg.ai.tele=0;sayN(tg.x,tg.y-34,'STUNNED','#ffe45a',1)}boom(p.x,p.y,p.c,p.boom>12?p.boom:9);if(p.fx)fxHit(p.src,tg,p);p.dead=true;break}
   else if(!BR||tg===p.tg)miss(tg.x,tg.y)}}
 if(p.dead)continue;
 // beams cancel weaker blasts, strong orbs break beams
