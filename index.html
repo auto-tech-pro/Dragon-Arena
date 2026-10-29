@@ -1,4 +1,6 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta name="theme-color" content="#05070d"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="Dragon Arena"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-180.png">
 <title>Dragon Arena 2D</title>
+</head><body>
 <style>
 :root{color-scheme:dark;--bg:#05070d;--fg:#ffffff}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -2992,4 +2994,21 @@ async function scanQR(onCode){
 $('scx').onclick=()=>stopScan();
 $('lHscan').onclick=()=>scanQR(v=>{$('lHa').value=v;$('lHgo').click()});
 $('lJscan').onclick=()=>scanQR(async v=>{$('lJo').value=v;await $('lJgo').onclick();showQR($('lJa').value)});
+// ===== installable app (PWA) =====
+(function(){
+ try{if('serviceWorker' in navigator&&/^https?:/.test(location.protocol))navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
+ const standalone=()=>window.matchMedia&&matchMedia('(display-mode: standalone),(display-mode: fullscreen)').matches||navigator.standalone;
+ if(standalone())return;
+ const b=document.createElement('button');b.id='hInstall';b.className='big g hb';b.textContent='INSTALL APP';b.style.cssText='position:absolute;left:.8em;bottom:.6em;font-size:.7em;padding:.35em .9em;display:none';
+ $('home').appendChild(b);let dp=null;
+ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;b.style.display=''});
+ window.addEventListener('appinstalled',()=>{b.style.display='none'});
+ const ios=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ if(ios&&/^https?:/.test(location.protocol))b.style.display='';
+ b.onclick=()=>{aud();sfx('ui');
+  if(dp){dp.prompt();dp.userChoice.finally(()=>{dp=null;b.style.display='none'});return}
+  $('lbBody').innerHTML='<div class="lbh">ADD TO HOME SCREEN</div><div class="lbm" style="opacity:1;font-size:1.05em;line-height:1.5">'+(ios?'1. Tap the <b>Share</b> button (the square with an arrow) in Safari.<br>2. Scroll down and tap <b>Add to Home Screen</b>.<br>3. Tap <b>Add</b>. Open Dragon Arena from your Home Screen for full screen play.':'Use your browser menu and choose <b>Install app</b> or <b>Add to Home Screen</b>.')+'</div>';
+  $('lead').classList.add('on')}
+})();
 </script>
+</body></html>
