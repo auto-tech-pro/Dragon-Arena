@@ -1030,7 +1030,7 @@ function drawIntro(){ctx.fillStyle='#04060f';ctx.fillRect(0,0,W,H);
 const g=ctx.createRadialGradient(W/2,H*.55,10,W/2,H*.55,W*.6);g.addColorStop(0,'rgba(40,70,160,.55)');g.addColorStop(1,'rgba(4,6,15,0)');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
 ctx.fillStyle='#bcd2ff';STARS.forEach(s=>{ctx.globalAlpha=.4+.5*Math.abs(Math.sin(T*s.v*.1+s.x*9));const x=(s.x*W+T*s.v*(scene==='menu'?.4:1))%W;ctx.fillRect(Math.round(x),Math.round(s.y*H),s.s>1.4?2:1,1)});ctx.globalAlpha=1;
 if(scene==='menu')return;
-if(iStage===0){ctx.globalAlpha=.55+.45*Math.sin(T*4);txt('TAP TO BEGIN',W/2,H/2+4,'#ffffff',12);ctx.globalAlpha=1;txt('sound on • best in landscape',W/2,H/2+22,'#7f94c8',7);return}
+if(iStage===0){ctx.globalAlpha=.55+.45*Math.sin(T*4);txt('TAP TO BEGIN',W/2,H/2+4,'#ffffff',12);ctx.globalAlpha=1;txt('sound on • best in landscape',W/2,H/2+22,'#7f94c8',7);txt('CREATED BY',W/2,H*.2,'#8fd0ff',8);txt('BANEBAMAGE',W/2,H*.2+20,'#ffe45a',20);return}
 const c=[ '#7ec8ff','#ffffff','#ffd83a'],cx=W/2,cy=H*.46;
 if(it<2.2){const k=it/2.2;for(let i=0;i<4;i++){const a=rnd(0,6.28),r=rnd(40,150)*(1-k*.4);PT.push({x:cx+Math.cos(a)*r,y:cy+Math.sin(a)*r,vx:-Math.cos(a)*r*2.6,vy:-Math.sin(a)*r*2.6,l:.4,m:.4,c:c[i%3],z:2})}
  orb(cx,cy,3+k*28+Math.sin(T*30)*2,['#2a8bff','#9fdcff','#ffffff']);for(let i=0;i<3;i++)bolt(cx,cy,cx+rnd(-60,60)*k,cy+rnd(-60,60)*k,'#ffffff',4);
@@ -1039,7 +1039,7 @@ else if(it<3.4){const k=(it-2.2)/1.2,w=40*(1-k*.6);for(let x=0;x<W;x++){const d=
 if(it>3.2){const by=H*.66,sp=Math.min(W/5.4,66);for(let i=0;i<5;i++){const tt=3.2+i*.28;if(it<tt)continue;const k=Math.min(1,(it-tt)/.25),x=W/2+(i-2)*sp,fo=F[INTRO[i]];
  ctx.globalAlpha=k;flame(x,by,fo.sh);dspr(spr[INTRO[i]][Math.floor(T*2.5)%2],x,by+4-(1-k)*24,2.2);txt(fo.s,x,by+34,fo.sh,7);ctx.globalAlpha=1}}
 if(it>4.8){const k=Math.min(1,(it-4.8)/.25),sc=1+(1-k)*2.2;ctx.save();ctx.translate(W/2,H*.22);ctx.scale(sc,sc);txt('DRAGON ARENA',0,6,'#ffe45a',28);ctx.restore();
- if(it>5.3){ctx.globalAlpha=Math.min(1,(it-5.3)*2);txt('2D  •  TEAM BATTLES',W/2,H*.22+22,'#8fd0ff',8);ctx.globalAlpha=1}}
+ if(it>5.3){ctx.globalAlpha=Math.min(1,(it-5.3)*2);txt('2D  •  TEAM BATTLES',W/2,H*.22+22,'#8fd0ff',8);txt('CREATED BY BANEBAMAGE',W/2,H*.22+35,'#ffe45a',7);ctx.globalAlpha=1}}
 if(iStage===2){ctx.globalAlpha=.5+.5*Math.sin(T*5);txt('TAP TO CONTINUE',W/2,H-10,'#ffffff',9);ctx.globalAlpha=1}
 else if(it>1.2){ctx.globalAlpha=.4;txt('tap to skip',W-30,H-6,'#ffffff',6);ctx.globalAlpha=1}
 for(const p of PT){if(it>=2.2){ctx.globalAlpha=Math.max(0,p.l/p.m);ctx.fillStyle=p.c;ctx.fillRect(Math.round(p.x),Math.round(p.y),p.z,p.z)}}ctx.globalAlpha=1;
