@@ -52,7 +52,7 @@ body:not(.fight) #fs{left:auto;right:calc(46px*var(--s))}body:not(.fight) #mu{le
 #res{position:absolute;inset:0;z-index:7;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}
 #res.on{display:flex}
 #resX{font-size:1em;color:#ffe45a;letter-spacing:.1em;margin-bottom:.8em;font-weight:800;text-align:center}body.spec .b,body.spec #joy,body.spec #jb,body.spec #jk{display:none!important}
-#lan{position:absolute;inset:0;z-index:9;display:none;align-items:center;justify-content:center;background:rgba(4,6,15,.92);touch-action:pan-x pan-y;overflow:auto}#lan.on{display:flex}
+#lan{position:absolute;inset:0;z-index:9;display:none;align-items:center;justify-content:center;background:rgba(4,6,15,.92);touch-action:pan-x pan-y;overflow:auto}#lan.on{display:flex}#lead{position:absolute;inset:0;z-index:9;display:none;align-items:center;justify-content:center;background:rgba(4,6,15,.92);touch-action:pan-x pan-y;overflow:auto}#lead.on{display:flex}#lbBody{font-size:.72em;margin:.4em 0;text-align:left}.lbr{display:flex;justify-content:space-between;gap:.8em;padding:.18em .1em;border-bottom:1px solid rgba(255,255,255,.08)}.lbr b{color:#ffe45a}.lbh{color:#7ad0ff;letter-spacing:.14em;font-size:.85em;margin-top:.6em;font-weight:800}.lbm{font-size:.8em;opacity:.65;margin-top:.5em}
 .lbox{max-width:34em;width:92%;max-height:100%;overflow:auto;padding:.6em;font-size:.8em;display:flex;flex-direction:column;gap:.4em;touch-action:pan-x pan-y}.lbox h2{margin:0;font-style:italic;color:#ffe45a;letter-spacing:.1em}
 #lStat{color:#9fb4e8;font-size:.9em}.lrow{display:flex;gap:.5em}.lrow .big{flex:1}.lp{display:none;flex-direction:column;gap:.35em}.lp.on{display:flex}
 #lan textarea{width:100%;background:rgba(16,22,44,.9);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:.4em;font:10px monospace;padding:.3em;user-select:text;-webkit-user-select:text;resize:none}
@@ -105,8 +105,9 @@ body:not(.fight) #fs{left:auto;right:calc(46px*var(--s))}body:not(.fight) #mu{le
 <button class="sm" id="fs" aria-label="Full screen">&#x26F6;</button>
 <button class="sm" id="mu" aria-label="Sound">&#x266A;</button>
 <button class="sm" id="bq" aria-label="Quit to menu">&#x2630;</button>
-<div id="home"><div class="hmain"><h1>DRAGON ARENA<small>2D</small></h1><div id="demoCap"></div><div id="rank"></div><div class="hgrid"><button class="big hb" id="hBattle">BATTLE</button><button class="big g hb" id="hStory">STORY</button><button class="big g hb" id="hDaily">DAILY</button><button class="big g hb" id="hTrain">TRAINING</button><button class="big g hb" id="hChars">CHARACTERS</button><button class="big g hb" id="hOnline">LAN BATTLE</button></div></div></div>
+<div id="home"><div class="hmain"><h1>DRAGON ARENA<small>2D</small></h1><div id="demoCap"></div><div id="rank"></div><div class="hgrid"><button class="big hb" id="hBattle">BATTLE</button><button class="big g hb" id="hStory">STORY</button><button class="big g hb" id="hDaily">DAILY</button><button class="big g hb" id="hTrain">TRAINING</button><button class="big g hb" id="hChars">CHARACTERS</button><button class="big g hb" id="hOnline">LAN BATTLE</button><button class="big g hb" id="hLead" style="grid-column:1/3">LEADERBOARD</button></div></div></div>
 <div id="chars"><div class="cl" id="cList"></div><div class="cr" id="cInfo"></div></div>
+<div id="lead"><div class="lbox"><h2>LEADERBOARD</h2><div id="lbBody"></div><button class="big g" id="lbClose">BACK</button></div></div>
 <div id="lan"><div class="lbox"><h2>LAN BATTLE</h2><div id="lStat">Play against someone on the same Wi-Fi. One device hosts, the other joins.</div>
 <div class="lrow" id="lChoose"><button class="big" id="lHost">HOST A GAME</button><button class="big g" id="lJoin">JOIN A GAME</button></div>
 <div class="lrow" id="lChoose2"><button class="big" id="lRHost">CREATE ONLINE ROOM</button><button class="big" id="lRJoin">JOIN ONLINE ROOM</button></div>
@@ -392,6 +393,68 @@ F.push(
  mel:[['Staff Strike',c3('#6ac8ff','#d8f4ff'),3,110],['Turtle Combo',c3('#ffe45a','#ffffff'),4,160]],swd:sw5('block','counter','block','dodge')}
 );
 ['GOKU','VEGETA','HEROES','TOP','HEROES','VILLAINS','VILLAINS','HEROES','TOP','VILLAINS'].forEach((g,i)=>F[i].g=g);
+// ===== roster 2: Teen Gohan, Beast Gohan, Fat Buu, Kid Buu, Uub, Beerus, Whis =====
+const GH_A=[[7,2,10,4],[6,-2,2,7],[9,-4,2,8],[12,-5,2,9],[15,-2,2,7],[6,4,2,6],[16,4,2,6],[9,5,6,2]];
+const GH_B=[[7,2,10,4],[5,-3,3,8],[8,-5,3,10],[12,-6,3,11],[15,-3,3,9],[6,4,2,7],[16,4,2,7],[9,5,6,2]];
+const BST=[[7,2,10,4],[4,-2,3,10],[7,-5,3,10],[11,-7,3,12],[15,-5,3,10],[18,-1,2,8],[5,4,2,10],[17,4,2,10],[9,5,2,5]];
+F.push(
+{n:'TEEN GOHAN',s:'T.GOHAN',sh:'#ffd83a',g:'HEROES',skin:SK,pants:'#6a3a9a',boots:'#2f6fd6',top:'#6a3a9a',sleeve:'#6a3a9a',hp:1200,eye:'#19c9b4',
+ hair:qHair(GH_A,'#ffd83a','#fff6b0'),
+ outfit(d){d('#2f6fd6',10,11,4,2);d('#2f6fd6',8,16,8,2);d('#2f6fd6',5,15,3,1);d('#2f6fd6',16,15,3,1);d('#e8e8f0',8,13,1,3);d('#e8e8f0',15,13,1,3)},
+ form:{name:'Super Saiyan 2',aura:'#ffe14a',eye:'#19c9b4',sparks:true,spark:'#bfe8ff',hair:qHair(GH_B,'#ffd83a','#fff6b0')},
+ ab:[BLS(c3('#ffe45a','#fff6b0')),qBm('Masenko',c3('#ff8a00','#ffd04a'),16,245,{charge:.5,dur:.9,cd:2.5}),qBs('Flying Kick Combo',c3('#ffe45a','#ffffff'),3,225,{fin:'kick',k:25,cd:3}),qUB('One-Hand Kamehameha',c3('#4aa3ff','#ffe98a'),44,620)],
+ fab:[BAR(c3('#ffe14a','#bfe8ff'),{nm:'Rage Barrage'}),qBs('Cell Games Combo',c3('#ffe14a','#9fd8ff'),5,300),qBm('Angry Masenko',c3('#ff8a00','#ffe98a'),30,390,{k:35,cd:4.5,lock:2,charge:.6}),qUB('Father-Son Kamehameha',c3('#4aa3ff','#ffe98a'),46,700)],
+ mel:[['Hero Combo',c3('#ffb400','#ffd84a'),3,120],['Rage Combo',c3('#ffe14a','#9fd8ff'),4,170]],swd:sw5('block','dodge','counter','dodge')},
+{n:'BEAST GOHAN',s:'B.GOHAN',sh:'#e8ecff',g:'HEROES',skin:SK,pants:'#2a2240',boots:'#2a2240',top:'#3a2a6a',sleeve:'#3a2a6a',hp:1400,eye:'#e03030',
+ hair:qHair(BST,'#e8ecff','#ffffff',[3,4]),
+ outfit(d){d('#e8e8f0',10,11,4,2);d('#f2b705',8,16,8,1);d('#e8e8f0',5,15,3,1);d('#e8e8f0',16,15,3,1);d('#5a4a9a',8,13,1,3);d('#5a4a9a',15,13,1,3)},
+ form:{name:'Full Beast',aura:'#f4f6ff',eye:'#ff2a2a',sparks:true,spark:'#ff5a5a',hair:qHair(BST,'#ffffff','#e8ecff',[3,4])},
+ ab:[BLS(c3('#e8ecff','#ffffff')),qBm('Special Beam Cannon',c3('#d8d0ff','#ffffff'),9,250,{charge:.4,dur:.9,cd:2.8,lock:1.5}),qBs('Beast Rush',c3('#e8ecff','#ff6a6a'),4,260,{k:30,cd:3.2}),qUB('Beast Cannon',c3('#f0f4ff','#ff5a5a'),42,680)],
+ fab:[BAR(c3('#f4f6ff','#ff7a7a'),{nm:'Beast Barrage'}),qBs('Beast Impact',c3('#ffffff','#ff5a5a'),5,320),qBm('Beast Kamehameha',c3('#dfe6ff','#ff6a6a'),36,420,{k:35,cd:4.5,lock:2,charge:.6}),qUB('Unleashed Beast Cannon',c3('#ffffff','#ff3a3a'),48,780)],
+ mel:[['Beast Punch',c3('#e8ecff','#ffffff'),3,135],['Beast Flurry',c3('#ffffff','#ff6a6a'),4,185]],swd:sw5('block','block','counter','tank')},
+{n:'FAT BUU',s:'FAT BUU',sh:'#ff9ab8',g:'VILLAINS',skin:'#f4a0b8',skinD:'#c8708c',pants:'#f4f4f4',boots:'#e8c040',top:'#f4a0b8',sleeve:'#f4a0b8',hp:1700,reg:.008,eye:'#222',
+ hair(s,d){s('#f4a0b8',10,-2,3,6);s('#f4a0b8',12,-4,4,3);s('#f4a0b8',15,-3,2,5)},
+ outfit(d){d('#f4a0b8',6,12,12,5);d('#1a1a1a',7,16,10,2);d('#e8c040',11,16,2,2);d('#f4f4f4',3,10,3,9);d('#f4f4f4',18,10,3,9);d('#f4f4f4',6,18,12,2)},
+ form:{name:'Super Buu',aura:'#ff6aa0',eye:'#e02030',sparks:true,spark:'#ffc0d8',skin:'#f08ca8',top:'#f08ca8',sleeve:'#f08ca8',hair(s,d){s('#f08ca8',10,-3,3,7);s('#f08ca8',11,-6,3,4);s('#f08ca8',14,-8,3,6);s('#f08ca8',15,-3,2,8)}},
+ ab:[BLS(c3('#ff9ab8','#ffd8e4')),qBm('Chocolate Beam',c3('#ff6aa0','#ffd0e0'),10,245,{charge:.4,dur:.9,cd:2.6,lock:1.3}),qSk('Angry Explosion',c3('#ff4a7a','#ffc0d0'),205,{cd:3.5}),qUO('Vanishing Ball',c3('#ff6aa0','#ffe0ec'),24,600)],
+ fab:[BAR(c3('#ff8ab0','#ffe0ec'),{nm:'Super Barrage'}),qBs('Rubber Rush',c3('#ff6aa0','#ffd0e0'),4,310),qBm('Chocolate Blitz',c3('#ff3a8a','#ffc0d8'),30,400,{k:35,cd:4.5,lock:2}),qUO('Planet Eraser',c3('#ff2a7a','#ffd0e4'),30,720)],
+ mel:[['Belly Bump',c3('#ff9ab8','#ffd8e4'),2,150],['Rubber Smash',c3('#ff6aa0','#ffd0e0'),3,195]],swd:sw5('tank','block','counter','tank')},
+{n:'KID BUU',s:'KID BUU',sh:'#ff6a9a',g:'VILLAINS',skin:'#f2879e',skinD:'#b85870',pants:'#2a2a2a',boots:'#f2879e',top:'#f2879e',sleeve:'#f2879e',hp:1300,eye:'#c01030',
+ hair(s,d){s('#f2879e',11,-3,2,6);s('#f2879e',13,-6,2,5);s('#f2879e',15,-9,2,5);s('#f2879e',17,-8,2,3)},
+ outfit(d){d('#e8e8e8',8,16,8,1);d('#2a2a2a',8,17,8,2);d('#1a1a1a',9,11,6,1)},
+ form:{name:'Berserk Buu',aura:'#ff2a6a',eye:'#ff2a2a',sparks:true,spark:'#ff9ac0',skin:'#e8607e',top:'#e8607e',sleeve:'#e8607e',boots:'#e8607e'},
+ ab:[BLS(c3('#ff6a9a','#ffd0e0')),qDs('Rubber Rush',c3('#ff6a9a','#ffd0e0'),195),qOb('Energy Bomb',c3('#ff4a8a','#ffc0d8'),13,225),qUO('Planet Burst',c3('#ff2a6a','#ffd8e8'),30,650)],
+ fab:[BAR(c3('#ff4a8a','#ffd0e0'),{nm:'Rain of Destruction'}),qBs('Chaos Combo',c3('#ff2a6a','#ffd0e0'),5,320),qBm('Death Wave',c3('#ff2a6a','#ffc0d8'),30,400,{k:35,cd:4.5,lock:2}),qUO('Planet Burst: Final',c3('#ff1a5a','#ffe0ec'),34,740)],
+ mel:[['Wild Kick',c3('#ff6a9a','#ffd0e0'),3,125],['Chaos Combo',c3('#ff2a6a','#ffc0d8'),4,180]],swd:sw5('dodge','dodge','counter','dodge')},
+{n:'UUB',s:'UUB',sh:'#ff9a3a',g:'HEROES',skin:'#a8703c',skinD:'#7a4a28',pants:'#e85a1a',boots:'#2f6fd6',top:'#f0a020',sleeve:'#f0a020',hp:1150,eye:'#111',
+ hair(s,d){s('#15151f',8,2,8,2);s('#15151f',11,-3,3,6)},
+ outfit(d){d('#2f6fd6',10,11,4,2);d('#2f6fd6',8,16,8,2);d('#2f6fd6',5,15,3,1);d('#2f6fd6',16,15,3,1)},
+ form:{name:'Majin Power',aura:'#ff8ac0',eye:'#ffffff',sparks:true,spark:'#ffc0e0',top:'#f4a0b8',sleeve:'#f4a0b8',hair(s,d){s('#15151f',8,2,8,2);s('#f4a0b8',11,-4,3,7);s('#f4a0b8',14,-6,3,4)}},
+ ab:[BLS(c3('#ffb43a','#ffe8a0')),qBm('Kamehameha',c3('#2a8bff','#5cc6ff'),20,255,{charge:.6}),qBs('Afterimage Strike',c3('#ffb43a','#ffffff'),3,225,{fin:'blast',k:28,cd:3}),qUB('Full Power Kamehameha',c3('#3a9bff','#ffe0a0'),40,600)],
+ fab:[BAR(c3('#ff8ac0','#ffe0f0'),{nm:'Majin Barrage'}),qBs('Buu Rush',c3('#ff8ac0','#ffe0f0'),4,300),qBm('Majin Kamehameha',c3('#ff6aa0','#ffd0e8'),32,390,{k:35,cd:4.5,lock:2,charge:.6}),qUB('Majin Spirit Wave',c3('#ff6aa0','#ffe0f0'),42,690)],
+ mel:[['Training Combo',c3('#ffb43a','#ffe8a0'),3,115],['Majin Combo',c3('#ff8ac0','#ffe0f0'),4,165]],swd:sw5('block','dodge','counter','dodge')},
+{n:'BEERUS',s:'BEERUS',sh:'#a05aff',g:'TOP',skin:'#8a7aa8',skinD:'#5a4a78',pants:'#2a1a4a',boots:'#f2b705',top:'#1a1a2a',sleeve:'#1a1a2a',hp:1800,eye:'#ffd84a',
+ hair(s,d){s('#8a7aa8',7,-1,3,6);s('#8a7aa8',14,-1,3,6);s('#5a4a78',8,3,8,2);d('#2a1a4a',8,0,1,3);d('#2a1a4a',15,0,1,3)},
+ outfit(d){d('#f2b705',8,10,8,2);d('#f2b705',11,12,2,5);d('#f2b705',8,16,8,1);d('#f2b705',5,14,3,1);d('#f2b705',16,14,3,1);d('#a05aff',10,13,1,3);d('#a05aff',13,13,1,3)},
+ form:{name:'Destruction Mode',aura:'#a05aff',eye:'#ff5aff',sparks:true,spark:'#e0b0ff',skin:'#9a6ac8',top:'#2a1a5a',sleeve:'#2a1a5a'},
+ ab:[BLS(c3('#a05aff','#e0c0ff')),qBm('Destroyer Beam',c3('#a05aff','#e8c8ff'),18,260,{charge:.5}),qDs('Hakai Dash',c3('#c05aff','#f0d0ff'),205),qUO('Hakai',c3('#8a2aff','#e0b8ff'),28,660)],
+ fab:[BAR(c3('#b070ff','#f0d8ff'),{nm:'Destruction Barrage'}),qBs('Divine Cat Combo',c3('#a05aff','#f0d0ff'),4,320),qBm('God Destroyer Beam',c3('#8a2aff','#e0b8ff'),34,420,{k:35,cd:4.5,lock:2}),qUO('Sphere of Hakai',c3('#7a1aee','#ffe0ff'),34,780)],
+ mel:[['Cat Swipe',c3('#a05aff','#e8d0ff'),2,150],['Destroyer Fist',c3('#8a2aff','#f0d0ff'),3,200]],swd:sw5('block','block','counter','tank')},
+{n:'WHIS',s:'WHIS',sh:'#8ad8ff',g:'TOP',skin:'#b8d8e8',skinD:'#7aa0b8',pants:'#e8f0ff',boots:'#6a8ad8',top:'#e8f0ff',sleeve:'#6a8ad8',hp:1800,eye:'#222',
+ hair:qHair([[8,2,8,3],[9,-4,6,6],[8,-6,3,3],[13,-6,3,3]],'#e8f0ff','#ffffff',[1,2]),
+ outfit(d){d('#6a8ad8',8,10,8,2);d('#6a8ad8',11,12,2,5);d('#7a4ab0',8,16,8,2);d('#d8c060',19,4,1,13);d('#6ad8ff',18,2,3,3)},
+ form:{name:'Divine Tutor',aura:'#c8d4ff',eye:'#ffffff',sparks:true,spark:'#ffffff',ui:true,hair:qHair([[8,2,8,3],[9,-4,6,6],[8,-6,3,3],[13,-6,3,3]],'#ffffff','#e8f0ff',[1,2])},
+ ab:[BLS(c3('#8ad8ff','#e0f4ff')),qSl('Staff Slash',c3('#6ad8ff','#e0f8ff'),20,220),qBs('Angel Rush',c3('#8ad8ff','#ffffff'),4,260,{fin:'kick',k:28,cd:3.2}),qUBS('Angelic Barrage',c3('#8ad8ff','#ffffff'),9,630)],
+ fab:[BAR(c3('#dfe6ff','#ffffff'),{nm:'Heaven Barrage'}),qBs('Celestial Strike',c3('#c8d4ff','#ffffff'),5,320),qBm('Divine Beam',c3('#8ad8ff','#ffffff'),32,410,{k:35,cd:4.5,lock:2,charge:.5}),qUB('Star Cleaver',c3('#c8d4ff','#ffffff'),46,760)],
+ mel:[['Staff Tap',c3('#8ad8ff','#e0f8ff'),3,125],['Angel Combo',c3('#c8d4ff','#ffffff'),5,180]],swd:sw5('dodge','dodge','dodge','dodge')},
+{n:'CUMBER',s:'CUMBER',sh:'#c01030',g:'VILLAINS',skin:SK,pants:'#2a2a3a',boots:'#1a1a22',top:'#2a2a3a',sleeve:'#2a2a3a',hp:1500,eye:'#e02030',
+ hair:qHair([[7,2,10,4],[3,0,3,19],[18,0,3,19],[9,-3,3,7],[12,-4,3,8],[5,2,3,8],[16,2,3,8],[10,5,2,6]],'#15151f','#3a3a55',[3,4]),
+ outfit(d){d('#8a1a2a',8,11,8,5);d('#c01030',7,10,2,3);d('#c01030',15,10,2,3);d('#8a1a2a',8,16,8,1);d('#c01030',5,15,3,1);d('#c01030',16,15,3,1)},
+ form:{name:'Evil Super Saiyan 3',aura:'#c01030',eye:'#ff2a3a',sparks:true,spark:'#ff6a7a',hair:qHair([[7,2,10,4],[3,0,3,19],[18,0,3,19],[9,-3,3,7],[12,-4,3,8],[5,2,3,8],[16,2,3,8],[10,5,2,6]],'#0a0a12','#8a1a2a',[3,4])},
+ ab:[BLS(c3('#c01030','#ff7a8a')),qBm('Crimson Beam',c3('#c01030','#ff8a9a'),20,265,{charge:.6}),qSk('Evil Eruption',c3('#8a1a2a','#ff6a7a'),205),qUO('Evil Impact',c3('#a0102a','#ff7a8a'),26,620)],
+ fab:[BAR(c3('#c01030','#ffa0b0'),{nm:'Evil Barrage'}),qBs('Dark Rush',c3('#c01030','#ffa0b0'),4,320),qBm('Evil Wave',c3('#8a0a20','#ff6a7a'),34,420,{k:35,cd:4.5,lock:2,charge:.6}),qUB('Evil Crimson Blast',c3('#a0102a','#ff9aa8'),44,720)],
+ mel:[['Brutal Strike',c3('#c01030','#ff8a9a'),2,150],['Evil Combo',c3('#8a1a2a','#ff6a7a'),4,185]],swd:sw5('block','block','counter','tank')}
+);
 const kc=a=>a.k!==undefined?a.k:(a.ult?50:({volley:6,beam:25,orb:22,dash:20,shock:20,slash:12,bstrike:30}[a.t]||15));
 const TYPE={beam:'Beam',volley:'Quick shots',dash:'Rush attack',shock:'Area wave',slash:'Energy slash',orb:'Energy ball',bstrike:'Blink strike'};
 function drawSprite(g,c,dy){
@@ -1238,6 +1301,23 @@ $('hStory').onclick=()=>{aud();sfx('ui');toMenu();sel.mode=MODES.findIndex(m=>m.
 $('hTrain').onclick=()=>{aud();sfx('ui');toMenu();sel.mode=MODES.findIndex(m=>m.train);sel.P=sel.P.slice(0,1);renderMenu()};
 $('hDaily').onclick=()=>{aud();sfx('ui');startChallenge()};
 updRank();
+// ===== leaderboard (saved on this device) =====
+(function(){
+const oab=afterBattle;
+afterBattle=function(win){if(!TRN){SAVE.streak=win?(SAVE.streak||0)+1:0;if(win&&SAVE.streak>(SAVE.best||0))SAVE.best=SAVE.streak;if(win&&BR)SAVE.brWins=(SAVE.brWins||0)+1;if(win&&(NET&&NET.live))SAVE.lanWins=(SAVE.lanWins||0)+1}
+ return oab(win)};
+const row=(a,b)=>'<div class="lbr"><span>'+a+'</span><b>'+b+'</b></div>';
+function render(){
+ const r=rankOf(SAVE.xp),w=Object.values(SAVE.wins).reduce((a,b)=>a+b,0),pl=SAVE.played||0;
+ let h='<div class="lbh">YOU</div>'+row('Rank',r.n)+row('XP',SAVE.xp+(r.next?' / '+r.next:''))+row('Battles played',pl)+row('Wins',w)+row('Win rate',pl?Math.round(100*w/pl)+'%':'-')+row('Win streak',(SAVE.streak||0)+'  (best '+(SAVE.best||0)+')')+row('Battle Royale wins',SAVE.brWins||0)+row('LAN wins',SAVE.lanWins||0)+row('Daily challenges',Object.keys(SAVE.daily).length)+row('Saga fights cleared',Object.values(SAVE.story).reduce((a,b)=>a+b,0));
+ const top=Object.entries(SAVE.wins).filter(e=>F[e[0]]).sort((a,b)=>b[1]-a[1]).slice(0,8);
+ h+='<div class="lbh">TOP FIGHTERS</div>'+(top.length?top.map((e,i)=>row((i+1)+'. '+F[e[0]].n,e[1]+' wins'+(e[1]>=15?' ★★★':e[1]>=5?' ★★':' ★'))).join(''):'<div class="lbm">No wins yet. Go fight!</div>');
+ h+='<div class="lbh">RANK LADDER</div>'+RANKS.map((k,i)=>row((i<=r.i?'✓ ':'')+k[1],k[0]+' XP')).join('');
+ h+='<div class="lbm">Scores are saved on this device. A shared online board needs a server.</div>';
+ $('lbBody').innerHTML=h}
+$('hLead').onclick=()=>{aud();sfx('ui');render();$('lead').classList.add('on')};
+$('lbClose').onclick=()=>{sfx('ui');$('lead').classList.remove('on')};
+})();
 // ---- QR encoder: QRCode for JavaScript (c) 2009 Kazuhiko Arase, MIT license ----
 const QRLib=(function(){const defs={},cache={};
 defs['QR8bitByte']=function(module,exports,require){var QRMode = require('./QRMode');
