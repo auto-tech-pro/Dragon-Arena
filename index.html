@@ -735,7 +735,7 @@ F.push(
  fab:[st(BAR(['#6affd8','#d8fff4','#ffffff'],{nm:'Spirit Barrage'}),'spirit'),
   {nm:'Spirit Legion',t:'summon',kind:'wisp',n:4,hp:90,life:11,dmg:44,rate:1.1,c:['#6affd8','#d8fff4','#ffffff'],k:35,cd:9,lock:1,cap:6},
   {nm:'Command',t:'command',c:['#e8c850','#fff4c0','#ffffff'],dur:7,k:20,cd:9,lock:.5,dmg:0},
-  {nm:'Colossus',t:'summon',ult:1,kind:'golem',n:1,sz:2.2,hp:1400,life:16,dmg:360,c:['#8a8a9a','#5a5a70','#6affd8'],k:50,cd:10,lock:1.8}],
+  {nm:'Colossus',t:'summon',ult:1,kind:'golem',n:1,sz:2.2,hp:1300,life:15,dmg:240,c:['#8a8a9a','#5a5a70','#6affd8'],k:50,cd:10,lock:1.8}],
  mel:[['Staff Combo',c3('#6affd8','#d8fff4'),3,115],['Spirit Combo',c3('#e8c850','#fff4c0'),4,170]],swd:sw5('block','block','counter','tank')},
 {n:'VESPER',s:'VESPER',sh:'#c01030',g:'ORIGINAL',skin:'#e8dcd8',skinD:'#b8a8a8',eye:'#ff2a4a',pants:'#1a0a10',boots:'#8a1020',top:'#14080c',sleeve:'#8a1020',hp:1250,
  hair(s,d){s('#14080c',7,2,10,4);s('#14080c',6,3,2,10);s('#14080c',16,3,2,10);s('#8a1020',9,2,2,2);d('#ffffff',10,7,1,1);d('#ffffff',13,7,1,1)},
@@ -759,7 +759,7 @@ F.push(
  ab:[st(BLS(['#c03aff','#e8a0ff','#9aff3a']),'rune'),
   {nm:'Hellfire Imps',t:'summon',kind:'imp',n:2,hp:70,life:10,dmg:60,c:['#ff5a2a','#8a2a1a','#ffe45a'],k:26,cd:7,lock:.8},
   {nm:'Dark Pact',t:'buff',self:1,hpc:.08,c:['#c03aff','#e8a0ff','#9aff3a'],fx:[['power',9,1.3],['haste',9,1]],dmg:0,k:15,cd:12,lock:.6},
-  {nm:'Infernal',t:'summon',ult:1,kind:'golem',n:1,sz:2.3,hp:1300,life:15,dmg:380,c:['#ff5a2a','#4a1a28','#ffe45a'],k:50,cd:10,lock:1.8}],
+  {nm:'Infernal',t:'summon',ult:1,kind:'golem',n:1,sz:2.3,hp:1100,life:13,dmg:170,c:['#ff5a2a','#4a1a28','#ffe45a'],k:50,cd:10,lock:1.8}],
  fab:[st(BAR(['#c03aff','#e8a0ff','#9aff3a'],{nm:'Hex Barrage'}),'rune'),
   st(qBm('Soul Drain',['#9aff3a','#e8a0ff','#ffffff'],16,320,{charge:.4,aim:120,k:26,leech:.4}),'rune'),
   {nm:'Curse of Agony',t:'hex',c:['#c03aff','#e8a0ff','#9aff3a'],dmg:230,rad:230,fx:[['weak',6,1],['mark',5,1],['burn',5,1]],k:28,cd:6,lock:.8},
@@ -4361,7 +4361,7 @@ const mAlive=o=>MIN.filter(m=>!m.dead&&m.o===o&&E.includes(m.e));
 function mFoe(o){return BR?(enemies(o.team).sort((a,b)=>Math.hypot(a.x-o.x,a.y-o.y)-Math.hypot(b.x-o.x,b.y-o.y))[0]||null):opp(o)}
 const d2=(a,b)=>a.x>=b.x?1:-1;
 function mDie(m,quiet){m.dead=true;if(!quiet){boom(m.x,m.y,m.c,Math.round(8*m.sz));burst(m.x,m.y,m.c,10,80,.4,2)}}
-function summonAtk(f,a){sfx('big');const n=a.n||2,big=a.sz>1.5?2:1;let cur=mAlive(f);while(cur.length+n*big>(a.cap||5)&&cur.length){mDie(cur.shift(),true)}
+function summonAtk(f,a){sfx('big');const n=a.n||2,big=a.sz>1.5?2:1;if(big>1){for(const q of mAlive(f).filter(q=>q.sz>1.5)){sayN(q.x,q.y-30,'REPLACED','#ffffff',0);mDie(q,true)}}let cur=mAlive(f);while(cur.length+n*big>(a.cap||5)&&cur.length){mDie(cur.shift(),true)}
  for(let i=0;i<n;i++){const ang=(i-(n-1)/2)*.9,px=clamp(f.x+f.dir*(24+Math.abs(i-(n-1)/2)*8),14,W-14),py=clamp(f.y+Math.sin(ang)*34,YMIN,YMAX);
   const m={o:f,team:f.team,kind:a.kind,x:px,y:py,hp:a.hp,max:a.hp,life:a.life,dmg:a.dmg,c:a.c,sz:a.sz||1,t:Math.random()*6,cd:rnd(.2,.8),i,fx:a.mfx,heal:a.heal,drain:a.drain,rate:a.rate||1.1,pw:0,dead:false,ph:rnd(0,6.28)};MIN.push(m);
   ring(px,py,22*m.sz,a.c,.5);burst(px,py,a.c,10,70,.4,2);
@@ -4375,10 +4375,10 @@ function mUpd(m,dt){const o=m.o;if(m.dead)return false;m.t+=dt;m.life-=dt*((o.ou
    if(dd<22&&m.cd<=0){m.cd=k==='bat'?.7:.9;const ok=dmg(o,fo,dm,fo.x,fo.y,m.c,{kind:'melee'});boom(fo.x,fo.y,m.c,6);if(ok!==false){for(const e of (m.fx||[]))sxApply(fo,e[0],e[1],e[2],o);if(m.drain)healF(o,dm*m.drain,'#ff5a7a')}}}else mv(o.x-o.dir*20,o.y,60)}
  else if(k==='golem'){const big=m.sz>1.5;
   if(big&&fo){const dd=Math.hypot(fo.x-m.x,fo.y-m.y);mv(fo.x-(fo.x>m.x?1:-1)*26*m.sz,fo.y,big?62:45);
-   if(dd<46*m.sz&&m.cd<=0){m.cd=1.1;dmg(o,fo,dm,fo.x,fo.y,m.c,{kind:'melee',big:true});boom(fo.x,fo.y,m.c,16*m.sz);shake=Math.max(shake,5)}
-   m.sp=(m.sp||0)-dt;if(m.sp<=0&&dd<190){m.sp=3.6;const R=95*m.sz/2.2+30,foes=(BR?enemies(o.team):[opp(o)]).filter(Boolean);sfx('big');ring(m.x,m.y,R,m.c,.6);ring(m.x,m.y,R*.6,[m.c[2],m.c[2],'#ffffff'],.4);shake=Math.max(shake,9);
-    for(const e of foes)if(Math.hypot(e.x-m.x,(e.y-m.y)*1.3)<R){dmg(o,e,dm*.9,e.x,e.y,m.c,{kind:'proj',big:true});if(!e.block){e.stun=Math.max(e.stun,.5);if(e.ai)e.ai.tele=0}}}
-   m.fb=(m.fb||0)-dt;if(m.fb<=0&&dd>70){m.fb=2.4;PR.push({vy:(fo.y-m.y)*1.2,hom:3,team:o.team,src:o,x:m.x+d2(fo,m)*14,y:m.y-8,vx:d2(fo,m)*170,r:9,hw:10,dmg:dm*.7,c:m.c,kind:'orb',pow:dm,ult:false,boom:18,pass:false,tt:0,prem:0,hd:0,_s:{t:'summon',nm:'fireball',c:m.c,dmg:dm},sty:'plain'})}}
+   if(dd<46*m.sz&&m.cd<=0){m.cd=1.6;dmg(o,fo,dm,fo.x,fo.y,m.c,{kind:'melee',big:true});boom(fo.x,fo.y,m.c,16*m.sz);shake=Math.max(shake,5)}
+   m.sp=(m.sp||0)-dt;if(m.sp<=0&&dd<190){m.sp=4.6;const R=95*m.sz/2.2+30,foes=(BR?enemies(o.team):[opp(o)]).filter(Boolean);sfx('big');ring(m.x,m.y,R,m.c,.6);ring(m.x,m.y,R*.6,[m.c[2],m.c[2],'#ffffff'],.4);shake=Math.max(shake,9);
+    for(const e of foes)if(Math.hypot(e.x-m.x,(e.y-m.y)*1.3)<R){dmg(o,e,dm*.7,e.x,e.y,m.c,{kind:'proj',big:true});if(!e.block){e.stun=Math.max(e.stun,.5);if(e.ai)e.ai.tele=0}}}
+   m.fb=(m.fb||0)-dt;if(m.fb<=0&&dd>70){m.fb=3.4;PR.push({vy:(fo.y-m.y)*1.2,hom:3,team:o.team,src:o,x:m.x+d2(fo,m)*14,y:m.y-8,vx:d2(fo,m)*170,r:9,hw:10,dmg:dm*.55,c:m.c,kind:'orb',pow:dm,ult:false,boom:18,pass:false,tt:0,prem:0,hd:0,_s:{t:'summon',nm:'fireball',c:m.c,dmg:dm},sty:'plain'})}}
   else{const tx=o.x+o.dir*(34+m.i*10*m.sz),ty=o.y+(m.i-.5)*14;mv(tx,ty,45);
   if(fo&&Math.hypot(fo.x-m.x,fo.y-m.y)<36*m.sz&&m.cd<=0){m.cd=1.3;dmg(o,fo,dm,fo.x,fo.y,m.c,{kind:'melee',big:true});boom(fo.x,fo.y,m.c,14*m.sz);shake=Math.max(shake,3)}}}
  else{const ang=m.t*1.8+m.ph,tx=k==='turret'?m.x:o.x+Math.cos(ang)*28,ty=k==='turret'?m.y:o.y+Math.sin(ang)*20;if(k!=='turret')mv(tx,ty,140);
