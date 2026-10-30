@@ -677,7 +677,52 @@ F.push(
   {nm:'Moonlight Veil',t:'heal',self:1,c:['#7a8cff','#d8e0ff','#ffffff'],heal:.15,regen:[6,1.4],shield:260,sdur:7,cleanse:1,dmg:0,k:30,cd:11,lock:.7},
   st(qBm('Umbra Lance',['#7a8cff','#d8e0ff','#ffffff'],18,340,{charge:.4,aim:140,k:28}),'crescent',{sxs:[['mark',4,1],['slow',4,1]]}),
   st(qUO('Diamond Ring',['#ffb020','#ffe9a0','#ffffff'],38,820,{boom:60}),'corona')],
- mel:[['Sun Combo',c3('#ffb020','#ffe9a0'),3,125],['Eclipse Combo',c3('#7a8cff','#d8e0ff'),4,185]],swd:sw5('dodge','block','counter','dodge')}
+ mel:[['Sun Combo',c3('#ffb020','#ffe9a0'),3,125],['Eclipse Combo',c3('#7a8cff','#d8e0ff'),4,185]],swd:sw5('dodge','block','counter','dodge')},
+{n:'PRISMA',s:'PRISMA',sh:'#ff7ae0',g:'ORIGINAL',skin:'#f0dcd0',skinD:'#c0a898',eye:'#5ad8ff',pants:'#a8b8e8',boots:'#ffffff',top:'#c8e8ff',sleeve:'#e8d8ff',hp:1250,
+ hair(s,d){s('#f4f4ff',7,2,10,4);s('#f4f4ff',6,-1,3,4);s('#f4f4ff',10,-3,4,5);s('#f4f4ff',15,-1,3,4);s('#f4f4ff',6,4,2,7);s('#f4f4ff',16,4,2,7);d('#ff5a5a',6,-1,1,1);d('#ffd84a',10,-3,1,1);d('#5aff8a',12,-3,1,1);d('#5ad8ff',14,-3,1,1);d('#a05aff',17,-1,1,1)},
+ outfit(d){d('#ffffff',11,11,2,1);d('#ffffff',10,12,4,1);d('#ff5a5a',9,14,1,1);d('#ffd84a',10,14,1,1);d('#5aff8a',11,14,1,1);d('#5ad8ff',12,14,1,1);d('#a05aff',13,14,1,1);d('#ffffff',4,10,4,3);d('#ffffff',16,10,4,3);d('#a05aff',8,16,8,1);d('#5ad8ff',5,15,3,1);d('#ff5a5a',16,15,3,1)},
+ form:{name:'Spectrum',aura:'#ffffff',eye:'#ffffff',sparks:true,spark:'#ffffff',fxk:'prism',top:'#ffffff',sleeve:'#ffffff',pants:'#e8f0ff',
+  hair(s,d){s('#ff5a5a',7,2,3,4);s('#ffd84a',10,2,3,4);s('#5aff8a',13,2,2,4);s('#5ad8ff',15,2,2,4);s('#ff5a5a',6,-1,3,4);s('#ffd84a',9,-3,2,5);s('#5aff8a',11,-4,2,6);s('#5ad8ff',13,-3,2,5);s('#a05aff',15,-1,3,4);s('#ff5a5a',6,4,2,7);s('#a05aff',16,4,2,7);d('#ffffff',11,-3,1,2)},
+  outfit(d){d('#ffffff',11,11,2,1);d('#ffffff',10,12,4,1);d('#ff5a5a',9,14,1,1);d('#ffd84a',10,14,1,1);d('#5aff8a',11,14,1,1);d('#5ad8ff',12,14,1,1);d('#a05aff',13,14,1,1);d('#ffd84a',4,10,4,3);d('#5ad8ff',16,10,4,3);d('#ff5ad8',8,16,8,1)}},
+ ab:[st(BLS(['#ff7ae0','#ffd0f5','#ffffff']),'prism'),
+  st(qOb('Facet Shard',['#ff7ae0','#ffd0f5','#ffffff'],12,250,{hom:5,k:22,cd:3}),'prism'),
+  st(qBm('Spectrum Beam',['#ff7ae0','#ffd0f5','#ffffff'],18,330,{charge:.45,aim:120,k:26}),'prism'),
+  st(qUB('Chromatic Collapse',['#ff7ae0','#ffd0f5','#ffffff'],42,900,{aim:150}),'prism')],
+ fab:[st(BAR(['#ff7ae0','#ffd0f5','#ffffff'],{nm:'Prism Barrage'}),'prism'),
+  {nm:'Refract Guard',t:'heal',self:1,c:['#ff7ae0','#ffd0f5','#ffffff'],shield:300,sdur:8,fx:[['guard',8,1]],cleanse:1,dmg:0,k:28,cd:11,lock:.7},
+  {nm:'Prism Bloom',t:'hex',c:['#ff7ae0','#ffd0f5','#ffffff'],dmg:230,rad:230,fx:[['weak',5,1],['mark',4,1]],k:28,cd:6,lock:.8},
+  st(qUO('Rainbow Nova',['#ff7ae0','#ffd0f5','#ffffff'],38,820,{boom:60}),'prism')],
+ mel:[['Facet Combo',c3('#ff7ae0','#ffd0f5'),3,120],['Spectrum Combo',c3('#5ad8ff','#ffffff'),4,180]],swd:sw5('dodge','block','counter','dodge')},
+{n:'SHROUD',s:'SHROUD',sh:'#8a30c8',g:'ORIGINAL',skin:'#8a7a9a',skinD:'#5a4a6a',eye:'#ff3a5a',pants:'#14101e',boots:'#2a2038',top:'#1a1426',sleeve:'#1a1426',hp:1150,
+ hair(s,d){s('#14101e',6,-1,12,6);s('#14101e',5,2,2,9);s('#14101e',17,2,2,9);s('#2a2038',8,6,8,3);d('#8a30c8',7,-1,10,1)},
+ outfit(d){d('#8a1a2a',8,9,8,2);d('#8a1a2a',15,10,2,7);d('#8a1a2a',16,16,2,2);d('#8a30c8',8,16,8,1);d('#c8c8e8',3,13,1,5);d('#c8c8e8',20,13,1,5);d('#3a2a4a',5,15,3,1);d('#3a2a4a',16,15,3,1)},
+ form:{name:'Nightfall',aura:'#8a30ff',eye:'#ff3a5a',sparks:true,spark:'#c070ff',fxk:'shadow',top:'#0a0612',sleeve:'#0a0612',pants:'#080410',boots:'#14101e',
+  hair(s,d){s('#08040e',6,-2,12,7);s('#08040e',5,2,2,10);s('#08040e',17,2,2,10);s('#14101e',8,6,8,3);d('#8a30ff',6,-2,12,1);d('#c070ff',7,-1,1,1);d('#c070ff',16,-1,1,1)},
+  outfit(d){d('#c01a3a',8,9,8,2);d('#c01a3a',15,10,2,8);d('#8a30ff',8,16,8,1);d('#c070ff',3,12,1,6);d('#c070ff',20,12,1,6);d('#8a30ff',11,12,2,2)}},
+ ab:[st(BLS(['#8a30c8','#1a0830','#ff3a5a']),'shadow'),
+  st(qSl('Void Slash',['#8a30c8','#1a0830','#ff3a5a'],24,270,{hom:4,boom:20,spd:320}),'shadow'),
+  st(qBm('Dread Lance',['#8a30c8','#1a0830','#ff3a5a'],16,320,{charge:.4,aim:120,k:26}),'shadow'),
+  st(qUB('Night Terror',['#8a30c8','#1a0830','#ff3a5a'],40,900,{aim:150}),'shadow')],
+ fab:[st(BAR(['#8a30c8','#1a0830','#ff3a5a'],{nm:'Wisp Barrage'}),'shadow'),
+  {nm:'Nightveil',t:'buff',self:1,c:['#8a30ff','#c070ff','#ffffff'],fx:[['haste',8,1],['guard',8,1],['power',8,1]],dmg:0,k:28,cd:12,lock:.7},
+  st(qDs('Shadow Rend',['#8a30c8','#1a0830','#ff3a5a'],320,{cd:3.2,leech:.4}),'shadow'),
+  {nm:'Eclipse of Night',t:'hex',ult:1,c:['#8a30ff','#c070ff','#ff3a5a'],dmg:560,rad:300,fx:[['stun',1.6],['weak',7,1],['slow',6,1],['mark',6,1]],k:50,cd:9,lock:1.6}],
+ mel:[['Dagger Combo',c3('#8a30c8','#c070ff'),3,125],['Umbral Combo',c3('#ff3a5a','#ffb0c0'),4,185]],swd:sw5('dodge','dodge','counter','dodge')},
+{n:'RESONA',s:'RESONA',sh:'#ff3ac8',g:'ORIGINAL',skin:'#e0b890',skinD:'#b08860',eye:'#3affff',pants:'#2a2a50',boots:'#3affff',top:'#1a1a30',sleeve:'#ff3ac8',hp:1200,
+ hair(s,d){s('#ff3ac8',7,2,10,3);s('#3affff',10,-4,4,7);s('#ff3ac8',9,-2,2,3);s('#ff3ac8',6,3,2,6);s('#3affff',16,3,2,6);s('#222233',5,4,2,5);s('#222233',17,4,2,5);s('#222233',6,1,12,1);d('#3affff',5,5,1,2);d('#ff3ac8',18,5,1,2)},
+ outfit(d){d('#3affff',9,12,6,1);d('#ff3ac8',9,14,1,2);d('#3affff',11,13,1,3);d('#ff3ac8',13,14,1,2);d('#ffffff',15,15,1,1);d('#3affff',4,10,4,3);d('#ff3ac8',16,10,4,3);d('#3affff',8,16,8,1)},
+ form:{name:'Crescendo',aura:'#ff3ac8',eye:'#ffffff',sparks:true,spark:'#ffffff',fxk:'sonic',top:'#3a1a60',sleeve:'#3affff',pants:'#4a2a80',
+  hair(s,d){s('#3affff',7,2,10,3);s('#ff3ac8',10,-6,4,9);s('#3affff',9,-3,2,4);s('#ff3ac8',6,3,2,8);s('#3affff',16,3,2,8);s('#ffffff',11,-6,2,1);s('#222233',5,4,2,5);s('#222233',17,4,2,5);s('#222233',6,1,12,1)},
+  outfit(d){d('#ff3ac8',9,12,6,1);d('#3affff',9,14,1,3);d('#ff3ac8',10,13,1,4);d('#3affff',11,13,1,4);d('#ff3ac8',12,14,1,3);d('#3affff',13,13,1,4);d('#ffffff',4,10,4,3);d('#ffffff',16,10,4,3)}},
+ ab:[st(BLS(['#ff3ac8','#3affff','#ffffff']),'sonic'),
+  {nm:'Bass Drop',t:'hex',c:['#ff3ac8','#3affff','#ffffff'],dmg:200,rad:210,fx:[['stun',.6],['weak',4,1]],k:26,cd:6,lock:.8},
+  {nm:'Harmony',t:'buff',c:['#3affff','#ff9ae8','#ffffff'],fx:[['haste',7,1],['regen',7,1.2],['power',7,1]],dmg:0,k:30,cd:12,lock:.7},
+  st(qUB('Crescendo Wave',['#ff3ac8','#3affff','#ffffff'],38,880,{aim:140}),'sonic')],
+ fab:[st(BAR(['#ff3ac8','#3affff','#ffffff'],{nm:'Treble Barrage'}),'sonic'),
+  {nm:'Lullaby',t:'heal',c:['#3affff','#a0ffff','#ffffff'],heal:.22,regen:[7,1.4],cleanse:1,dmg:0,k:30,cd:11,lock:.9},
+  st(qBm('Resonance Lance',['#ff3ac8','#3affff','#ffffff'],18,330,{charge:.4,aim:130,k:28}),'sonic'),
+  {nm:'Symphony of Ruin',t:'hex',ult:1,c:['#ff3ac8','#3affff','#ffffff'],dmg:580,rad:300,fx:[['stun',1.6],['weak',7,1],['mark',6,1],['slow',5,1]],k:50,cd:9,lock:1.6}],
+ mel:[['Riff Combo',c3('#ff3ac8','#ff9ae8'),3,120],['Drop Combo',c3('#3affff','#ffffff'),4,175]],swd:sw5('dodge','block','counter','dodge')}
 );
 const kc=a=>a.k!==undefined?a.k:(a.ult?50:({volley:6,beam:25,orb:22,dash:20,shock:20,slash:12,bstrike:30}[a.t]||15));
 const TYPE={beam:'Beam',volley:'Quick shots',dash:'Rush attack',shock:'Area wave',slash:'Energy slash',orb:'Energy ball',bstrike:'Blink strike'};
@@ -1238,7 +1283,7 @@ const PK={
 'GOGETA':{tr:.50,f:{tier:4,dm:1.35,dr:.8,rg:.014,hl:.12,mv:1.15,cost:35}},'VEGETO':{tr:.50,f:{tier:4,dm:1.35,kreg:3,mv:1.2,cost:35}},'VEGETA':{tr:.50,f:{tier:1}},'VEGETA SS2':{tr:.50,f:{tier:2}},'VEGETA SS4':{tr:.52,f:{tier:3,dr:.8,rg:.014,hl:.12}},
 'VEGETA BLUE':{tr:.52,f:{tier:4,mv:1.2,kreg:3,cost:35}},'VEGETA EGO':{tr:.50,f:{tier:4,cost:35}},
 'GOHAN':{tr:.60,f:{tier:2}},'JIREN':{tr:.50,f:{tier:3},base:{dr:.9,mv:.95}},'TRUNKS':{tr:.62,f:{tier:1},base:{mv:1.05}},
-'FRIEZA':{tr:.55,f:{tier:3,burst:1}},'ECLIPSE':{tr:.5,f:{tier:4,dm:1.35,kreg:3,cost:35}},'SERAPH':{tr:.5,f:{tier:3,hl:.1,rg:.008}},'VERDANT':{tr:.55,f:{tier:3,rg:.012,dr:.88}},'MORBUS':{tr:.55,f:{tier:3,dm:1.3,kreg:3}},'GLACIA':{tr:.5,f:{tier:3,dr:.85,cost:30}},'TEMPUS':{tr:.5,f:{tier:3,mv:1.25,kreg:4}},'ZARKON':{tr:.55,f:{tier:3,dm:1.3,dr:.85,cost:30},base:{dr:.92,mv:.92}},'LYRA':{tr:.55,f:{tier:3,mv:1.2,kreg:3},base:{mv:1.1}},'CAPTAIN BRINE':{tr:.55,f:{tier:3,dr:.85,hl:.08,rg:.008}},'ASHE':{tr:.5,f:{tier:3,dm:1.35,kreg:3}},'VANTA':{tr:.5,f:{tier:4,dm:1.25,kreg:4,cost:35}},'FRIEZA 1ST':{tr:.6,f:{tier:3,burst:1,hl:.08}},'GOLDEN FRIEZA':{tr:.5,f:{tier:4,dm:1.3,dr:.85,cost:35}},'BROLY':{tr:.50,f:{tier:3,dr:.8,rg:.014,hl:.12},base:{dr:.9,mv:.9}},
+'FRIEZA':{tr:.55,f:{tier:3,burst:1}},'PRISMA':{tr:.5,f:{tier:4,dm:1.3,kreg:3,cost:35}},'SHROUD':{tr:.5,f:{tier:3,mv:1.3,dm:1.35,kreg:3}},'RESONA':{tr:.55,f:{tier:3,rg:.01,mv:1.15,kreg:3}},'ECLIPSE':{tr:.5,f:{tier:4,dm:1.35,kreg:3,cost:35}},'SERAPH':{tr:.5,f:{tier:3,hl:.1,rg:.008}},'VERDANT':{tr:.55,f:{tier:3,rg:.012,dr:.88}},'MORBUS':{tr:.55,f:{tier:3,dm:1.3,kreg:3}},'GLACIA':{tr:.5,f:{tier:3,dr:.85,cost:30}},'TEMPUS':{tr:.5,f:{tier:3,mv:1.25,kreg:4}},'ZARKON':{tr:.55,f:{tier:3,dm:1.3,dr:.85,cost:30},base:{dr:.92,mv:.92}},'LYRA':{tr:.55,f:{tier:3,mv:1.2,kreg:3},base:{mv:1.1}},'CAPTAIN BRINE':{tr:.55,f:{tier:3,dr:.85,hl:.08,rg:.008}},'ASHE':{tr:.5,f:{tier:3,dm:1.35,kreg:3}},'VANTA':{tr:.5,f:{tier:4,dm:1.25,kreg:4,cost:35}},'FRIEZA 1ST':{tr:.6,f:{tier:3,burst:1,hl:.08}},'GOLDEN FRIEZA':{tr:.5,f:{tier:4,dm:1.3,dr:.85,cost:35}},'BROLY':{tr:.50,f:{tier:3,dr:.8,rg:.014,hl:.12},base:{dr:.9,mv:.9}},
 'PICCOLO':{tr:.65,f:{tier:2,dm:1.45,rg:.008,hl:.08},base:{reg:.003}},'HIT':{tr:.60,f:{tier:2,timeskip:1},base:{mv:1.1}},
 'BLACK':{tr:.55,f:{tier:3},base:{mv:1.05}},'TOPPO':{tr:.55,f:{tier:3,rg:.008,hl:.06},base:{dr:.9,mv:.95}},
 'DYSPO':{tr:.65,f:{tier:2,mv:1.15},base:{mv:1.3}},'CAULIFLA':{tr:.60,f:{tier:2},base:{mv:1.05}},
@@ -3546,6 +3591,9 @@ var LINES={
 'MORBUS':{o:"A little sickness. A lot of cure. Mine.",a:"Don't breathe too deep. Stay by me.",r:"Fascinating. A resilient specimen."},
 'GLACIA':{o:"Cold is only patience.",a:"Stand behind the frost.",r:"You'll thaw eventually."},
 'TEMPUS':{o:"I have already seen how this ends.",a:"Time is generous when shared.",r:"Too slow. Again."},
+'PRISMA':{o:"Every light has a hidden color. Let me show you.",a:"Stand in my light. It will protect you.",r:"Beautiful... and broken."},
+'SHROUD':{o:"You never saw me begin.",a:"Quiet. I'll handle the dark.",r:"Too late. It's already over."},
+'RESONA':{o:"Turn it up. This one's for the whole arena!",a:"Feel the beat? Stay in rhythm with me!",r:"Encore? Nope, you're done."},
 'ECLIPSE':{o:"Day and night both bow to me.",a:"Walk in my shadow, and you will shine.",r:"Totality. Nothing escapes it."},
 'FRIEZA':{o:"Do try to entertain me before the end.",a:"Be useful. Or be forgotten.",r:"How adorable. You think you can win."},
 'BROLY':{o:"Come on. Don't die too fast.",a:"...Stay behind me.",r:"I will crush you."},
@@ -4100,6 +4148,52 @@ SXE.corona=[['burn',3,1],['slow',3,1]];SXE.crescent=[['slow',4,1],['weak',3,.5]]
   const al=Math.abs(mx-sx)<2;if(al||ml>.95){for(let i=0;i<20;i++){const a=T*2+i*.314,L=34+(i%2?6:14)+Math.sin(T*14+i)*3;ln(sx+Math.cos(a)*26,sy+Math.sin(a)*26,sx+Math.cos(a)*L,sy+Math.sin(a)*L,i%2?'#ffe9a0':'#ffb020',1)}}
   disc(mx,sy,25*k,'#07051a');ctx.fillStyle='#c8d4ff';circ(mx,sy,25*k,1);
   ctx.globalAlpha=.5*k;ctx.fillStyle='#ffd84a';ctx.fillRect(Math.round(f.x-1),Math.round(sy+26),2,Math.round(f.y-sy-30));ctx.globalAlpha=1}})}}
+// ---- PRISMA / SHROUD / RESONA: new element styles + unique power-up cinematics ----
+SXE.prism=[['weak',4,1],['mark',3,.5]];SXE.shadow=[['weak',4,1],['slow',3,1]];SXE.sonic=[['knock',18,1],['shock',.35,.3]];
+const rbw=(i,t)=>'hsl('+Math.round((i*50+t*180)%360)+',100%,62%)';
+{const op=pOrbAt;pOrbAt=function(x,y,r,c,sty,v,dir,t){t=t===undefined?T:t;dir=dir||1;
+ if(sty==='prism'){x=Math.round(x);y=Math.round(y);disc(x,y,r+5,'#ffffff',.18);const R=r+2,n=6;for(let i=0;i<n;i++){const a=t*2+i*1.047,b=a+1.047;ln(x+Math.cos(a)*R,y+Math.sin(a)*R,x+Math.cos(b)*R,y+Math.sin(b)*R,rbw(i,t),1)}
+  for(let i=0;i<n;i+=1){const a=t*2+i*1.047;ln(x,y,x+Math.cos(a)*R,y+Math.sin(a)*R,rbw(i+3,t),1)}disc(x,y,r*.5,'#ffffff');for(let i=0;i<5;i++){const a=-t*3+i*1.256;disc(x+Math.cos(a)*(r+6),y+Math.sin(a)*(r+6),1,rbw(i,t))}return}
+ if(sty==='shadow'){x=Math.round(x);y=Math.round(y);disc(x,y,r+4,c[0],.3);for(let i=0;i<5;i++){const a=t*6+i*1.256;disc(x+Math.cos(a)*r*.5,y+Math.sin(a)*r*.5,r*.8,c[1],.95)}disc(x,y,r,c[1]);ctx.fillStyle=c[0];circ(x,y,r+1,1);
+  const ex=dir*r*.35;ctx.fillStyle=c[2];ctx.fillRect(x+ex-2,y-2,2,2);ctx.fillRect(x+ex+2,y-2,2,2);
+  if(Math.random()<.6)PT.push({x:x-dir*r,y:y+rnd(-r,r),vx:-dir*15,vy:rnd(-30,10),l:.5,m:.5,c:Math.random()<.5?c[0]:c[1],z:2});return}
+ if(sty==='sonic'){x=Math.round(x);y=Math.round(y);disc(x,y,r*.55,c[1],.95);disc(x,y,r*.3,c[2]);for(let i=0;i<3;i++){const ph=(t*2.5+i/3)%1,rr=r*.8+ph*r*1.8;ctx.globalAlpha=1-ph;ctx.fillStyle=i%2?c[0]:c[1];
+   for(let q=-1.2;q<=1.2;q+=.1){ctx.fillRect(Math.round(x+Math.cos(q)*dir*rr),Math.round(y+Math.sin(q)*rr),1,1)}}ctx.globalAlpha=1;return}
+ return op.apply(this,arguments)}}
+{const od=drawBeam;drawBeam=function(b){const a=b.a,sty=styleOf(a);if(sty!=='prism'&&sty!=='shadow'&&sty!=='sonic')return od(b);
+ const f=b.f,c=a.c,my=bY(b),d=f.dir;
+ if(b.t<b.fs&&!b.cut){pOrbAt(b.mx,my,2+a.r*b.t/b.fs,c,sty,0,d);return}
+ const k=(b.cut||b.t>=b.fe)?Math.max(0,1-b.fade/.3):Math.min(1,(b.t-b.fs)/.1),w=a.w*k;if(w<=0)return;
+ b.offs.forEach(o=>{const y0=Math.round(my+o),xa=Math.floor(Math.min(b.mx,b.ex)),xb=Math.ceil(Math.max(b.mx,b.ex));
+  for(let x=xa;x<xb;x++){
+   if(sty==='prism'){const bw=w/6;for(let i=0;i<6;i++){const yy=y0+(i-2.5)*bw+Math.sin(x*.12-T*14*d+i)*1.2;ctx.fillStyle=rbw(i,T*.4);ctx.fillRect(x,Math.round(yy-bw/2),1,Math.max(1,Math.ceil(bw)))}ctx.fillStyle='#ffffff';ctx.globalAlpha=.8;ctx.fillRect(x,y0-1,1,2);ctx.globalAlpha=1}
+   else if(sty==='shadow'){const hw=Math.max(.5,w/2+Math.sin(x*.2-T*10*d)*w*.15);ctx.globalAlpha=.35;ctx.fillStyle=c[0];ctx.fillRect(x,Math.round(y0-hw-4),1,Math.round(hw*2+8));ctx.globalAlpha=1;ctx.fillStyle=c[0];ctx.fillRect(x,Math.round(y0-hw),1,Math.round(hw*2));ctx.fillStyle=c[1];ctx.fillRect(x,Math.round(y0-hw*.8),1,Math.round(hw*1.6));if((x*d+Math.floor(T*14))%23===0){ctx.fillStyle=c[2];ctx.fillRect(x,Math.round(y0-2),2,2)}}
+   else{const h=Math.max(1,w/2*(.3+.7*Math.abs(Math.sin(x*.4-T*35*d))));if(x%3!==2){ctx.fillStyle=(Math.floor(x/3)%2)?c[0]:c[1];ctx.fillRect(x,Math.round(y0-h),1,Math.round(h*2));ctx.fillStyle=c[2];ctx.fillRect(x,Math.round(y0-h),1,1);ctx.fillRect(x,Math.round(y0+h-1),1,1)}}}
+  if(Math.random()<.6){const bx=xa+Math.random()*(xb-xa);if(sty==='prism')PT.push({x:bx,y:y0+rnd(-w,w),vx:0,vy:rnd(-40,40),l:.4,m:.4,c:rbw(Math.floor(Math.random()*6),T),z:2});else if(sty==='shadow')PT.push({x:bx,y:y0+rnd(-w,w),vx:0,vy:rnd(-40,10),l:.5,m:.5,c:Math.random()<.5?c[0]:c[1],z:2});else{const yy=y0+rnd(-w,w);ctx.fillStyle=c[2];ctx.fillRect(Math.round(bx),Math.round(yy),2,2)}}
+  if(!b.cl)pOrbAt(b.ex,y0,Math.max(2,w*.55),c,sty,0,-d);pOrbAt(b.mx,y0,Math.max(2,w*.6),c,sty,0,d)})}}
+// halos while powered up
+{const od=drawF;drawF=function(f){od.apply(this,arguments);if(f.out||f.hide||!f.form)return;const k=F[f.id].form.fxk;if(!k)return;const x=f.x,sz=f.sz||1;
+ if(k==='prism'){for(let i=0;i<6;i++){const a=T*2+i*1.047,px=x+Math.cos(a)*20*sz,py=f.y-4*sz+Math.sin(a)*8*sz;disc(px,py,2.2,rbw(i,T),1);ln(px,py-3,px,py+3,'#ffffff',1)}ctx.globalAlpha=.25;ctx.fillStyle=rbw(0,T);circ(x,f.y,17*sz,1);ctx.globalAlpha=1}
+ else if(k==='shadow'){if(Math.random()<.6)PT.push({x:x+rnd(-9,9),y:f.y+12,vx:rnd(-10,10),vy:rnd(-70,-30),l:.7,m:.7,c:Math.random()<.5?'#8a30ff':'#1a0830',z:2});ctx.fillStyle='#ff3a5a';ctx.fillRect(Math.round(x-4*f.dir),Math.round(f.y-17*sz),2,1);ctx.fillRect(Math.round(x+1*f.dir),Math.round(f.y-17*sz),2,1);for(const s of[-1,1]){ln(x+s*14,f.y+12,x+s*(14+Math.sin(T*5+s)*4),f.y-6,'#8a30ff',1)}}
+ else if(k==='sonic'){for(let i=0;i<9;i++){const h=3+Math.abs(Math.sin(T*9+i*1.3))*10;ctx.fillStyle=i%2?'#ff3ac8':'#3affff';ctx.fillRect(Math.round(x-18+i*4.5),Math.round(f.y+14-h),3,Math.round(h))}if(Math.random()<.15)PT.push({x:x+rnd(-12,12),y:f.y-8,vx:rnd(-15,15),vy:-45,l:.9,m:.9,c:Math.random()<.5?'#ff3ac8':'#3affff',z:3})}}}
+// power-up cinematics
+{const ot=toggleForm;toggleForm=function(f){const l0=f.lock,was=f.form;ot.apply(this,arguments);if(!f||was||f.lock<=l0)return;const k=F[f.id].form.fxk;if(!k)return;
+ const D=2.2,sx=f.x,sy=f.y-52;let t=0,fl=false;
+ E.push({u(dt){t+=dt;if(f.down>0||f.out)return false;
+  if(!fl&&t>1.65){fl=true;flash=.8;flashC=k==='shadow'?'#8a30ff':'#ffffff';shake=Math.max(shake,11);
+   if(k==='prism'){for(let i=0;i<7;i++)PT.push({x:sx,y:sy,vx:Math.cos(i*.9)*190,vy:Math.sin(i*.9)*190,l:.8,m:.8,c:rbw(i,0),z:3});for(let q=0;q<3;q++)ring(f.x,f.y,100+q*30,[rbw(q*2,0),rbw(q*2+1,0),'#ffffff'],.9)}
+   else if(k==='shadow'){ring(f.x,f.y,140,['#8a30ff','#c070ff','#ff3a5a'],1);for(let i=0;i<30;i++){const a=i*.2;PT.push({x:f.x,y:f.y,vx:Math.cos(a)*rnd(60,180),vy:Math.sin(a)*rnd(60,180),l:.8,m:.8,c:i%2?'#8a30ff':'#ff3a5a',z:2})}}
+   else{ring(f.x,f.y,160,['#ff3ac8','#3affff','#ffffff'],1);ring(f.x,f.y,110,['#3affff','#ff3ac8','#ffffff'],.8)}}
+  if(k==='sonic'&&t<1.7&&Math.floor(t*5)!==Math.floor((t-dt)*5))ring(f.x,f.y,50+t*30,t*5%2<1?['#ff3ac8','#ff9ae8','#ffffff']:['#3affff','#a0ffff','#ffffff'],.5);
+  if(k==='shadow'&&t<1.6&&Math.random()<.8)PT.push({x:f.x+rnd(-18,18),y:f.y+14,vx:rnd(-8,8),vy:rnd(-110,-50),l:.9,m:.9,c:Math.random()<.5?'#8a30ff':'#1a0830',z:3});
+  return t<D},
+ d(){const q=Math.min(1,t/.5);
+  if(k==='prism'){const R=16*q,rot=t*3,ex=t>1.65?Math.max(0,1-(t-1.65)/.5):1;if(t<1.7){for(let i=0;i<6;i++){const a=rot+i*1.047,b=a+1.047;ln(sx+Math.cos(a)*R,sy+Math.sin(a)*R*1.3,sx+Math.cos(b)*R,sy+Math.sin(b)*R*1.3,rbw(i,t),1);ln(sx,sy,sx+Math.cos(a)*R,sy+Math.sin(a)*R*1.3,rbw(i+2,t),1)}disc(sx,sy,R*.45,'#ffffff',.9);disc(sx,sy,R+6,'#ffffff',.15+Math.sin(t*10)*.05);
+    if(t>.6)for(let i=0;i<7;i++){ctx.globalAlpha=Math.min(1,(t-.6)*1.2);ln(sx,sy,sx+Math.cos(i*.9+t)*(30+t*20),sy+Math.sin(i*.9+t)*(30+t*20),rbw(i,t),1)}ctx.globalAlpha=1}
+   else for(let i=0;i<7;i++){ctx.globalAlpha=ex;ln(sx,sy,sx+Math.cos(i*.9)*100,sy+Math.sin(i*.9)*100,rbw(i,0),2)}ctx.globalAlpha=1}
+  else if(k==='shadow'){const R=t<1.6?260-210*Math.min(1,t/1.5):50+(t-1.6)*600,al=t<1.7?.62:Math.max(0,.62*(1-(t-1.7)/.5));ctx.fillStyle='rgba(8,2,18,'+al+')';ctx.beginPath();ctx.rect(0,0,W,H);ctx.arc(f.x,f.y,R,0,6.283);ctx.fill('evenodd');
+   ctx.fillStyle='#ff3a5a';ctx.fillRect(Math.round(f.x-4*f.dir),Math.round(f.y-17),2,1);for(let i=0;i<7;i++){const bx=f.x-30+i*10;ln(bx,f.y+14,bx+Math.sin(t*6+i)*4,f.y+14-Math.min(60,t*60)*(.5+(i%3)*.25),'#8a30ff',1)}}
+  else{const n=13;for(let i=0;i<n;i++){const h=(8+Math.abs(Math.sin(t*9+i*1.1))*40)*Math.min(1,t/.6)*(t>1.7?Math.max(0,1-(t-1.7)/.4):1);ctx.fillStyle=i%2?'#ff3ac8':'#3affff';ctx.globalAlpha=.8;ctx.fillRect(Math.round(f.x-60+i*10),Math.round(f.y+14-h),6,Math.round(h));ctx.fillStyle='#ffffff';ctx.fillRect(Math.round(f.x-60+i*10),Math.round(f.y+14-h),6,1)}ctx.globalAlpha=1}}})}}
 // ===== announcer voice choice + volume, and a pause button for every map =====
 (function(){
 const $=id=>document.getElementById(id);
