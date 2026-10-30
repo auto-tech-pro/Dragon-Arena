@@ -1665,9 +1665,10 @@ afterBattle=function(win){if(!TRN){SAVE.streak=win?(SAVE.streak||0)+1:0;if(win&&
 const row=(a,b)=>'<div class="lbr"><span>'+a+'</span><b>'+b+'</b></div>';
 function render(){
  const r=rankOf(SAVE.xp),w=Object.values(SAVE.wins).reduce((a,b)=>a+b,0),pl=SAVE.played||0;
- let h='<div class="lbh">YOU</div>'+row('Rank',r.n)+row('XP',SAVE.xp+(r.next?' / '+r.next:''))+row('Battles played',pl)+row('Wins',w)+row('Win rate',pl?Math.round(100*w/pl)+'%':'-')+row('Win streak',(SAVE.streak||0)+'  (best '+(SAVE.best||0)+')')+row('Battle Royale wins',SAVE.brWins||0)+row('LAN wins',SAVE.lanWins||0)+row('Daily challenges',Object.keys(SAVE.daily).length)+row('Saga fights cleared',Object.values(SAVE.story).reduce((a,b)=>a+b,0));
+ let h='<div class="lbh">'+(SAVE.pname?SAVE.pname.replace(/[<>&]/g,''):'YOU')+'</div>'+row('Rank',r.n)+row('XP',SAVE.xp+(r.next?' / '+r.next:''))+row('Battles played',pl)+row('Wins',w)+row('Win rate',pl?Math.round(100*w/pl)+'%':'-')+row('Win streak',(SAVE.streak||0)+'  (best '+(SAVE.best||0)+')')+row('Battle Royale wins',SAVE.brWins||0)+row('LAN wins',SAVE.lanWins||0)+row('Daily challenges',Object.keys(SAVE.daily).length)+row('Saga fights cleared',Object.values(SAVE.story).reduce((a,b)=>a+b,0));
  const top=Object.entries(SAVE.wins).filter(e=>F[e[0]]).sort((a,b)=>b[1]-a[1]).slice(0,8);
  h+='<div class="lbh">TOP FIGHTERS</div>'+(top.length?top.map((e,i)=>row((i+1)+'. '+F[e[0]].n,e[1]+' wins'+(e[1]>=15?' ★★★':e[1]>=5?' ★★':' ★'))).join(''):'<div class="lbm">No wins yet. Go fight!</div>');
+ {const hh=Object.entries(SAVE.h2h||{});if(hh.length)h+='<div class="lbh">ONLINE RECORD VS FRIENDS</div>'+hh.sort((a,b)=>(b[1].w+b[1].l)-(a[1].w+a[1].l)).slice(0,8).map(e=>row(e[0].replace(/[<>&]/g,''),e[1].w+' W  -  '+e[1].l+' L')).join('')}
  h+='<div class="lbh">RANK LADDER</div>'+RANKS.map((k,i)=>row((i<=r.i?'✓ ':'')+k[1],k[0]+' XP')).join('');
  h+='<div class="lbm">Scores are saved on this device. A shared online board needs a server.</div>';
  $('lbBody').innerHTML=h}
@@ -4782,6 +4783,38 @@ setInterval(()=>{const ok=okScene()&&!document.hidden;
  if(YP&&YR){try{YP.setVolume(vol());const want=BGT.yt&&ok&&!MUSOFF&&!muted&&!(window.ASET_OPEN);const st=YP.getPlayerState&&YP.getPlayerState();if(want&&st!==1&&st!==3&&st!==0)YP.playVideo();else if(!want&&st===1)YP.pauseVideo()}catch(e){}}
  if(BGT.cur==='T'&&TH.ended&&ok)next()},400);
 b.onclick=()=>{aud();MUSOFF=window.MUSOFF=!MUSOFF;SAVE.musOff=MUSOFF;save();b.classList.toggle('off',MUSOFF);if(!MUSOFF&&BGT.yt){try{YP&&YP.playVideo()}catch(e){}}if(window.sayToast)sayToast(MUSOFF?'Music off':'Music on');else sfx('ui')};
+})();
+// ---- player display name, names in online battles, head-to-head records ----
+(function(){
+const $$=id=>document.getElementById(id);
+const BAD=['fuck','shit','bitch','cunt','nigg','fag','dick','cock','pussy','whore','slut','rape','nazi','porn','sex','penis','vagina','asshole','retard'];
+const clean=s=>(s||'').replace(/[<>&"'`\\]/g,'').replace(/\s+/g,' ').trim().slice(0,12);
+const bad=s=>{const t=s.toLowerCase().replace(/[^a-z]/g,'').replace(/1/g,'i');return BAD.some(w=>t.includes(w))};
+const nm=()=>SAVE.pname||'';
+window.myDisplayName=()=>SAVE.pname||'PLAYER';
+const css=document.createElement('style');css.textContent='#nmo{position:absolute;inset:0;z-index:40;display:none;align-items:center;justify-content:center;background:rgba(4,6,15,.94)}#nmo.on{display:flex}#nmo .sbox{max-width:22em;text-align:center}#nmo input{width:100%;box-sizing:border-box;padding:.6em .7em;border-radius:.5em;border:1px solid #2a3a6a;background:#0b1226;color:#fff;font:inherit;font-size:1em;text-align:center;margin:.3em 0}#nmErr{color:#ff8a8a;font-size:.8em;min-height:1.2em}';document.head.appendChild(css);
+const d=document.createElement('div');d.id='nmo';d.innerHTML='<div class="sbox"><h2>CHOOSE YOUR NAME</h2><div class="sub" style="font-size:.8em;color:#9fb4e8">This is the name other players see when you battle them. You can change it later in Settings.</div><input id="nmIn" maxlength="12" autocomplete="off" placeholder="Your name"><div id="nmErr"></div><button class="big" id="nmOk">DONE</button></div>';
+(document.getElementById('stage')||document.body).appendChild(d);
+function setName(v,errEl){v=clean(v);if(v.length<2){if(errEl)errEl.textContent='Use at least 2 letters or numbers.';return false}if(bad(v)){if(errEl)errEl.textContent='Please choose a different name.';return false}SAVE.pname=v;save();return true}
+window.setPlayerName=setName;
+function show(){$$('nmIn').value=nm();$$('nmErr').textContent='';d.classList.add('on');setTimeout(()=>{try{$$('nmIn').focus()}catch(e){}},50)}
+$$('nmOk').onclick=()=>{if(setName($$('nmIn').value,$$('nmErr'))){d.classList.remove('on');sfx('ui')}};
+$$('nmIn').addEventListener('keydown',e=>{if(e.key==='Enter')$$('nmOk').click()});
+const oth=toHome;toHome=function(){const r=oth.apply(this,arguments);if(!nm()&&scene==='home')show();return r};
+// settings field
+{const sb=document.querySelector('#aset .sbox');if(sb){const h=document.createElement('div');h.innerHTML='<h2 style="font-size:1em">PLAYER NAME</h2><input id="aName" maxlength="12" autocomplete="off" style="width:100%;box-sizing:border-box;padding:.5em;border-radius:.5em;border:1px solid #2a3a6a;background:#0b1226;color:#fff;font:inherit;text-transform:none"><div id="aNameE" style="color:#ff8a8a;font-size:.8em;min-height:1em"></div>';sb.insertBefore(h,sb.children[1]);
+ const ai=$$('aName');ai.addEventListener('change',()=>{if(setName(ai.value,$$('aNameE')))$$('aNameE').textContent='Saved'});
+ new MutationObserver(()=>{if($$('aset').classList.contains('on')){ai.value=nm();$$('aNameE').textContent=''}}).observe($$('aset'),{attributes:true,attributeFilter:['class']})}}
+// ---- online: exchange names ----
+const osd=setupDc;setupDc=function(dc){const r=osd.apply(this,arguments);const o=dc.onopen;dc.onopen=function(){NET.oname='';const x=o&&o.apply(this,arguments);netSend({t:'name',n:window.myDisplayName()});return x};return r};
+const onm=netMsg;netMsg=function(m){if(m&&m.t==='name'){NET.oname=clean(m.n)||'PLAYER 2';if(!m.r)netSend({t:'name',n:window.myDisplayName(),r:1});return}return onm.apply(this,arguments)};
+// ---- names on the battle screen ----
+{const orr=render;render=function(){const r=orr.apply(this,arguments);if(NET.live&&(scene==='battle'||scene==='over')&&NET.oname){ctx.setTransform(1,0,0,1,0,0);const me=window.myDisplayName(),op=NET.oname,host=NET.role==='host';
+  txt((host?me:op)+(host?' (you)':''),6,50,'#bfe0ff',6,'left');txt((host?op:me)+(host?'':' (you)'),W-6,50,'#ff9a8a',6,'right')}return r}}
+// ---- results: record vs this opponent ----
+const oab=afterBattle;afterBattle=function(win){oab.apply(this,arguments);if(!NET.live||!NET.oname)return;
+ SAVE.h2h=SAVE.h2h||{};const k=NET.oname,h=SAVE.h2h[k]||(SAVE.h2h[k]={w:0,l:0});if(win)h.w++;else h.l++;save();const el=$$('resS');if(!el)return;
+ el.textContent=(win?window.myDisplayName()+' wins!':NET.oname+' wins!')+'  •  Your record vs '+NET.oname+': '+h.w+' - '+h.l};
 })();
 // ===== installable app (PWA) =====
 (function(){
