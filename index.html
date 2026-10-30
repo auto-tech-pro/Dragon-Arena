@@ -662,7 +662,22 @@ F.push(
   {nm:'Overclock Pulse',t:'buff',c:['#ffd84a','#fff6c0','#ffffff'],fx:[['haste',8,1],['power',8,1]],dmg:0,k:28,cd:12,lock:.7},
   st(qBm('Chrono Lance',['#e0a83a','#ffe9a0','#ffffff'],14,330,{charge:.4,aim:140,k:28}),'time'),
   st(qUO('Stasis Sphere',['#e0a83a','#ffe9a0','#ffffff'],32,780),'time',{sxs:[['slow',6,1],['mark',5,1]]})],
- mel:[['Pocketwatch Combo',c3('#e0a83a','#ffe9a0'),3,120],['Epoch Combo',c3('#ffd84a','#fff6c0'),4,175]],swd:sw5('dodge','dodge','counter','dodge')}
+ mel:[['Pocketwatch Combo',c3('#e0a83a','#ffe9a0'),3,120],['Epoch Combo',c3('#ffd84a','#fff6c0'),4,175]],swd:sw5('dodge','dodge','counter','dodge')},
+{n:'ECLIPSE',s:'ECLIPSE',sh:'#ffb020',g:'ORIGINAL',skin:'#e8c090',skinD:'#b89060',eye:'#fff0a0',pants:'#2a2f6a',boots:'#c8d4ff',top:'#e0a020',sleeve:'#e0a020',hp:1300,
+ hair(s,d){s('#ffd84a',7,2,5,4);s('#c8d4ff',12,2,5,4);s('#ffd84a',6,-1,3,4);s('#ffd84a',9,-3,3,5);s('#c8d4ff',12,-3,3,5);s('#c8d4ff',15,-1,3,4);s('#ffd84a',6,4,2,8);s('#c8d4ff',16,4,2,8);d('#ffffff',12,-4,1,1);d('#ffffff',10,-2,1,1)},
+ outfit(d){d('#ffd84a',4,10,4,3);d('#c8d4ff',16,10,4,3);d('#3a3f9a',12,10,6,6);d('#7a8cff',13,11,4,1);d('#ffd84a',8,16,4,1);d('#c8d4ff',12,16,4,1);d('#ffffff',11,13,2,2);d('#07051a',11,13,1,1);d('#ffd84a',5,15,3,1);d('#c8d4ff',16,15,3,1)},
+ form:{name:'Totality',aura:'#ffe45a',eye:'#ffffff',sparks:true,spark:'#fff0a0',eclipse:true,top:'#14142e',sleeve:'#14142e',pants:'#0c0c20',boots:'#ffd84a',
+  hair(s,d){s('#0a0a1c',7,2,10,4);s('#0a0a1c',6,-1,3,4);s('#0a0a1c',9,-4,3,6);s('#0a0a1c',12,-4,3,6);s('#0a0a1c',15,-1,3,4);s('#0a0a1c',6,4,2,9);s('#0a0a1c',16,4,2,9);d('#ffd84a',9,-4,1,1);d('#ffd84a',14,-4,1,1);d('#ffd84a',6,-1,1,1);d('#ffd84a',17,-1,1,1);d('#ffffff',11,-3,2,1)},
+  outfit(d){d('#ffd84a',4,10,4,3);d('#ffd84a',16,10,4,3);d('#ffd84a',10,11,4,1);d('#ffffff',11,12,2,3);d('#07051a',11,13,2,1);d('#ffd84a',8,16,8,1);d('#c8d4ff',5,15,3,1);d('#c8d4ff',16,15,3,1)}},
+ ab:[st(BLS(['#ffb020','#ffe9a0','#ffffff']),'corona'),
+  st(qSl('Crescent Slash',['#7a8cff','#d8e0ff','#ffffff'],24,270,{hom:3,boom:20,spd:300}),'crescent'),
+  st(qBm('Solar Lance',['#ffb020','#ffe9a0','#ffffff'],16,330,{charge:.45,aim:120,k:26}),'corona'),
+  st(qUB('Corona Cannon',['#ffb020','#ffe9a0','#ffffff'],42,900,{aim:150}),'corona')],
+ fab:[st(BAR(['#ffb020','#ffe9a0','#ffffff'],{nm:'Sunburst Barrage'}),'corona'),
+  {nm:'Moonlight Veil',t:'heal',self:1,c:['#7a8cff','#d8e0ff','#ffffff'],heal:.15,regen:[6,1.4],shield:260,sdur:7,cleanse:1,dmg:0,k:30,cd:11,lock:.7},
+  st(qBm('Umbra Lance',['#7a8cff','#d8e0ff','#ffffff'],18,340,{charge:.4,aim:140,k:28}),'crescent',{sxs:[['mark',4,1],['slow',4,1]]}),
+  st(qUO('Diamond Ring',['#ffb020','#ffe9a0','#ffffff'],38,820,{boom:60}),'corona')],
+ mel:[['Sun Combo',c3('#ffb020','#ffe9a0'),3,125],['Eclipse Combo',c3('#7a8cff','#d8e0ff'),4,185]],swd:sw5('dodge','block','counter','dodge')}
 );
 const kc=a=>a.k!==undefined?a.k:(a.ult?50:({volley:6,beam:25,orb:22,dash:20,shock:20,slash:12,bstrike:30}[a.t]||15));
 const TYPE={beam:'Beam',volley:'Quick shots',dash:'Rush attack',shock:'Area wave',slash:'Energy slash',orb:'Energy ball',bstrike:'Blink strike'};
@@ -1223,7 +1238,7 @@ const PK={
 'GOGETA':{tr:.50,f:{tier:4,dm:1.35,dr:.8,rg:.014,hl:.12,mv:1.15,cost:35}},'VEGETO':{tr:.50,f:{tier:4,dm:1.35,kreg:3,mv:1.2,cost:35}},'VEGETA':{tr:.50,f:{tier:1}},'VEGETA SS2':{tr:.50,f:{tier:2}},'VEGETA SS4':{tr:.52,f:{tier:3,dr:.8,rg:.014,hl:.12}},
 'VEGETA BLUE':{tr:.52,f:{tier:4,mv:1.2,kreg:3,cost:35}},'VEGETA EGO':{tr:.50,f:{tier:4,cost:35}},
 'GOHAN':{tr:.60,f:{tier:2}},'JIREN':{tr:.50,f:{tier:3},base:{dr:.9,mv:.95}},'TRUNKS':{tr:.62,f:{tier:1},base:{mv:1.05}},
-'FRIEZA':{tr:.55,f:{tier:3,burst:1}},'SERAPH':{tr:.5,f:{tier:3,hl:.1,rg:.008}},'VERDANT':{tr:.55,f:{tier:3,rg:.012,dr:.88}},'MORBUS':{tr:.55,f:{tier:3,dm:1.3,kreg:3}},'GLACIA':{tr:.5,f:{tier:3,dr:.85,cost:30}},'TEMPUS':{tr:.5,f:{tier:3,mv:1.25,kreg:4}},'ZARKON':{tr:.55,f:{tier:3,dm:1.3,dr:.85,cost:30},base:{dr:.92,mv:.92}},'LYRA':{tr:.55,f:{tier:3,mv:1.2,kreg:3},base:{mv:1.1}},'CAPTAIN BRINE':{tr:.55,f:{tier:3,dr:.85,hl:.08,rg:.008}},'ASHE':{tr:.5,f:{tier:3,dm:1.35,kreg:3}},'VANTA':{tr:.5,f:{tier:4,dm:1.25,kreg:4,cost:35}},'FRIEZA 1ST':{tr:.6,f:{tier:3,burst:1,hl:.08}},'GOLDEN FRIEZA':{tr:.5,f:{tier:4,dm:1.3,dr:.85,cost:35}},'BROLY':{tr:.50,f:{tier:3,dr:.8,rg:.014,hl:.12},base:{dr:.9,mv:.9}},
+'FRIEZA':{tr:.55,f:{tier:3,burst:1}},'ECLIPSE':{tr:.5,f:{tier:4,dm:1.35,kreg:3,cost:35}},'SERAPH':{tr:.5,f:{tier:3,hl:.1,rg:.008}},'VERDANT':{tr:.55,f:{tier:3,rg:.012,dr:.88}},'MORBUS':{tr:.55,f:{tier:3,dm:1.3,kreg:3}},'GLACIA':{tr:.5,f:{tier:3,dr:.85,cost:30}},'TEMPUS':{tr:.5,f:{tier:3,mv:1.25,kreg:4}},'ZARKON':{tr:.55,f:{tier:3,dm:1.3,dr:.85,cost:30},base:{dr:.92,mv:.92}},'LYRA':{tr:.55,f:{tier:3,mv:1.2,kreg:3},base:{mv:1.1}},'CAPTAIN BRINE':{tr:.55,f:{tier:3,dr:.85,hl:.08,rg:.008}},'ASHE':{tr:.5,f:{tier:3,dm:1.35,kreg:3}},'VANTA':{tr:.5,f:{tier:4,dm:1.25,kreg:4,cost:35}},'FRIEZA 1ST':{tr:.6,f:{tier:3,burst:1,hl:.08}},'GOLDEN FRIEZA':{tr:.5,f:{tier:4,dm:1.3,dr:.85,cost:35}},'BROLY':{tr:.50,f:{tier:3,dr:.8,rg:.014,hl:.12},base:{dr:.9,mv:.9}},
 'PICCOLO':{tr:.65,f:{tier:2,dm:1.45,rg:.008,hl:.08},base:{reg:.003}},'HIT':{tr:.60,f:{tier:2,timeskip:1},base:{mv:1.1}},
 'BLACK':{tr:.55,f:{tier:3},base:{mv:1.05}},'TOPPO':{tr:.55,f:{tier:3,rg:.008,hl:.06},base:{dr:.9,mv:.95}},
 'DYSPO':{tr:.65,f:{tier:2,mv:1.15},base:{mv:1.3}},'CAULIFLA':{tr:.60,f:{tier:2},base:{mv:1.05}},
@@ -3531,6 +3546,7 @@ var LINES={
 'MORBUS':{o:"A little sickness. A lot of cure. Mine.",a:"Don't breathe too deep. Stay by me.",r:"Fascinating. A resilient specimen."},
 'GLACIA':{o:"Cold is only patience.",a:"Stand behind the frost.",r:"You'll thaw eventually."},
 'TEMPUS':{o:"I have already seen how this ends.",a:"Time is generous when shared.",r:"Too slow. Again."},
+'ECLIPSE':{o:"Day and night both bow to me.",a:"Walk in my shadow, and you will shine.",r:"Totality. Nothing escapes it."},
 'FRIEZA':{o:"Do try to entertain me before the end.",a:"Be useful. Or be forgotten.",r:"How adorable. You think you can win."},
 'BROLY':{o:"Come on. Don't die too fast.",a:"...Stay behind me.",r:"I will crush you."},
 'PICCOLO':{o:"I've trained for this. Let's see who's stronger.",a:"Watch my back and I'll watch yours.",r:"You'll regret that."},
@@ -4047,6 +4063,43 @@ function pOrb(p){if(p.sty===undefined)sxScan();pOrbAt(p.x,p.y,p.r,p.c,p.sty,p.vr
   if(!b.cl)pOrbAt(b.ex,y0,Math.max(2,w*.55),c,sty,v,-d);
   pOrbAt(b.mx,y0,Math.max(2,w*.6),c,sty,v,d)})}}
 // orbs/shots in the main render loop
+// ---- ECLIPSE: solar/lunar visuals + Totality transformation ----
+SXE.corona=[['burn',3,1],['slow',3,1]];SXE.crescent=[['slow',4,1],['weak',3,.5]];
+{const op=pOrbAt;pOrbAt=function(x,y,r,c,sty,v,dir,t){t=t===undefined?T:t;dir=dir||1;
+ if(sty==='corona'){x=Math.round(x);y=Math.round(y);disc(x,y,r+6,c[0],.18);disc(x,y,r+3,c[0],.35);const n=14;for(let i=0;i<n;i++){const a=t*2+i*6.283/n,L=r+4+(i%2?5:9)+Math.sin(t*12+i*2)*2;ln(x+Math.cos(a)*(r+1),y+Math.sin(a)*(r+1),x+Math.cos(a)*L,y+Math.sin(a)*L,i%2?c[1]:c[0],1)}
+  disc(x,y,r+1,c[1]);disc(x,y,r,'#07051a');ctx.fillStyle=c[2];circ(x,y,r+1,1);return}
+ if(sty==='crescent'){x=Math.round(x);y=Math.round(y);disc(x,y,r+4,c[0],.25);const R=Math.max(2,Math.round(r)),ox=-dir*R*.55,rot=t*5;ctx.fillStyle=c[1];for(let j=-R;j<=R;j++)for(let i=-R;i<=R;i++){if(i*i+j*j>R*R)continue;const ci=i-ox*Math.cos(rot*0),cj=j;if(ci*ci+cj*cj<(R*.82)*(R*.82))continue;ctx.fillRect(x+i,y+j,1,1)}
+  ctx.fillStyle=c[2];for(let j=-R;j<=R;j++){const i=-Math.round(Math.sqrt(Math.max(0,R*R-j*j)))*dir;if(Math.abs(j)<R*.9&&j%2===0)ctx.fillRect(x+i,y+j,1,1)}
+  if(Math.random()<.4)PT.push({x:x-dir*R,y:y+rnd(-R,R),vx:-dir*20,vy:rnd(-10,10),l:.4,m:.4,c:c[2],z:1});return}
+ return op.apply(this,arguments)}}
+{const od=drawBeam;drawBeam=function(b){const a=b.a,sty=styleOf(a);if(sty!=='corona'&&sty!=='crescent')return od(b);
+ const f=b.f,c=a.c,my=bY(b),d=f.dir;
+ if(b.t<b.fs&&!b.cut){pOrbAt(b.mx,my,2+a.r*b.t/b.fs,c,sty,0,d);return}
+ const k=(b.cut||b.t>=b.fe)?Math.max(0,1-b.fade/.3):Math.min(1,(b.t-b.fs)/.1),w=a.w*k;if(w<=0)return;
+ b.offs.forEach(o=>{const y0=Math.round(my+o),xa=Math.floor(Math.min(b.mx,b.ex)),xb=Math.ceil(Math.max(b.mx,b.ex));
+  for(let x=xa;x<xb;x++){const ph=(x*d-T*140)%26,ring=Math.abs(ph)<2.2;let hw=w/2;
+   if(sty==='corona'){const fl=Math.sin(x*.3-T*40*d)*.9;hw=Math.max(.5,w/2+fl);ctx.globalAlpha=.3;ctx.fillStyle=c[0];ctx.fillRect(x,Math.round(y0-hw-4),1,Math.round(hw*2+8));ctx.globalAlpha=1;ctx.fillStyle=c[0];ctx.fillRect(x,Math.round(y0-hw),1,Math.round(hw*2));ctx.fillStyle=c[1];ctx.fillRect(x,Math.round(y0-hw*.7),1,Math.round(hw*1.4));ctx.fillStyle=c[2];ctx.fillRect(x,Math.round(y0-hw*.3),1,Math.max(1,Math.round(hw*.6)));
+    if(ring){ctx.fillStyle='#07051a';ctx.fillRect(x,Math.round(y0-hw*1.5),1,Math.round(hw*3));ctx.fillStyle=c[1];ctx.fillRect(x,Math.round(y0-hw*1.5)-1,1,1);ctx.fillRect(x,Math.round(y0+hw*1.5),1,1)}}
+   else{const s=Math.sin(x*.18-T*20*d);hw=Math.max(.5,w/2*(.55+.45*Math.abs(s)));ctx.globalAlpha=.3;ctx.fillStyle=c[0];ctx.fillRect(x,Math.round(y0-w/2-3),1,Math.round(w+6));ctx.globalAlpha=1;ctx.fillStyle=c[1];ctx.fillRect(x,Math.round(y0-hw),1,Math.round(hw*2));ctx.fillStyle=c[2];ctx.fillRect(x,Math.round(y0-hw*.35),1,Math.max(1,Math.round(hw*.7)));
+    if(ring){ctx.fillStyle=c[2];ctx.fillRect(x,Math.round(y0-w*.8),1,Math.round(w*1.6))}}}
+  if(Math.random()<.6){const bx=xa+Math.random()*(xb-xa);if(sty==='corona')PT.push({x:bx,y:y0+rnd(-w,w),vx:0,vy:rnd(-50,50),l:.35,m:.35,c:Math.random()<.5?c[1]:c[2],z:2});else star(bx,y0+rnd(-w/2,w/2),rnd(2,4),'#ffffff',T*6)}
+  if(!b.cl)pOrbAt(b.ex,y0,Math.max(2,w*.55),c,sty,0,-d);pOrbAt(b.mx,y0,Math.max(2,w*.6),c,sty,0,d)})}}
+// halo of rays while in Totality
+{const od=drawF;drawF=function(f){od.apply(this,arguments);if(f.out||f.hide||!f.form||!F[f.id].form.eclipse)return;const x=f.x,y=f.y-15*(f.sz||1),n=16,r=15*(f.sz||1),c=['#ffb020','#ffe9a0','#ffffff'];
+ ctx.globalAlpha=.55;ctx.fillStyle=c[0];circ(x,y,r,1);ctx.globalAlpha=1;for(let i=0;i<n;i++){const a=T*1.6+i*6.283/n,L=r+3+(i%2?4:9)+Math.sin(T*10+i)*2;ln(x+Math.cos(a)*(r+1),y+Math.sin(a)*(r+1),x+Math.cos(a)*L,y+Math.sin(a)*L,i%2?c[1]:c[0],1)}
+ ctx.fillStyle=c[2];circ(x,y,r,1)}}
+// transformation: the moon slides over the sun
+{const ot=toggleForm;toggleForm=function(f){const l0=f.lock,was=f.form;ot.apply(this,arguments);if(!f||was||f.lock<=l0||!F[f.id].form.eclipse)return;
+ const D=2.2;let t=0;const sx=f.x,sy=f.y-62;
+ E.push({u(dt){t+=dt;if(f.down>0||f.out)return false;if(t>.5&&t<1.9&&Math.random()<.7)PT.push({x:f.x+rnd(-8,8),y:f.y+14,vx:rnd(-25,25),vy:rnd(-140,-60),l:.8,m:.8,c:Math.random()<.5?'#ffd84a':'#c8d4ff',z:2});
+  if(t>1.65&&t<1.7){flash=.7;flashC='#ffe9a0';shake=Math.max(shake,10);for(let i=0;i<24;i++){const a=i*.2618;PT.push({x:sx,y:sy,vx:Math.cos(a)*150,vy:Math.sin(a)*150,l:.7,m:.7,c:i%2?'#ffe9a0':'#ffb020',z:2})}ring(sx,sy,90,['#ffb020','#ffe9a0','#ffffff'],.8);ring(f.x,f.y,120,['#ffb020','#ffe9a0','#ffffff'],1)}
+  return t<D},
+ d(){const k=Math.min(1,t/.5),ml=t<.4?0:Math.min(1,(t-.4)/1.2),mx=sx-46*(1-ml*ml*(3-2*ml)),dark=Math.min(.45,ml*.45)*(t>1.8?Math.max(0,1-(t-1.8)/.4):1);
+  ctx.fillStyle='rgba(6,2,22,'+dark+')';ctx.fillRect(0,0,W,H);
+  disc(sx,sy,30*k,'#ffb020',.22);disc(sx,sy,24*k,'#ffd84a');disc(sx,sy,18*k,'#fff0a0');
+  const al=Math.abs(mx-sx)<2;if(al||ml>.95){for(let i=0;i<20;i++){const a=T*2+i*.314,L=34+(i%2?6:14)+Math.sin(T*14+i)*3;ln(sx+Math.cos(a)*26,sy+Math.sin(a)*26,sx+Math.cos(a)*L,sy+Math.sin(a)*L,i%2?'#ffe9a0':'#ffb020',1)}}
+  disc(mx,sy,25*k,'#07051a');ctx.fillStyle='#c8d4ff';circ(mx,sy,25*k,1);
+  ctx.globalAlpha=.5*k;ctx.fillStyle='#ffd84a';ctx.fillRect(Math.round(f.x-1),Math.round(sy+26),2,Math.round(f.y-sy-30));ctx.globalAlpha=1}})}}
 // ===== announcer voice choice + volume, and a pause button for every map =====
 (function(){
 const $=id=>document.getElementById(id);
