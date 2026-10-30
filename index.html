@@ -207,12 +207,12 @@ F.push(
   hair(s,d){s('#c8940c',8,3,8,3);s('#f6cb2c',7,0,2,5);s('#f6cb2c',15,0,2,5);d('#fff6b0',9,4,6,1)},
   outfit(d){d('#c8940c',8,11,8,3);d('#c8940c',5,11,3,2);d('#c8940c',16,11,3,2);d('#c8940c',8,17,8,1);d('#e0486a',11,12,2,1);d('#fff6b0',9,12,1,1)}},
  ab:[BLS(['#e08aff','#f0c0ff','#ffffff']),
- {nm:'Death Beam',t:'beam',c:['#c020ff','#ff7ae0','#ffffff'],charge:.3,dur:.8,w:7,r:4,dmg:230,tick:.1,shake:2,cd:2.5,lock:1.2},
+ {nm:'Death Beam',t:'beam',c:['#c020ff','#ff7ae0','#ffffff'],charge:.3,dur:.8,w:7,r:4,dmg:230,tick:.1,shake:2,cd:2.5,lock:1.2,aim:700,cnt:1},
  {nm:'Destructo Disc',t:'slash',c:['#ff3aa0','#ff9ad8','#ffffff'],hw:20,spd:250,dmg:200,boom:16,cd:3,lock:.5,hom:9},
  {nm:'Death Ball',t:'orb',ult:1,c:['#b020ff','#ff5ac0','#ffe8ff'],charge:1.2,r:24,hw:24,spd:80,dmg:560,boom:36,cd:7,lock:1.3}],
  fab:[BAR(['#ffe14a','#fff08a','#ffffff']),
  {nm:'Golden Rush',t:'bstrike',combo:4,fin:'kick',c:['#ffd83a','#fff3a0','#ffffff'],dmg:300,boom:20,cd:3.5,lock:1.6},
- {nm:'Golden Death Beam',t:'beam',c:['#ffb400','#ffe45a','#ffffff'],charge:.3,dur:.9,w:9,r:4,dmg:330,tick:.1,shake:2,cd:3,lock:1.3,k:25},
+ {nm:'Golden Death Beam',t:'beam',c:['#ffb400','#ffe45a','#ffffff'],charge:.3,dur:.9,w:9,r:4,dmg:330,tick:.1,shake:2,cd:3,lock:1.3,k:25,aim:700,unb:1},
  {nm:'Golden Death Ball',t:'orb',ult:1,c:['#ffb400','#ffe45a','#ffffff'],charge:1.2,r:28,hw:28,spd:85,dmg:660,boom:40,cd:8,lock:1.4}]},
 {n:'BROLY',s:'BROLY',sh:'#7fe060',skin:'#d8a070',skinD:'#a8764a',pants:'#4a3a2a',boots:'#2a2018',top:'#d8a070',sleeve:'#d8a070',
  hair(s,d){const H='#1a1a22',h='#3a3a4a';s(H,7,2,10,4);s(H,6,-1,3,6);s(H,10,-3,3,7);s(H,14,-1,3,6);s(H,6,4,2,5);s(H,16,4,2,5);d(h,11,-2,1,3)},
@@ -3438,6 +3438,10 @@ const osh=shot;shot=function(f,a,delay,oy){
  if(a&&a.t==='orb'&&SKY.test(a.nm||'')&&!(typeof NET!=='undefined'&&NET&&(NET.live||NET.play)))return skyShot(f,a);
  return osh.apply(this,arguments)};
 })();
+// Golden Death Beam: cannot be blocked, parried, countered by a switch-in or turned into a beam struggle
+{const od=dmg;dmg=function(s,tg,amt,x,y,c,o){
+ if(o&&o.beam&&o.beam.a&&o.beam.a.unb&&tg&&tg.inv<=0){const sw=tg.sw,bl=tg.block;tg.sw=null;o.ult=true;const r=od.call(this,s,tg,amt,x,y,c,o);if(tg.sw===null)tg.sw=sw;return r}
+ return od.apply(this,arguments)}}
 // ===== announcer voice choice + volume, and a pause button for every map =====
 (function(){
 const $=id=>document.getElementById(id);
