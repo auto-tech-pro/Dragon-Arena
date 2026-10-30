@@ -239,9 +239,9 @@ F.push(
  {nm:'Giant Wave',t:'shock',c:['#ff8a2a','#ffd08a','#ffffff'],dmg:290,cd:4,lock:.8,k:25},
  {nm:'Orange Cannon',t:'beam',ult:1,c:['#ff6a00','#ffc860','#ffffff'],charge:1.1,dur:1.4,w:36,r:14,dmg:700,tick:.2,shake:5,cd:8,lock:2.6}]},
 {n:'HIT',s:'HIT',sh:'#b48aff',skin:'#c9b6c4',skinD:'#9a7a96',pants:'#2d2a3d',boots:'#8a3a8a',top:'#2d2a3d',sleeve:'#2d2a3d',
- hair(s,d){const H='#1a1a24',h='#44445e';s(H,7,2,10,4);s(H,7,0,3,3);s(H,13,0,3,3);s(H,6,4,2,5);s(H,16,4,2,5);s(H,9,5,2,2);d(h,10,1,1,1)},
+ hair(s,d){const K='#c9b6c4',L='#e6d8e2';s(K,7,2,10,4);s(K,8,1,8,2);d(L,9,1,3,1);d(L,9,2,1,1)},
  outfit(d){d('#8a3a8a',8,16,8,2);d('#8a3a8a',10,11,4,1);d('#8a3a8a',5,16,3,1);d('#8a3a8a',16,16,3,1);d('#c8a0d8',9,13,1,2)},
- form:{name:'Pure Progress',aura:'#a87aff',eye:'#ff6a6a',sparks:true,spark:'#e0c8ff',hair(s,d){const H='#1a1a24',h='#44445e';s(H,7,2,10,4);s(H,6,-1,3,5);s(H,10,-2,3,5);s(H,14,-1,3,5);s(H,6,4,2,5);s(H,16,4,2,5);d(h,11,-1,1,2)}},
+ form:{name:'Pure Progress',aura:'#a87aff',eye:'#ff6a6a',sparks:true,spark:'#e0c8ff',hair(s,d){const K='#c9b6c4',L='#e6d8e2';s(K,7,2,10,4);s(K,8,1,8,2);d(L,9,1,3,1);d(L,9,2,1,1)}},
  ab:[BLS(['#c8a0ff','#e8d8ff','#ffffff']),
  {nm:'Time Skip',t:'bstrike',combo:3,fin:'kick',c:['#b48aff','#e0ccff','#ffffff'],dmg:240,boom:18,cd:3,lock:1.4},
  {nm:'Ripple Wave',t:'shock',c:['#a87aff','#d8c0ff','#ffffff'],dmg:200,cd:3,lock:.7},
@@ -495,7 +495,37 @@ F.push(
   Object.assign(qBs('Divine Fusion Combo',c3('#ff3a4a','#ffd070'),6,370),{prem:1,hd:1}),
   Object.assign(qSl('Divine Spirit Sword',c3('#ff3a4a','#ffd070'),36,460,{boom:30,hom:6,spd:210,cd:3.4,lock:.6,k:30}),{prem:1,hd:1}),
   Object.assign(qUB('God Final Kamehameha',['#ff3a4a','#ffd070','#ffffff'],58,960,{sweep:28,swp:3.2,aim:150,curve:1}),{prem:1,hd:1})],
- mel:[['Potara Combo',c3('#f08a20','#ffe0a0'),3,135],['Divine Combo',c3('#ff3a4a','#ffd070'),4,190]],swd:sw5('dodge','dodge','counter','dodge')}
+ mel:[['Potara Combo',c3('#f08a20','#ffe0a0'),3,135],['Divine Combo',c3('#ff3a4a','#ffd070'),4,190]],swd:sw5('dodge','dodge','counter','dodge')},
+{n:'FRIEZA 1ST',s:'1ST FORM',sh:'#c8a0d8',g:'VILLAINS',skin:'#e6c9d6',skinD:'#a8808f',eye:'#d8202c',pants:'#8a6c9a',boots:'#5a3a6a',top:'#8a6c9a',sleeve:'#8a6c9a',hp:1250,
+ hair(s,d){const K='#e6c9d6',k='#b8909f';s(K,6,-2,2,7);s(K,16,-2,2,7);s(K,5,-4,1,3);s(K,18,-4,1,3);s(K,7,2,10,3);d(k,9,3,6,1)},
+ outfit(d){d('#b49ac8',5,11,3,2);d('#b49ac8',16,11,3,2);d('#5a3a6a',8,16,8,2);d('#5a3a6a',10,11,4,1);d('#e0486a',11,12,2,1);d('#c8b8d8',9,13,1,2);d('#c8b8d8',14,13,1,2)},
+ form:{name:'Final Form',aura:'#c9a6ff',eye:'#d8202c',sparks:true,spark:'#e8d8ff',skin:'#ece8f4',skinD:'#a58cc8',pants:'#ece8f4',top:'#ece8f4',sleeve:'#ece8f4',boots:'#7a3fb0',
+  hair(s,d){s('#7a3fb0',8,3,8,3);s('#ece8f4',7,0,2,5);s('#ece8f4',15,0,2,5);d('#a58cc8',9,4,6,1)},
+  outfit(d){d('#7a3fb0',8,11,8,3);d('#7a3fb0',5,11,3,2);d('#7a3fb0',16,11,3,2);d('#7a3fb0',8,17,8,1);d('#e0486a',11,12,2,1);d('#7a3fb0',5,16,3,1);d('#7a3fb0',16,16,3,1)}},
+ ab:[BLS(['#e0a0ff','#f0d0ff','#ffffff']),
+  qDs('Horn Charge',c3('#d8a0e8','#f6e0ff'),240,{cd:2.8,lock:.8,k:20}),
+  qSk('Psycho Wave',c3('#c070ff','#f0d0ff'),210,{cd:3.2}),
+  qUO('Planet Buster',c3('#b020ff','#ff9ae0'),24,560)],
+ fab:[BAR(['#e08aff','#f0c0ff','#ffffff']),
+  qBs('Final Rush',c3('#c8a0ff','#ffffff'),4,300,{cd:3.4,lock:1.5}),
+  {nm:'Death Beam',t:'beam',c:['#c020ff','#ff7ae0','#ffffff'],charge:.3,dur:.8,w:7,r:4,dmg:240,tick:.1,shake:2,cd:2.5,lock:1.2,aim:700,cnt:1},
+  {nm:'Death Ball',t:'orb',ult:1,c:['#b020ff','#ff5ac0','#ffe8ff'],charge:1.2,r:24,hw:24,spd:80,dmg:600,boom:36,cd:7,lock:1.3}],
+ mel:[['Tail Combo',c3('#c8a0d8','#f0e0f8'),3,125],['Final Combo',c3('#c070ff','#ffe8ff'),4,175]],swd:sw5('block','dodge','counter','dodge')},
+{n:'GOLDEN FRIEZA',s:'GOLDEN',sh:'#ffd83a',g:'VILLAINS',skin:'#f6cb2c',skinD:'#c8940c',eye:'#e0202a',pants:'#f6cb2c',boots:'#c8940c',top:'#f6cb2c',sleeve:'#f6cb2c',hp:1350,
+ hair(s,d){s('#c8940c',8,3,8,3);s('#f6cb2c',7,0,2,5);s('#f6cb2c',15,0,2,5);d('#fff6b0',9,4,6,1)},
+ outfit(d){d('#c8940c',8,11,8,3);d('#c8940c',5,11,3,2);d('#c8940c',16,11,3,2);d('#c8940c',8,17,8,1);d('#e0486a',11,12,2,1);d('#fff6b0',9,12,1,1)},
+ form:{name:'Black Frieza',aura:'#8a2cff',eye:'#ff2a2a',sparks:true,spark:'#c070ff',skin:'#1c1722',skinD:'#0b0910',pants:'#1c1722',top:'#241d2c',sleeve:'#241d2c',boots:'#5a1f8a',
+  hair(s,d){s('#0b0910',8,3,8,3);s('#1c1722',7,0,2,5);s('#1c1722',15,0,2,5);d('#5a1f8a',9,4,6,1)},
+  outfit(d){d('#5a1f8a',8,11,8,3);d('#5a1f8a',5,11,3,2);d('#5a1f8a',16,11,3,2);d('#5a1f8a',8,17,8,1);d('#ff3a4a',11,12,2,1);d('#8a4adf',9,12,1,1)}},
+ ab:[BAR(['#ffe14a','#fff08a','#ffffff']),
+  qBs('Golden Rush',c3('#ffd83a','#fff3a0'),4,310,{fin:'kick',boom:20,cd:3.5,lock:1.6}),
+  {nm:'Golden Death Beam',t:'beam',c:['#ffb400','#ffe45a','#ffffff'],charge:.3,dur:.9,w:9,r:4,dmg:340,tick:.1,shake:2,cd:3,lock:1.3,k:25,aim:700,unb:1},
+  {nm:'Golden Death Ball',t:'orb',ult:1,c:['#ffb400','#ffe45a','#ffffff'],charge:1.2,r:28,hw:28,spd:85,dmg:680,boom:40,cd:8,lock:1.4}],
+ fab:[BAR(['#7a3aff','#c070ff','#ffffff'],{nm:'Dark Barrage'}),
+  qBs('Black Rush',c3('#6a2cff','#c8a0ff'),7,400,{cd:3.8,lock:1.9}),
+  {nm:'Black Death Beam',t:'beam',c:['#4a1aaa','#9a5cff','#ffffff'],charge:.3,dur:1,w:10,r:4,dmg:400,tick:.1,shake:3,cd:3.2,lock:1.3,k:26,aim:700,unb:1},
+  {nm:'Black Death Ball',t:'orb',ult:1,c:['#6a2cff','#1a0a2a','#9a5cff'],charge:1.2,r:30,hw:30,spd:85,dmg:780,boom:44,cd:8,lock:1.4}],
+ mel:[['Golden Combo',c3('#ffd83a','#fff3a0'),3,130],['Black Combo',c3('#6a2cff','#c8a0ff'),4,190]],swd:sw5('block','dodge','counter','tank')}
 );
 const kc=a=>a.k!==undefined?a.k:(a.ult?50:({volley:6,beam:25,orb:22,dash:20,shock:20,slash:12,bstrike:30}[a.t]||15));
 const TYPE={beam:'Beam',volley:'Quick shots',dash:'Rush attack',shock:'Area wave',slash:'Energy slash',orb:'Energy ball',bstrike:'Blink strike'};
@@ -539,7 +569,7 @@ const SWD=[{proj:'dodge',beam:'dodge',melee:'counter',ult:'dodge'},{proj:'counte
 const SWT={dodge:'DODGE!',block:'GUARD!',counter:'COUNTER!',tank:'IRON WILL!'};
 const MODES=[{k:'1v1',n:'1 v 1',p:1,e:1},{k:'2v2',n:'2 v 2',p:2,e:2},{k:'3v3',n:'3 v 3',p:3,e:3},{k:'koth',n:'KING OF THE HILL 1v3',p:1,e:3},{k:'br',n:'BATTLE ROYALE 1v5',p:1,e:5,br:true},{k:'tr',n:'TEAM ROYALE 3x2',p:2,e:4,br:true,squads:true},{k:'train',n:'TRAINING',p:1,e:0,train:true},{k:'story',n:'STORY',p:1,e:0,story:true},{k:'lan',n:'LAN VS',p:1,e:0,lan:true}];
 const melOf=id=>{const f=F[id];if(f.mel&&!f._m)f._m=f.mel.map(a=>mel(a[0],a[1],a[2],a[3]));return f._m||MEL[id]};
-const SKL=f=>{const c=F[f.id],s=f.form?c.fab:(f.ab2||c.ab);return[melOf(f.id)[f.form?1:0],s[0],s[1],s[2],s[3]]};
+const SKL=f=>{const c=F[f.id],s=f.form?(f.fab2||c.fab):(f.ab2||c.ab);return[melOf(f.id)[f.form?1:0],s[0],s[1],s[2],s[3]]};
 const FORMCD=2.5;
 
 // ================= audio (synthesized, no assets) =================
@@ -1056,7 +1086,7 @@ const PK={
 'GOGETA':{tr:.50,f:{tier:4,dm:1.35,dr:.8,rg:.014,hl:.12,mv:1.15,cost:35}},'VEGETO':{tr:.50,f:{tier:4,dm:1.35,kreg:3,mv:1.2,cost:35}},'VEGETA':{tr:.50,f:{tier:1}},'VEGETA SS2':{tr:.50,f:{tier:2}},'VEGETA SS4':{tr:.52,f:{tier:3,dr:.8,rg:.014,hl:.12}},
 'VEGETA BLUE':{tr:.52,f:{tier:4,mv:1.2,kreg:3,cost:35}},'VEGETA EGO':{tr:.50,f:{tier:4,cost:35}},
 'GOHAN':{tr:.60,f:{tier:2}},'JIREN':{tr:.50,f:{tier:3},base:{dr:.9,mv:.95}},'TRUNKS':{tr:.62,f:{tier:1},base:{mv:1.05}},
-'FRIEZA':{tr:.55,f:{tier:3,burst:1}},'BROLY':{tr:.50,f:{tier:3,dr:.8,rg:.014,hl:.12},base:{dr:.9,mv:.9}},
+'FRIEZA':{tr:.55,f:{tier:3,burst:1}},'FRIEZA 1ST':{tr:.6,f:{tier:3,burst:1,hl:.08}},'GOLDEN FRIEZA':{tr:.5,f:{tier:4,dm:1.3,dr:.85,cost:35}},'BROLY':{tr:.50,f:{tier:3,dr:.8,rg:.014,hl:.12},base:{dr:.9,mv:.9}},
 'PICCOLO':{tr:.65,f:{tier:2,dm:1.45,rg:.008,hl:.08},base:{reg:.003}},'HIT':{tr:.60,f:{tier:2,timeskip:1},base:{mv:1.1}},
 'BLACK':{tr:.55,f:{tier:3},base:{mv:1.05}},'TOPPO':{tr:.55,f:{tier:3,rg:.008,hl:.06},base:{dr:.9,mv:.95}},
 'DYSPO':{tr:.65,f:{tier:2,mv:1.15},base:{mv:1.3}},'CAULIFLA':{tr:.60,f:{tier:2},base:{mv:1.05}},
@@ -1208,7 +1238,7 @@ function setupChars(){E=[];PT=[];NUM=[];PR=[];BM=[];CL=[];GU=[];CUT=null;BAN=nul
 CV.dummy=CV.id===3?5:3;const f=mkF(CV.id,0),d=mkF(CV.dummy,1);d.hp=d.max=99999;f.unl=true;TM[0]=[f];TM[1]=[d];ACT[0]=ACT[1]=0;
 const k=LW/W,lp=(11*14*SC+8)/k,rp=(LW-21*14*SC-8)/k;f.x=lp+(rp-lp)*.27;d.x=lp+(rp-lp)*.8;f.y=d.y=H*.58;f.ent=0;f.inv=0;d.inv=0;CV.t=.8;CV.tf=0;if(CV.form){f.form=true}}
 function selChar(id){CV.id=id;CV.form=false;CV.slot=1;setupChars();document.querySelectorAll('#cList .ci').forEach(e=>e.classList.toggle('on',+e.dataset.i===id));renderInfo()}
-function renderInfo(){const id=CV.id,f=F[id],fm=f.form,set=CV.form?f.fab:getAb(id),sk=[melOf(id)[CV.form?1:0]].concat(set),a=sk[CV.slot],ds=descMove(a,CV.slot,CV.form,id);
+function renderInfo(){const id=CV.id,f=F[id],fm=f.form,set=CV.form?getFab(id):getAb(id),sk=[melOf(id)[CV.form?1:0]].concat(set),a=sk[CV.slot],ds=descMove(a,CV.slot,CV.form,id);
 const nm=f.n;let h='<div class="cn2" style="color:'+f.sh+'">'+nm+'</div><div class="cs">'+f.g+' • '+(f.sai?'SAIYAN':'WARRIOR')+masteryStr(CV.id)+'</div>';
 h+='<div class="tabs2"><button data-f="0" class="'+(CV.form?'':'on')+'">BASE</button><button data-f="1" class="'+(CV.form?'on':'')+'">'+fm.name.toUpperCase()+'</button><button data-w="1" class="w">▶ WATCH TRANSFORM</button></div>';
 h+='<div class="bars">'+bars(id).map(b=>'<div class="br"><span>'+b[0]+'</span><i><b style="width:'+Math.round(b[1]*100)+'%;background:'+f.sh+'"></b></i></div>').join('')+'</div>';
@@ -1518,16 +1548,21 @@ Object.keys(TW).forEach(k=>{Object.assign(ABM[k].m,TW[k])});
 Object.assign(ABM.u_sf.m,{fx:'blind'});Object.assign(ABM.u_dd.m,{hom:9});Object.assign(ABM.u_tf.m,{fx:'freeze'});
 
 Object.assign(FL,...ABL.concat(UNI).map(a=>({[a.m.nm]:a.txt})));
-F.forEach(f=>{f.ab0=f.ab.slice()});
+F.forEach(f=>{f.ab0=f.ab.slice();f.fab0=f.fab?f.fab.slice():f.ab.slice()});SAVE.lof=SAVE.lof||{};
 function defKey(i){return 'd'+i}
 function resolveKey(id,i,key){const f=F[id];if(!key||key===defKey(i))return f.ab0[i];
  if(/^d[0-3]$/.test(key)){const j=+key[1];return(j===3)===(i===3)?f.ab0[j]:f.ab0[i]}
  const a=ABM[key];if(!a||(a.shop&&!UNLOCK_ALL)||(a.fid!==undefined&&a.fid!==id)||(mxLv(id)<a.lv&&!UNLOCK_ALL)||a.u!==(i===3))return f.ab0[i];return a.m}
+function fKey(i){return 'f'+i}
+function resolveKeyF(id,i,key){const f=F[id];if(!key||key===fKey(i))return f.fab0[i];
+ if(/^f[0-3]$/.test(key)){const j=+key[1];return(j===3)===(i===3)?f.fab0[j]:f.fab0[i]}
+ const a=ABM[key];if(!a||(a.shop&&!UNLOCK_ALL)||(a.fid!==undefined&&a.fid!==id)||(mxLv(id)<a.lv&&!UNLOCK_ALL)||a.u!==(i===3))return f.fab0[i];return a.m}
+function getFab(id){const lo=SAVE.lof[id]||[],out=[];for(let i=0;i<4;i++){let m=resolveKeyF(id,i,lo[i]);if(out.some(o=>o.nm===m.nm))m=F[id].fab0[i];out.push(m)}return out}
 function getAb(id){const lo=SAVE.lo[id]||[],out=[];for(let i=0;i<4;i++){let m=resolveKey(id,i,lo[i]);if(out.some(o=>o.nm===m.nm))m=F[id].ab0[i];out.push(m)}return out}
 let premOrb;
 (function(){
 const omk=mkF;
-mkF=function(id,team){const f=omk(id,team);if(team===0&&!(NET&&(NET.live||NET.play)))f.ab2=getAb(id);return f};
+mkF=function(id,team){const f=omk(id,team);if(team===0&&!(NET&&(NET.live||NET.play))){f.ab2=getAb(id);f.fab2=getFab(id)}return f};
 const oab=afterBattle;
 afterBattle=function(win){const main=TM[MYT]&&TM[MYT][0];let g=0,up=null;
  if(!TRN&&main){const l0=mxLv(main.id);g=win?35:15;SAVE.mx[main.id]=mxXp(main.id)+g;if(mxLv(main.id)>l0)up=F[main.id].s+' MASTERY Lv '+mxLv(main.id)}
@@ -1670,25 +1705,24 @@ function skinRow(id){const cur=SAVE.skin[id]||0;let h='<div class="loh">SKINS</d
 
 // ---- loadout UI (Characters screen) ----
 function lvBar(id){const x=mxXp(id),l=mxLv(id),a=MXT[l-1],b=MXT[l];return '<div class="mxh"><b>MASTERY Lv '+l+'</b><i><u style="width:'+(b?Math.round(100*(x-a)/(b-a)):100)+'%"></u></i><small>'+(b?x+' / '+b+' XP':'MAX')+'</small></div>'}
-function opts(id,slot){const i=slot-1,out=[],f=F[id];
- out.push({key:defKey(i),m:f.ab0[i],lv:1,tag:'SIGNATURE'});
- if(i<3)[0,1,2].forEach(j=>{if(j!==i)out.push({key:defKey(j),m:f.ab0[j],lv:1,tag:'SIGNATURE'})});
+function opts(id,slot,fm){const i=slot-1,out=[],f=F[id],b0=fm?f.fab0:f.ab0,dk=fm?fKey:defKey;
+ out.push({key:dk(i),m:b0[i],lv:1,tag:'SIGNATURE'});
+ if(i<3)[0,1,2].forEach(j=>{if(j!==i)out.push({key:dk(j),m:b0[j],lv:1,tag:'SIGNATURE'})});
  ABL.forEach(a=>{if(a.fid===id&&a.u===(i===3))out.push({key:a.key,m:a.m,lv:a.lv,tag:'PREMIUM'})});
  UNI.forEach(a=>{if(a.u===(i===3))out.push({key:a.key,m:a.m,lv:99,tag:'PREMIUM',shop:1})});
  return out}
 function loPanel(){const id=CV.id,sl=CV.slot;let h='<div class="lo">'+lvBar(id)+(UNLOCK_ALL?'<div class="lom tm">TEST MODE: every ability and skin is unlocked.</div>':'')+skinRow(id);
- if(CV.form)h+='<div class="lom">Switch to BASE to change abilities.</div>';
- else if(sl===0)h+='<div class="lom">Melee cannot be swapped.</div>';
- else{const cur=getAb(id),curNm=cur[sl-1].nm;h+='<div class="loh">CHANGE '+SLOTN[sl]+'</div>';
-  opts(id,sl).forEach(o=>{const m=o.m,on=m.nm===curNm,lock=!UNLOCK_ALL&&(o.shop||mxLv(id)<o.lv),inUse=!on&&cur.some((c,k)=>k!==sl-1&&c.nm===m.nm),ds=descMove(m,sl,false,id);
+ if(sl===0)h+='<div class="lom">Melee cannot be swapped.</div>';
+ else{const fm=!!CV.form,cur=fm?getFab(id):getAb(id),curNm=cur[sl-1].nm;h+='<div class="loh">CHANGE '+SLOTN[sl]+(fm?' (TRANSFORMED)':'')+'</div>';
+  opts(id,sl,fm).forEach(o=>{const m=o.m,on=m.nm===curNm,lock=!UNLOCK_ALL&&(o.shop||mxLv(id)<o.lv),inUse=!on&&cur.some((c,k)=>k!==sl-1&&c.nm===m.nm),ds=descMove(m,sl,fm,id);
    h+='<div class="lor'+(on?' on':'')+(lock?' lk':'')+'" style="--c:'+m.c[1]+'"><div class="lot"><b>'+m.nm+'</b>'+(m.prem?'<span class="pm">★ PREMIUM</span>':'')+'<small>DMG '+ds.dmg+' • KI '+ds.k+' • CD '+ds.cd+'s'+(m.t==='pillar'?' • ERUPTION':'')+(m.sweep?' • SWIVEL':m.aim?(m.curve?' • CURVING':' • TRACKING'):'')+(m.hom>=4?' • HOMING':'')+(m.fx==='choc'?' • CHOCOLATE':m.fx==='blind'?' • BLINDS':m.fx==='freeze'?' • FREEZES':'')+(m.t==='wrap'?' • GRAB':'')+(m.t==='discs'?' • MULTI-DISC':'')+'</small></div><div class="lob"><button data-pv="'+o.key+'">TRY</button>'+(on?'<span class="eq">EQUIPPED</span>':lock&&o.shop?'<span class="lkd">SHOP • COMING SOON</span>':lock?'<span class="lkd">LOCKED • Lv '+o.lv+'</span>':inUse?'<span class="lkd">IN OTHER SLOT</span>':'<button data-eq="'+o.key+'" class="go">EQUIP</button>')+'</div></div>'});
   if(!ABL.some(a=>a.fid===id))h+='<div class="lom">More abilities for this fighter are coming soon.</div>'}
  return h+'</div>'}
 const orender=renderInfo;
 renderInfo=function(){orender();const e=$('cInfo');e.insertAdjacentHTML('beforeend',loPanel())};
-function applyViewer(key,slot,equip){const id=CV.id,i=slot-1,o=opts(id,slot).find(x=>x.key===key);if(!o)return;
- if(equip){const lo=(SAVE.lo[id]=SAVE.lo[id]||[null,null,null,null]);lo[i]=key===defKey(i)?null:key;save()}
- const f=TM[0][0];if(f){const arr=getAb(id).slice();if(!equip)arr[i]=o.m;f.ab2=arr}
+function applyViewer(key,slot,equip){const id=CV.id,i=slot-1,fm=!!CV.form,o=opts(id,slot,fm).find(x=>x.key===key);if(!o)return;
+ if(equip){const S=fm?SAVE.lof:SAVE.lo,lo=(S[id]=S[id]||[null,null,null,null]);lo[i]=key===(fm?fKey(i):defKey(i))?null:key;save()}
+ const f=TM[0][0];if(f){const arr=(fm?getFab(id):getAb(id)).slice();if(!equip)arr[i]=o.m;if(fm)f.fab2=arr;else f.ab2=arr}
  CV.slot=slot;CV.t=.15;CUT=null;E=[];PR=[];BM=[];CL=[];f&&(f.lock=0,f.atk=null);renderInfo()}
 $('cInfo').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.pv!==undefined){sfx('ui');applyViewer(b.dataset.pv,CV.slot,false);e.stopPropagation()}
@@ -3178,6 +3212,8 @@ var LINES={
 'ULTIMATE GOHAN':{o:"I've unlocked my hidden power. Don't hold back.",a:"I'll cover you. Go all out!",r:"I'm not the kid I used to be."},
 'JIREN':{o:"Justice stands before you. Stay down.",a:"Fight with conviction or step aside.",r:"Strength speaks louder than words."},
 'TRUNKS':{o:"I came from a darker future to stop you.",a:"We can't lose. Too much is riding on this.",r:"Don't underestimate my sword."},
+'FRIEZA 1ST':{o:"This form is merely a courtesy. Enjoy it.",a:"Try to keep up, if you can.",r:"Cute. I haven't even started."},
+'GOLDEN FRIEZA':{o:"Behold the result of my training!",a:"Stay behind me. I'll end this.",r:"Golden perfection. Kneel."},
 'FRIEZA':{o:"Do try to entertain me before the end.",a:"Be useful. Or be forgotten.",r:"How adorable. You think you can win."},
 'BROLY':{o:"Come on. Don't die too fast.",a:"...Stay behind me.",r:"I will crush you."},
 'PICCOLO':{o:"I've trained for this. Let's see who's stronger.",a:"Watch my back and I'll watch yours.",r:"You'll regret that."},
@@ -3395,7 +3431,7 @@ window.PACK=["SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//tYwA
 // The caster raises a hand, the ball grows above them, then it rises over to the enemy and falls on them.
 (function(){
 const SKY=/Death Ball|Supernova|Spirit Bomb|Sphere of Destruction|Hakai Sphere|Hakai Justice/;
-const DARK=/^(Death Ball|Supernova)$/;
+const DARK=/^(Death Ball|Supernova|Black Death Ball)$/;
 function skyDraw(x,y,R,t,dark,c){
  x=Math.round(x);y=Math.round(y);
  if(!dark){const p=1+Math.sin(t*9)*.04;orb(x,y,R*p,c);ctx.globalAlpha=.35;ctx.strokeStyle=c[2];ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,R+4+Math.sin(t*7)*1.5,0,6.283);ctx.stroke();ctx.globalAlpha=1;return}
