@@ -1782,6 +1782,64 @@ N('FRIEZA 1ST','z_f11',3,qBs('Tail Lash Combo',c3('#d8a0e8','#f6e0ff'),3,250),'A
 Ul('FRIEZA 1ST','z_f12',qUPl('Psycho Eruption',c3('#c070ff','#f0d0ff'),24,780),'Three psychic eruptions burst up under the target.');
 P('FRIEZA 1ST','z_f1p',qDs('Horn Impaler',c3('#e0b0ff','#ffffff'),330,{k:24}),'A charge that drives the horns into the target.');
 })();
+// ===== batch 2 of unique abilities (13 fighters): 1 normal (Lv3), 1 ultimate (Lv5), 1 premium (shop) =====
+(function(){
+const U=(m,o)=>Object.assign(m,o||{});
+function add(fn,key,lv,u,m,txt,shop){const a={key,fn,lv:shop?99:lv,u:!!u,m:shop?U(PM(m),{hd:1}):PM(m),txt,shop:shop?'SHOP':undefined};a.fid=F.findIndex(f=>f.n===fn);if(a.fid<0)throw new Error('ability fighter '+fn);ABL.push(a);ABM[key]=a;FL[a.m.nm]=txt}
+const N=(fn,key,m,t)=>add(fn,key,3,0,m,t),Ul=(fn,key,m,t)=>add(fn,key,5,1,m,t),P=(fn,key,m,t)=>add(fn,key,99,0,m,t,1);
+// ULTIMATE GOHAN
+N('ULTIMATE GOHAN','z2_ug1',qDs('Mystic Strike',c3('#8a6aff','#e8f0ff'),270),'A fast rush with Mystic power behind the punch.');
+Ul('ULTIMATE GOHAN','z2_ug2',U(qUB('Ultimate Masenko',c3('#ff8a00','#ffd04a'),44,760),{aim:110}),'A huge Masenko that follows the target.');
+P('ULTIMATE GOHAN','z2_ugp',qSk('Mystic Burst Wave',c3('#8a6aff','#ffffff'),280,{cd:3.2}),'A wave of released Mystic power.');
+// TRUNKS
+N('TRUNKS','z2_tr1',qOb('Burning Attack',c3('#ffb400','#ffe08a'),14,300,{hom:4,spd:170,k:26}),'A fast fiery ball that curves into the target.');
+Ul('TRUNKS','z2_tr2',qUBS('Sword Rush Barrage',c3('#7ac8ff','#ffffff'),8,780),'An eight-hit rush of sword strikes.');
+P('TRUNKS','z2_trp',qSl('Sword of Hope',c3('#5ac8ff','#ffffff'),30,350,{hom:5,spd:280}),'A blade of light that homes in on the target.');
+// GOKU SS2
+N('GOKU SS2','z2_g21',qBs('Rapid Strikes',c3('#ffe14a','#ffffff'),5,300),'Five fast lightning-charged strikes.');
+Ul('GOKU SS2','z2_g22',U(qUB('Rage Kamehameha',c3('#ffe14a','#9fd8ff'),46,760),{sweep:26,swp:4}),'A furious Kamehameha that swivels across the arena.');
+P('GOKU SS2','z2_g2p',qBm('Lightning Kamehameha',c3('#ffe14a','#9fd8ff'),22,310,{aim:120,charge:.5,k:30}),'A crackling Kamehameha that follows the target.');
+// GOKU SS3
+N('GOKU SS3','z2_g31',qSk('Roar Shockwave',c3('#ffd83a','#fff3a0'),270),'A thunderous roar that blasts a shockwave outward.');
+Ul('GOKU SS3','z2_g32',qUPl('Spirit Eruption',c3('#ffd83a','#fff3a0'),22,800),'Three golden pillars erupt under the target.');
+P('GOKU SS3','z2_g3p',qOb('Dragon Fist Blast',c3('#ffd83a','#fff3a0'),15,330,{hom:5,k:28}),'A dragon-shaped ball of ki that hunts the target.');
+// GOKU SS4
+N('GOKU SS4','z2_g41',qBs('Tail Whip Combo',c3('#ff7a3a','#ffd0a0'),4,300),'A four-hit combo ending in a tail whip.');
+Ul('GOKU SS4','z2_g42',qUB('Ten-Times Kamehameha',c3('#ff4a3a','#ffd0a0'),50,800),'The strongest primal Kamehameha.');
+P('GOKU SS4','z2_g4p',qSk('Primal Roar',c3('#ff4a3a','#ffd0a0'),290,{cd:3.2}),'A primal roar that sends out a crushing wave.');
+// GOKU GOD
+N('GOKU GOD','z2_gg1',qSl('Divine Slash',c3('#ff3a4a','#ffb0b8'),24,310,{hom:4}),'A crimson slash of divine ki that homes in.');
+Ul('GOKU GOD','z2_gg2',qUO('Crimson Sun',c3('#ff3a4a','#ffd0d8'),34,800),'A burning crimson sun.');
+P('GOKU GOD','z2_ggp',qBm('Crimson Ray',c3('#ff3a4a','#ffd0d8'),18,330,{aim:110,charge:.5,k:30}),'A crimson ray that follows the target.');
+// GOKU BLUE
+N('GOKU BLUE','z2_gu1',qDs('Blue Kaioken Charge',c3('#38b8ff','#ffffff'),280),'A Kaioken-boosted charge in Blue.');
+Ul('GOKU BLUE','z2_gu2',U(qUB('Blue Kamehameha Max',c3('#38b8ff','#e8fbff'),48,800),{aim:120,curve:1}),'A blue Kamehameha that curves into the target.');
+P('GOKU BLUE','z2_gup',qPl('Blue Geyser',c3('#38b8ff','#e8fbff'),20,340),'A blue ki geyser erupts under the target.');
+// GOKU UI
+N('GOKU UI','z2_gi1',qBs('Reflex Combo',c3('#dfe8ff','#ffffff'),6,320),'A six-hit combo of pure reflex.');
+Ul('GOKU UI','z2_gi2',qUBS('Silver Flurry',c3('#dfe8ff','#ffffff'),10,840),'A ten-hit flurry that never misses.');
+P('GOKU UI','z2_gip',qSk('Silver Pulse',c3('#dfe8ff','#ffffff'),290,{cd:3.2}),'A silver pulse of calm power.');
+// VEGETA SS2
+N('VEGETA SS2','z2_v21',qOb('Galick Burst',c3('#ffe14a','#ffffff'),15,310,{hom:4,spd:170,k:28}),'A heavy ball of Galick energy.');
+Ul('VEGETA SS2','z2_v22',U(qUB('Ascended Galick Gun',c3('#b060ff','#ffe8ff'),46,760),{aim:110}),'A towering Galick Gun that tracks.');
+P('VEGETA SS2','z2_v2p',qSl('Energy Blade',c3('#ffe14a','#ffffff'),24,340,{hom:5,spd:290}),'A blade of golden ki that homes in.');
+// VEGETA SS4
+N('VEGETA SS4','z2_v41',qBs('Primal Strikes',c3('#ff6a4a','#ffd0a0'),4,310),'Four heavy primal strikes.');
+Ul('VEGETA SS4','z2_v42',qUO('Primal Big Bang',c3('#ff6a4a','#ffd0a0'),36,810),'A huge primal Big Bang.');
+P('VEGETA SS4','z2_v4p',qBm('Primal Galick',c3('#ff6a4a','#ffd0a0'),20,330,{aim:100,charge:.5,k:30}),'A primal Galick beam that follows the target.');
+// VEGETA BLUE
+N('VEGETA BLUE','z2_vb1',qOb('Blue Big Bang',c3('#38b8ff','#e8fbff'),15,320,{hom:5,spd:175,k:28}),'A fast blue Big Bang that curves in.');
+Ul('VEGETA BLUE','z2_vb2',U(qUB('Blue Final Flash',c3('#38b8ff','#ffffff'),50,820),{aim:120,sweep:20,swp:3.6}),'A blue Final Flash that follows the target.');
+P('VEGETA BLUE','z2_vbp',qDs('Blue Falcon',c3('#38b8ff','#ffffff'),300,{k:24}),'A blue falcon strike that smashes into the target.');
+// VEGETA EGO
+N('VEGETA EGO','z2_ve1',qSl('Ego Slash',c3('#b030ff','#e8c8ff'),24,320,{hom:4}),'A purple slash of Ego ki that homes in.');
+Ul('VEGETA EGO','z2_ve2',qUBS('Destruction Barrage',c3('#a020ff','#ff7aff'),9,820),'A nine-hit barrage of destructive ki.');
+P('VEGETA EGO','z2_vep',qOb('Ego Singularity',c3('#a020ff','#ff9ad0'),14,340,{hom:7,cd:3.2}),'A tight sphere of Ego that hunts the target.');
+// TEEN GOHAN
+N('TEEN GOHAN','z2_tg1',qSk('Rage Burst',c3('#ffe45a','#ffffff'),270),'A burst of rage that shocks everything nearby.');
+Ul('TEEN GOHAN','z2_tg2',U(qUB('Rage Masenko',c3('#ffe45a','#ffffff'),44,760),{aim:110}),'A huge Masenko driven by anger.');
+P('TEEN GOHAN','z2_tgp',qBm('Masenko Flare',c3('#ffb400','#ffe8a0'),12,310,{charge:.5,aim:110,k:28}),'A bright Masenko that follows the target.');
+})();
 // ---- QR encoder: QRCode for JavaScript (c) 2009 Kazuhiko Arase, MIT license ----
 const QRLib=(function(){const defs={},cache={};
 defs['QR8bitByte']=function(module,exports,require){var QRMode = require('./QRMode');
