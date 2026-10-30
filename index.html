@@ -107,10 +107,10 @@ body:not(.fight) #fs{left:auto;right:calc(46px*var(--s))}body:not(.fight) #mu{le
 <button class="sm" id="fs" aria-label="Full screen">&#x26F6;</button>
 <button class="sm" id="mu" aria-label="Sound">&#x266A;</button>
 <button class="sm" id="bq" aria-label="Quit to menu">&#x2630;</button>
-<div id="home"><div class="hmain"><h1>DRAGON ARENA<small>2D</small></h1><div id="demoCap"></div><div id="rank"></div><div class="hgrid"><button class="big hb" id="hBattle">BATTLE</button><button class="big g hb" id="hStory">STORY</button><button class="big g hb" id="hDaily">DAILY</button><button class="big g hb" id="hTrain">TRAINING</button><button class="big g hb" id="hChars">CHARACTERS</button><button class="big g hb" id="hOnline">LAN BATTLE</button><button class="big g hb" id="hLead" style="grid-column:1/3">LEADERBOARD</button></div></div></div>
+<div id="home"><div class="hmain"><h1>DRAGON ARENA<small>2D</small></h1><div id="demoCap"></div><div id="rank"></div><div class="hgrid"><button class="big hb" id="hBattle">BATTLE</button><button class="big g hb" id="hStory">STORY</button><button class="big g hb" id="hDaily">DAILY</button><button class="big g hb" id="hTrain">TRAINING</button><button class="big g hb" id="hChars">CHARACTERS</button><button class="big g hb" id="hOnline">ONLINE BATTLE</button><button class="big g hb" id="hLead" style="grid-column:1/3">LEADERBOARD</button></div></div></div>
 <div id="chars"><div class="cl" id="cList"></div><div class="cr" id="cInfo"></div></div>
 <div id="lead"><div class="lbox"><h2>LEADERBOARD</h2><div id="lbBody"></div><button class="big g" id="lbClose">BACK</button></div></div>
-<div id="lan"><div class="lbox"><h2>LAN BATTLE</h2><div id="lStat">Play against someone on the same Wi-Fi. One device hosts, the other joins.</div>
+<div id="lan"><div class="lbox"><h2>ONLINE BATTLE</h2><div id="lStat">Play against someone on the same Wi-Fi. One device hosts, the other joins.</div>
 <div class="lrow" id="lChoose"><button class="big" id="lHost">HOST A GAME</button><button class="big g" id="lJoin">JOIN A GAME</button></div>
 <div class="lrow" id="lChoose2"><button class="big" id="lRHost">CREATE ONLINE ROOM</button><button class="big" id="lRJoin">JOIN ONLINE ROOM</button></div>
 <div id="lR" class="lp"><div id="lRbig"></div><input id="lRi" maxlength="6" placeholder="ENTER ROOM CODE" autocapitalize="characters" autocomplete="off"><button class="big" id="lRgo">JOIN ROOM</button><details id="lRset"><summary>Server settings</summary><input id="lRu" placeholder="https://dragon-arena-relay.NAME.workers.dev" autocapitalize="none"><button class="big g" id="lRsave">SAVE</button></details></div>
@@ -3525,6 +3525,74 @@ async function scanQR(onCode){
 $('scx').onclick=()=>stopScan();
 $('lHscan').onclick=()=>scanQR(v=>{$('lHa').value=v;$('lHgo').click()});
 $('lJscan').onclick=()=>scanQR(async v=>{$('lJo').value=v;await $('lJgo').onclick();showQR($('lJa').value)});
+// ---- ONLINE: free room codes + friends (PeerJS public broker, direct P2P, no server of ours) ----
+(function(){
+const PRE='dragonarena-',$$=id=>document.getElementById(id);
+const css=document.createElement('style');css.textContent='#chal{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:rgba(4,6,15,.82)}#chal.on{display:flex}#chal .sbox{text-align:center;max-width:20em}#chal b{color:#ffe45a}#lF{display:none;flex-direction:column;gap:.4em}#lF.on{display:flex}#lF input{font-size:.9em;text-transform:none}#fCode{font-size:2em;font-weight:900;letter-spacing:.25em;text-align:center;color:#ffe45a;font-family:monospace}.frow{display:flex;align-items:center;gap:.4em;padding:.3em .5em;background:rgba(255,255,255,.06);border-radius:.5em}.frow span{flex:1;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.frow .big{font-size:.75em;padding:.35em .6em}#lRset{display:none}';document.head.appendChild(css);
+const lan=$$('lan').querySelector('.lbox'),back=$$('lBack');
+const c3=document.createElement('div');c3.className='lrow';c3.id='lChoose3';c3.innerHTML='<button class="big" id="lFr">★ FRIENDS</button>';lan.insertBefore(c3,$$('lR'));
+const fp=document.createElement('div');fp.id='lF';fp.className='lp';
+fp.innerHTML='<div class="sub" style="font-size:.8em;opacity:.8">YOUR FRIEND CODE (send it to your son or brother)</div><div id="fCode"></div><div class="lrow"><button class="big g" id="fShare">Share my code</button></div><input id="fName" maxlength="12" placeholder="Your name"><div class="sub" style="font-size:.8em;opacity:.8">ADD A FRIEND</div><div class="lrow"><input id="fAN" maxlength="12" placeholder="Name" style="flex:1"><input id="fAC" maxlength="8" placeholder="Their code" style="flex:1;text-transform:uppercase"></div><button class="big" id="fAdd">ADD FRIEND</button><div id="fList"></div><div class="sub" style="font-size:.75em;opacity:.7">To challenge a friend, both of you need the game open. They get an accept prompt.</div>';
+lan.insertBefore(fp,back);
+const ch=document.createElement('div');ch.id='chal';ch.innerHTML='<div class="sbox"><h2>⚔ CHALLENGE!</h2><div id="chT"></div><button class="big" id="chY">ACCEPT</button><button class="big g" id="chN">DECLINE</button></div>';(document.getElementById('stage')||document.body).appendChild(ch);
+$$('lHost').addEventListener('click',()=>{c3.style.display='none'});$$('lJoin').addEventListener('click',()=>{c3.style.display='none'});
+const oLO=lanOpen;lanOpen=function(){oLO();c3.style.display='flex';fp.classList.remove('on');$$('lChoose2').style.display='flex';lStat('Play a friend online (any network) or on the same Wi-Fi.')};
+const oLC=lanClose;lanClose=function(){if(!NET.live)closeRP();oLC()};
+// --- PeerJS loading ---
+let PL=null;function loadPJ(){if(window.Peer)return Promise.resolve();if(PL)return PL;PL=new Promise((res,rej)=>{const s=document.createElement('script');s.src=window.PJ_SRC||'https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js';s.onload=res;s.onerror=()=>{PL=null;rej(new Error('Could not load the online service. Check your internet.'))};document.head.appendChild(s)});return PL}
+const OPT=()=>Object.assign({config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'},{urls:['turn:openrelay.metered.ca:80','turn:openrelay.metered.ca:443','turns:openrelay.metered.ca:443'],username:'openrelayproject',credential:'openrelayproject'}]}},window.PEER_OPTS||{});
+let RP=null,FP=null,pending=null;
+function closeRP(){try{RP&&RP.destroy()}catch(e){}RP=null}
+function adopt(conn,role){const dc={readyState:'open',send:s=>{try{conn.send(s)}catch(e){}},close:()=>{try{conn.close()}catch(e){}}};
+ NET.role=role;NET.pc=null;setupDc(dc);conn.on('data',d=>{if(dc.onmessage)dc.onmessage({data:typeof d==='string'?d:new TextDecoder().decode(d)})});
+ conn.on('close',()=>{if(dc.onclose)dc.onclose();closeRP()});conn.on('error',()=>{});dc.onopen()}
+// --- room codes ---
+function showCode(c){$$('lRbig').style.display='block';$$('lRbig').textContent=c}
+async function hostRoom(){lStat('Connecting…');try{await loadPJ()}catch(e){lStat(e.message);return}
+ closeRP();const code=genRoom(),p=new Peer(PRE+code,OPT());RP=p;
+ p.on('open',()=>{showCode(code);lStat('Room is open. Tell the other player this code and wait…')});
+ p.on('connection',c=>{c.on('open',()=>{if(NET.live){c.close();return}adopt(c,'host')})});
+ p.on('error',e=>{if(e.type==='unavailable-id'){closeRP();hostRoom()}else lStat('Online service problem ('+e.type+'). Try again in a moment.')});
+ p.on('disconnected',()=>{try{p.reconnect()}catch(e){}})}
+async function joinRoom(code){lStat('Joining…');try{await loadPJ()}catch(e){lStat(e.message);return}
+ closeRP();const p=new Peer(OPT());RP=p;let done=false;
+ p.on('open',()=>{const c=p.connect(PRE+code,{reliable:true,serialization:'none'});const t=setTimeout(()=>{if(!done)lStat('Could not connect. Check the code. If it is right, one of you may be on a network that blocks direct play. Try Wi-Fi.')},20000);
+  c.on('open',()=>{done=true;clearTimeout(t);adopt(c,'client')});c.on('error',()=>{})});
+ p.on('error',e=>{lStat(e.type==='peer-unavailable'?'No room with that code. Check it and make sure the host is waiting.':'Online service problem ('+e.type+'). Try again.')})}
+$$('lRHost').onclick=()=>{aud();sfx('ui');$$('lChoose').style.display='none';$$('lChoose2').style.display='none';c3.style.display='none';$$('lR').classList.add('on');$$('lRi').style.display='none';$$('lRgo').style.display='none';$$('lRbig').textContent='';hostRoom()};
+$$('lRJoin').onclick=()=>{aud();sfx('ui');$$('lChoose').style.display='none';$$('lChoose2').style.display='none';c3.style.display='none';$$('lR').classList.add('on');$$('lRbig').style.display='none';$$('lRi').style.display='';$$('lRgo').style.display='';lStat('Type the 4-letter room code from the host.')};
+$$('lRgo').onclick=()=>{const c=$$('lRi').value.toUpperCase().replace(/[^A-Z0-9]/g,'');if(c.length<3){lStat('Enter the room code first.');return}joinRoom(c)};
+// --- friends ---
+const AL='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function myId(){if(!SAVE.fid){let s='';for(let i=0;i<6;i++)s+=AL[Math.floor(Math.random()*AL.length)];SAVE.fid=s;save()}return SAVE.fid}
+const myName=()=>(SAVE.pname||'PLAYER').slice(0,12);
+const friends=()=>SAVE.friends||(SAVE.friends=[]);
+function addFriend(n,c){c=(c||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(c.length<4||c===myId())return false;const L=friends(),f=L.find(x=>x.c===c);if(f){if(n)f.n=n}else L.push({n:(n||'FRIEND').slice(0,12),c});save();return true}
+function paintF(){$$('fCode').textContent=myId();$$('fName').value=SAVE.pname||'';$$('fList').innerHTML='';
+ friends().forEach((f,i)=>{const r=document.createElement('div');r.className='frow';const s=document.createElement('span');s.textContent=f.n+'  ('+f.c+')';const b=document.createElement('button');b.className='big';b.textContent='CHALLENGE';b.onclick=()=>challenge(f);const x=document.createElement('button');x.className='big g';x.textContent='✕';x.onclick=()=>{friends().splice(i,1);save();paintF()};r.append(s,b,x);$$('fList').appendChild(r)});
+ if(!friends().length)$$('fList').innerHTML='<div class="sub" style="font-size:.8em;opacity:.7;text-align:center">No friends yet. Add your son or brother by their code.</div>'}
+$$('lFr').onclick=()=>{aud();sfx('ui');$$('lChoose').style.display='none';$$('lChoose2').style.display='none';c3.style.display='none';fp.classList.add('on');paintF();lStat('Friends: challenge them with one tap.');listen()};
+$$('fName').oninput=()=>{SAVE.pname=$$('fName').value.trim().slice(0,12);save()};
+$$('fAdd').onclick=()=>{if(addFriend($$('fAN').value.trim(),$$('fAC').value)){$$('fAN').value=$$('fAC').value='';sfx('ui');paintF()}else lStat('Enter a name and their friend code (not your own).')};
+$$('fShare').onclick=()=>{const t='Add me on Dragon Arena! My friend code: '+myId()+' ('+myName()+')';if(navigator.share)navigator.share({text:t}).catch(()=>{});else{try{navigator.clipboard.writeText(t)}catch(e){}sayToast('Copied')}};
+async function listen(){if(FP||!window.RTCPeerConnection&&!window.webkitRTCPeerConnection)return;try{await loadPJ()}catch(e){return}if(FP)return;
+ const p=new Peer(PRE+'u-'+myId(),OPT());FP=p;
+ p.on('connection',c=>{const m=c.metadata||{};c.on('open',()=>{if(NET.live||NET.play||scene==='battle'||pending){try{c.send('busy')}catch(e){}setTimeout(()=>c.close(),300);return}
+  pending={c,n:String(m.n||'FRIEND').slice(0,12),f:String(m.f||'')};$$('chT').innerHTML='<b></b> wants to battle you!';$$('chT').firstChild.textContent=pending.n;$$('chal').classList.add('on');sfx('perfect')});
+  c.on('close',()=>{if(pending&&pending.c===c){pending=null;$$('chal').classList.remove('on')}})});
+ p.on('error',e=>{if(e.type==='unavailable-id'||e.type==='network'||e.type==='server-error'||e.type==='socket-error'){try{p.destroy()}catch(x){}FP=null}});
+ p.on('disconnected',()=>{try{p.reconnect()}catch(e){}})}
+$$('chY').onclick=()=>{if(!pending)return;const{c,n,f}=pending;pending=null;$$('chal').classList.remove('on');if(f)addFriend(n,f);try{c.send('ok')}catch(e){}closeRP();adopt(c,'host')};
+$$('chN').onclick=()=>{if(!pending)return;const{c}=pending;pending=null;$$('chal').classList.remove('on');try{c.send('no')}catch(e){}setTimeout(()=>c.close(),300)};
+async function challenge(f){lStat('Challenging '+f.n+'… (they need the game open)');try{await loadPJ()}catch(e){lStat(e.message);return}
+ closeRP();const p=new Peer(OPT());RP=p;let st=0;
+ p.on('open',()=>{const c=p.connect(PRE+'u-'+f.c,{reliable:true,serialization:'none',metadata:{n:myName(),f:myId()}});
+  const t=setTimeout(()=>{if(!st)lStat(f.n+' did not answer. They need to have the game open (Online screen not required).')},45000);
+  c.on('data',d=>{if(st)return;d=typeof d==='string'?d:new TextDecoder().decode(d);if(d==='ok'){st=1;clearTimeout(t);adopt(c,'client')}else if(d==='no'){st=2;clearTimeout(t);lStat(f.n+' declined.')}else if(d==='busy'){st=2;clearTimeout(t);lStat(f.n+' is busy right now.')}});c.on('error',()=>{})});
+ p.on('error',e=>{lStat(e.type==='peer-unavailable'?f.n+' is offline. They need the game open.':'Online service problem ('+e.type+').')})}
+// listen for challenges whenever the game is open (once a friend code exists)
+if(SAVE.fid||SAVE.friends)setTimeout(listen,2500);
+})();
 // ===== sound settings (master / music / effects) =====
 var AUDV=Object.assign({ma:1,mu:1,fx:1},(typeof SAVE!=='undefined'&&SAVE.aud)||{});
 (function(){
