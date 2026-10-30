@@ -3593,13 +3593,13 @@ function adopt(conn,role){const dc={readyState:'open',send:s=>{try{conn.send(s)}
  conn.on('close',()=>{if(dc.onclose)dc.onclose();closeRP()});conn.on('error',()=>{});dc.onopen()}
 // --- room codes ---
 function showCode(c){$$('lRbig').style.display='block';$$('lRbig').textContent=c}
-async function hostRoom(){lStat('Connecting…');try{await loadPJ()}catch(e){lStat(e.message);return}
+async function hostRoom(){lStat('Allow the camera if asked. This only lets your phone find its Wi-Fi address, nothing is recorded.');await ensureCam();lStat('Connecting…');try{await loadPJ()}catch(e){lStat(e.message);return}
  closeRP();const code=genRoom(),p=new Peer(PRE+code,OPT());RP=p;
  p.on('open',()=>{showCode(code);lStat('Room is open. Tell the other player this code and wait…')});
  p.on('connection',c=>{lStat('Someone is joining\u2026');watchIce(c,'the other player');c.on('open',()=>{if(NET.live){c.close();return}adopt(c,'host')})});
  p.on('error',e=>{if(e.type==='unavailable-id'){closeRP();hostRoom()}else lStat('Online service problem ('+e.type+'). Try again in a moment.')});
  p.on('disconnected',()=>{try{p.reconnect()}catch(e){}})}
-async function joinRoom(code){lStat('Joining…');try{await loadPJ()}catch(e){lStat(e.message);return}
+async function joinRoom(code){lStat('Allow the camera if asked. This only lets your phone find its Wi-Fi address, nothing is recorded.');await ensureCam();lStat('Joining…');try{await loadPJ()}catch(e){lStat(e.message);return}
  closeRP();const p=new Peer(OPT());RP=p;let done=false;
  p.on('open',()=>{const c=p.connect(PRE+code,{reliable:true,serialization:'none'});lStat('Room found. Connecting\u2026');watchIce(c,'the host');const t=setTimeout(()=>{if(!done)lStat('Could not connect. If the code is right, your networks are probably blocking direct play. Put both phones on the same Wi-Fi (or use a hotspot) and try again.')},25000);
   c.on('open',()=>{done=true;clearTimeout(t);adopt(c,'client')});c.on('error',()=>{})});
@@ -3620,7 +3620,7 @@ $$('lFr').onclick=()=>{aud();sfx('ui');$$('lChoose').style.display='none';$$('lC
 $$('fName').oninput=()=>{SAVE.pname=$$('fName').value.trim().slice(0,12);save()};
 $$('fAdd').onclick=()=>{if(addFriend($$('fAN').value.trim(),$$('fAC').value)){$$('fAN').value=$$('fAC').value='';sfx('ui');paintF()}else lStat('Enter a name and their friend code (not your own).')};
 $$('fShare').onclick=()=>{const t='Add me on Dragon Arena! My friend code: '+myId()+' ('+myName()+')';if(navigator.share)navigator.share({text:t}).catch(()=>{});else{try{navigator.clipboard.writeText(t)}catch(e){}sayToast('Copied')}};
-async function listen(){if(FP||!window.RTCPeerConnection&&!window.webkitRTCPeerConnection)return;try{await loadPJ()}catch(e){return}if(FP)return;
+async function listen(){if(FP||!window.RTCPeerConnection&&!window.webkitRTCPeerConnection)return;try{const q=await navigator.permissions.query({name:'camera'});if(q.state==='granted')await ensureCam()}catch(e){}try{await loadPJ()}catch(e){return}if(FP)return;
  const p=new Peer(PRE+'u-'+myId(),OPT());FP=p;
  p.on('connection',c=>{const m=c.metadata||{};c.on('open',()=>{if(NET.live||NET.play||scene==='battle'||pending){try{c.send('busy')}catch(e){}setTimeout(()=>c.close(),300);return}
   pending={c,n:String(m.n||'FRIEND').slice(0,12),f:String(m.f||'')};$$('chT').innerHTML='<b></b> wants to battle you!';$$('chT').firstChild.textContent=pending.n;$$('chal').classList.add('on');sfx('perfect')});
@@ -3629,7 +3629,7 @@ async function listen(){if(FP||!window.RTCPeerConnection&&!window.webkitRTCPeerC
  p.on('disconnected',()=>{try{p.reconnect()}catch(e){}})}
 $$('chY').onclick=()=>{if(!pending)return;const{c,n,f}=pending;pending=null;$$('chal').classList.remove('on');if(f)addFriend(n,f);try{c.send('ok')}catch(e){}closeRP();adopt(c,'host')};
 $$('chN').onclick=()=>{if(!pending)return;const{c}=pending;pending=null;$$('chal').classList.remove('on');try{c.send('no')}catch(e){}setTimeout(()=>c.close(),300)};
-async function challenge(f){lStat('Challenging '+f.n+'… (they need the game open)');try{await loadPJ()}catch(e){lStat(e.message);return}
+async function challenge(f){lStat('Allow the camera if asked (only used to find your Wi-Fi address).');await ensureCam();lStat('Challenging '+f.n+'… (they need the game open)');try{await loadPJ()}catch(e){lStat(e.message);return}
  closeRP();const p=new Peer(OPT());RP=p;let st=0;
  p.on('open',()=>{const c=p.connect(PRE+'u-'+f.c,{reliable:true,serialization:'none',metadata:{n:myName(),f:myId()}});
   const t=setTimeout(()=>{if(!st)lStat(f.n+' did not answer. They need to have the game open (Online screen not required).')},45000);
