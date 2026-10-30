@@ -1034,7 +1034,7 @@ function render(){ctx.setTransform(1,0,0,1,0,0);ctx.imageSmoothingEnabled=false;
 if(scene==='intro'||scene==='menu'){drawIntro();return}
 let sx=0,sy=0;if(shake>0){sx=Math.round(rnd(-shake,shake)/2);sy=Math.round(rnd(-shake,shake)/2)}
 if(CUT){const c=CUT.f,z=1+.6*Math.min(1,CUT.t/.35)*(1-Math.max(0,(CUT.t-CUT.dur+.2)/.2));ctx.setTransform(z,0,0,z,W/2-c.x*z+sx,H/2-c.y*z+sy)}else ctx.setTransform(1,0,0,1,sx,sy);
-ctx.drawImage(fl,0,0);if(window.drawCrowd)drawCrowd();if(BR&&(scene==='battle'||scene==='over'))drawBRWorld();
+ctx.drawImage(fl,0,0);if(window.drawCrowd)drawCrowd();if(window.drawProps)drawProps();if(BR&&(scene==='battle'||scene==='over'))drawBRWorld();
 const fs=[];for(let t=0;t<TM.length;t++)for(const f of TM[t])if(!f.out)fs.push(f);GU.forEach(g=>fs.push(g));fs.sort((a,b)=>a.y-b.y);
 fs.forEach(f=>{if(f.guest){ctx.globalAlpha=.85;flame(f.x,f.y,AU(f));ctx.globalAlpha=.9;dspr(curSpr(f,Math.floor(T*2.5)%2),f.x,f.y);ctx.globalAlpha=1}else drawF(f)});
 E.forEach(e=>e.d());BM.forEach(drawBeam);CL.forEach(drawClash);
@@ -3478,6 +3478,47 @@ const osh=shot;shot=function(f,a,delay,oy){
 {const od=dmg;dmg=function(s,tg,amt,x,y,c,o){
  if(o&&o.beam&&o.beam.a&&o.beam.a.unb&&tg&&tg.inv<=0){const sw=tg.sw,bl=tg.block;tg.sw=null;o.ult=true;const r=od.call(this,s,tg,amt,x,y,c,o);if(tg.sw===null)tg.sw=sw;return r}
  return od.apply(this,arguments)}}
+// ===== destructible map props: crates, barrels, crystals, boulders, pillars. They break and respawn elsewhere. =====
+(function(){
+var PRP=[];window.PRP=PRP;
+const KIND={crate:{sz:'s',r:7,hp:90,c:['#8a5a2a','#c08a4a','#4a2e14']},barrel:{sz:'s',r:7,hp:80,c:['#3a6a9a','#8ab8e0','#1a3550']},crystal:{sz:'s',r:6,hp:70,c:['#4ac8ff','#d8f6ff','#1a5a8a']},
+ boulder:{sz:'m',r:12,hp:260,c:['#9a9fab','#d0d4de','#4e525c']},pillar:{sz:'m',r:10,hp:220,c:['#b8b0a0','#e6dfd0','#6a6458']}};
+const SM=['crate','barrel','crystal'],MD=['boulder','pillar'];
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function allF(){const o=[];for(const t of TM)for(const f of t)if(f&&!f.out)o.push(f);return o}
+function place(r,self){const fs=allF();for(let k=0;k<60;k++){const x=rnd(28,W-28),y=rnd(YMIN+12,YMAX-6);
+  if(fs.some(f=>Math.hypot(f.x-x,(f.y-y)*1.3)<48))continue;if(PRP.some(q=>q!==self&&!q.dead&&Math.hypot(q.x-x,q.y-y)<q.r+r+14))continue;return[x,y]}return null}
+function mk(k){const d=KIND[k],p=place(d.r);if(!p)return null;return{k,x:p[0],y:p[1],r:d.r,hp:d.hp,max:d.hp,fl:0,sp:0,dead:false,rt:0,d}}
+function fill(){PRP.length=0;if(Math.random()>.55)return;const ns=3+Math.floor(Math.random()*3),nm=1+Math.floor(Math.random()*3);
+ for(let i=0;i<ns+nm;i++){const o=mk(i<ns?pick(SM):pick(MD));if(o)PRP.push(o)}}
+function hurt(p,amt,x,y){if(p.dead||p.sp<1||amt<=0)return;p.hp-=amt;p.fl=.14;if(p.hp>0){burst(p.x,p.y-4,[p.d.c[0],p.d.c[1]],3,50,.25,2);return}
+ p.dead=true;p.rt=rnd(5,9);sfx('hit');burst(p.x,p.y-4,[p.d.c[0],p.d.c[1],p.d.c[2]],p.d.sz==='m'?26:14,p.d.sz==='m'?150:110,.6,2);ring(p.x,p.y,p.r*2.4,[p.d.c[1],p.d.c[0],'#ffffff'],.35);shake=Math.max(shake,p.d.sz==='m'?4:2)}
+function splash(x,y,rad,amt){for(const p of PRP){if(p.dead)continue;if(Math.hypot(p.x-x,(p.y-y)*1.2)<=p.r+rad)hurt(p,amt,x,y)}}
+// anything that explodes or lands a hit near a prop damages it
+{const ob=boom;boom=function(x,y,c,s){splash(x,y,s*1.4,s*9);return ob.apply(this,arguments)}}
+{const od=dmg;dmg=function(s,tg,amt,x,y,c,o){const r=od.apply(this,arguments);if(r!==false&&PRP.length&&!(o&&o.tick))splash(x,y,14,amt*.35);return r}}
+{const osb=startBattle;startBattle=function(mode){const r=osb.apply(this,arguments);
+ PRP.length=0;if(scene==='battle'&&mode&&!mode.train&&!DEMO&&!TRN&&!(typeof NET!=='undefined'&&NET&&(NET.live||NET.play)))fill();return r}}
+{const ou=update;update=function(dt){const r=ou.apply(this,arguments);
+ if(scene!=='battle'||window.OPEN||window.GAME_PAUSED||!PRP.length)return r;
+ for(const p of PRP){p.fl=Math.max(0,p.fl-dt);if(p.dead){p.rt-=dt;if(p.rt<=0){const k=pick(Math.random()<.6?SM:MD),d=KIND[k],pos=place(d.r,p);if(pos){p.k=k;p.d=d;p.r=d.r;p.hp=p.max=d.hp;p.x=pos[0];p.y=pos[1];p.dead=false;p.sp=0}else p.rt=1.5}continue}
+  if(p.sp<1){const a=p.sp;p.sp=Math.min(1,p.sp+dt*2.4);if(a===0){ring(p.x,p.y,p.r*2.2,['#ffffff',p.d.c[1],'#ffffff'],.3)}}}
+ for(const q of PR){if(q.dead)continue;for(const p of PRP){if(p.dead||p.sp<1||(q.pp&&q.pp.has(p)))continue;
+  if(Math.hypot(q.x-p.x,(q.y-p.y)*1.2)<=p.r+Math.max(2,q.r*.6)){(q.pp||(q.pp=new Set())).add(p);hurt(p,Math.max(30,q.dmg*.7),q.x,q.y);if(q.dmg<220&&!q.ult&&q.kind!=='slash'){q.dead=true;boom(q.x,q.y,q.c,q.boom>12?q.boom:9);break}}}}
+ for(const b of BM){if(!b.on||b.cut)continue;const lo=Math.min(b.mx,b.ex),hi=Math.max(b.mx,b.ex),by=bY(b),hw=(b.a.w||8)/2;
+  for(const p of PRP){if(p.dead||p.sp<1)continue;if(p.x>=lo-p.r&&p.x<=hi+p.r&&Math.abs(p.y-by)<=hw+p.r)hurt(p,b.a.dmg/Math.max(.4,b.a.dur)*.55*dt,p.x,p.y)}}
+ return r}}
+function drawOne(p){let x=Math.round(p.x),y=Math.round(p.y);const k=p.sp<1?p.sp:1,d=p.d,c=d.c,fl=p.fl>0;
+ const R=Math.max(2,Math.round(p.r*k));disc(x,y+3,R+1,'#000000',.25*k);
+ const fc=a=>fl?'#ffffff':a;
+ if(p.k==='crate'){const w=R*2,h=Math.round(R*1.7);ctx.fillStyle=c[2];ctx.fillRect(x-R-1,y-h+3,w+2,h+2);ctx.fillStyle=fc(c[0]);ctx.fillRect(x-R,y-h+4,w,h);ctx.fillStyle=fc(c[1]);ctx.fillRect(x-R,y-h+4,w,2);ctx.fillRect(x-R,y+1,w,2);ctx.fillRect(x-1,y-h+4,2,h);ctx.fillStyle=c[2];ctx.fillRect(x-R,y-Math.round(h/2)+2,w,1)}
+ else if(p.k==='barrel'){const h=Math.round(R*2);ctx.fillStyle=c[2];ctx.fillRect(x-R-1,y-h+4,R*2+2,h);ctx.fillStyle=fc(c[0]);ctx.fillRect(x-R,y-h+5,R*2,h-2);ctx.fillStyle=fc(c[1]);ctx.fillRect(x-R,y-h+7,R*2,1);ctx.fillRect(x-R,y+1,R*2,1);ctx.fillStyle='rgba(255,255,255,.35)';ctx.fillRect(x-R+1,y-h+8,1,h-6)}
+ else if(p.k==='crystal'){const h=Math.round(R*2.6);for(let j=0;j<h;j++){const hw=Math.max(0,Math.round((j<h*.45?j/(h*.45):(h-j)/(h*.55))*R));ctx.fillStyle=c[2];ctx.fillRect(x-hw-1,y-h+4+j,hw*2+3,1);ctx.fillStyle=fc(c[0]);ctx.fillRect(x-hw,y-h+4+j,hw*2+1,1)}ctx.fillStyle=fc(c[1]);ctx.fillRect(x-1,y-h+7,1,Math.round(h*.5))}
+ else if(p.k==='boulder'){disc(x,y-R*.4,R+1,c[2]);disc(x,y-R*.4,R,fc(c[0]));disc(x-R*.3,y-R*.75,Math.max(2,R*.45),fc(c[1]),.8);ctx.fillStyle=c[2];ctx.fillRect(x+Math.round(R*.2),y-Math.round(R*.5),1,Math.round(R*.7))}
+ else{const w=Math.round(R*1.1),h=Math.round(R*2.8);ctx.fillStyle=c[2];ctx.fillRect(x-w-1,y-h+3,w*2+2,h+1);ctx.fillStyle=fc(c[0]);ctx.fillRect(x-w,y-h+4,w*2,h-1);ctx.fillStyle=fc(c[1]);ctx.fillRect(x-w,y-h+4,3,h-1);ctx.fillStyle=c[2];ctx.fillRect(x-w-2,y-h+2,w*2+4,3);ctx.fillRect(x-w-2,y+1,w*2+4,2);ctx.fillRect(x+1,y-h+10,1,6);ctx.fillRect(x+2,y-h+15,1,4)}
+ if(p.hp<p.max&&!p.dead&&p.sp>=1){const w=Math.max(10,p.r*2),f=Math.max(0,p.hp/p.max),top=y-(p.k==='pillar'?Math.round(R*2.8):p.k==='boulder'?R*2:Math.round(R*2))-4;ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(x-w/2-1,top-1,w+2,4);ctx.fillStyle=f>.5?'#6aff6a':f>.25?'#ffd84a':'#ff5a4a';ctx.fillRect(x-w/2,top,Math.round(w*f),2)}}
+window.drawProps=function(){if(!PRP.length)return;const L=PRP.filter(p=>!p.dead).sort((a,b)=>a.y-b.y);for(const p of L)drawOne(p)};
+})();
 // ===== announcer voice choice + volume, and a pause button for every map =====
 (function(){
 const $=id=>document.getElementById(id);
