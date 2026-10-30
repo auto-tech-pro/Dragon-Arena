@@ -1840,6 +1840,64 @@ N('TEEN GOHAN','z2_tg1',qSk('Rage Burst',c3('#ffe45a','#ffffff'),270),'A burst o
 Ul('TEEN GOHAN','z2_tg2',U(qUB('Rage Masenko',c3('#ffe45a','#ffffff'),44,760),{aim:110}),'A huge Masenko driven by anger.');
 P('TEEN GOHAN','z2_tgp',qBm('Masenko Flare',c3('#ffb400','#ffe8a0'),12,310,{charge:.5,aim:110,k:28}),'A bright Masenko that follows the target.');
 })();
+// ===== batch 3 of unique abilities (last 13 fighters): 1 normal (Lv3), 1 ultimate (Lv5), 1 premium (shop) =====
+(function(){
+const U=(m,o)=>Object.assign(m,o||{});
+function add(fn,key,lv,u,m,txt,shop){const a={key,fn,lv:shop?99:lv,u:!!u,m:shop?U(PM(m),{hd:1}):PM(m),txt,shop:shop?'SHOP':undefined};a.fid=F.findIndex(f=>f.n===fn);if(a.fid<0)throw new Error('ability fighter '+fn);ABL.push(a);ABM[key]=a;FL[a.m.nm]=txt}
+const N=(fn,key,m,t)=>add(fn,key,3,0,m,t),Ul=(fn,key,m,t)=>add(fn,key,5,1,m,t),P=(fn,key,m,t)=>add(fn,key,99,0,m,t,1);
+// TOPPO
+N('TOPPO','z3_tp1',qSk('Justice Pressure',c3('#e83a8a','#ffd0f0'),270),'A wave of righteous pressure.');
+Ul('TOPPO','z3_tp2',U(qUB('Justice Flash Max',c3('#e83a8a','#ffd0f0'),46,780),{aim:110}),'A giant Justice Flash that follows the target.');
+P('TOPPO','z3_tpp',qOb('Hakai Ball',c3('#e83a8a','#ffd0f0'),15,340,{hom:6,k:28}),'A ball of destruction that hunts the target.');
+// DYSPO
+N('DYSPO','z3_dy1',qDs('Lightning Dash',c3('#ffd83a','#fff8c0'),270,{cd:2.6}),'A blinding fast dash.');
+Ul('DYSPO','z3_dy2',qUBS('Justice Kick Barrage',c3('#ffb400','#fff3a0'),9,780),'A nine-kick storm.');
+P('DYSPO','z3_dyp',qSl('Speed Slash',c3('#ffd83a','#ffffff'),22,330,{spd:330,hom:5}),'A very fast slash that homes in.');
+// CAULIFLA
+N('CAULIFLA','z3_ca1',qOb('Saiyan Pride Blast',c3('#ff6aa8','#ffe0f0'),14,300,{hom:4,k:26}),'A heavy ball of Saiyan pride.');
+Ul('CAULIFLA','z3_ca2',U(qUB('Burning Fury Beam',c3('#ff6aa8','#ffe0f0'),46,780),{aim:110}),'A burning beam that follows the target.');
+P('CAULIFLA','z3_cap',qBs('Ascended Rush',c3('#ffe45a','#ffffff'),5,320),'A five-hit rush with golden power.');
+// KALE
+N('KALE','z3_ka1',qSk('Berserker Roar',c3('#4ad04a','#d0ffb8'),280),'A wild roar that blasts a green shockwave.');
+Ul('KALE','z3_ka2',qUPl('Berserker Eruption',c3('#4ad04a','#d0ffb8'),24,820),'Three green eruptions under the target.');
+P('KALE','z3_kap',qBm('Green Burst',c3('#4ad04a','#d0ffb8'),24,330,{charge:.5,k:30}),'A heavy green beam.');
+// ANDROID 17
+N('ANDROID 17','z3_a71',qBs('Android Combo',c3('#4af0ff','#ffffff'),4,300),'A four-hit combo with barrier-boosted punches.');
+Ul('ANDROID 17','z3_a72',qUB('Energy Cannon',c3('#4af0ff','#ffffff'),44,760),'A huge concentrated energy cannon.');
+P('ANDROID 17','z3_a7p',qOb('Barrier Bomb',c3('#4af0ff','#ffffff'),14,330,{hom:5,k:28}),'A bomb of compressed barrier energy.');
+// MASTER ROSHI
+N('MASTER ROSHI','z3_ro1',qBm('Turtle Beam',c3('#4ac8ff','#ffffff'),16,280,{charge:.5,k:26}),'A focused beam from the Turtle School.');
+Ul('MASTER ROSHI','z3_ro2',qUB('Max Power Kamehameha',c3('#4ac8ff','#ffffff'),44,740),'The old master gives it everything.');
+P('MASTER ROSHI','z3_rop',qSk('Flash Wave',c3('#fff8c0','#ffffff'),270,{fx:'blind',cd:3.4}),'A bright flash that blinds the target.');
+// BEAST GOHAN
+N('BEAST GOHAN','z3_bg1',qBs('Beast Combo',c3('#e8ecff','#ff5a5a'),5,330),'A five-hit combo of raw Beast power.');
+Ul('BEAST GOHAN','z3_bg2',qUO('Beast Burst',c3('#ffffff','#ff3a3a'),36,840),'A huge white ball of Beast energy.');
+P('BEAST GOHAN','z3_bgp',qBm('Beast Cannon',c3('#ffffff','#ff3a3a'),22,340,{aim:120,charge:.5,k:30}),'A beast cannon that follows the target.');
+// FAT BUU
+N('FAT BUU','z3_fb1',qSk('Belly Bounce',c3('#ff9ab8','#ffe0ec'),270),'A bounce that sends a wave across the ground.');
+Ul('FAT BUU','z3_fb2',qUPl('Candy Geyser',c3('#ff9ab8','#ffe0ec'),26,800),'Three sweet geysers erupt under the target.');
+P('FAT BUU','z3_fbp',qOb('Candy Bomb',c3('#ff9ab8','#ffe0ec'),16,340,{hom:5,fx:'choc',k:30}),'A candy bomb that turns the target to chocolate.');
+// KID BUU
+N('KID BUU','z3_kb1',qBs('Wild Combo',c3('#ff4a8a','#ffc0d8'),5,300),'A five-hit flurry of wild strikes.');
+Ul('KID BUU','z3_kb2',qUO('Planet Burst Orb',c3('#ff4a8a','#ffc0d8'),34,820),'A huge ball of pink destruction.');
+P('KID BUU','z3_kbp',qWr('Chaos Grab',c3('#ff4a8a','#ffc0d8'),340,{hold:1.4,k:28,cd:4}),'Buu stretches out, grabs the target and slams them.');
+// UUB
+N('UUB','z3_uu1',qDs('Earthling Rush',c3('#ffb400','#ffe08a'),270),'A quick rush from the young Earthling.');
+Ul('UUB','z3_uu2',qUB('Spirit Kamehameha',c3('#ffb400','#ffe08a'),44,760),'A pure-hearted Kamehameha.');
+P('UUB','z3_uup',qSl('Rising Fist',c3('#ffb400','#ffe08a'),24,320,{hom:5}),'A rising fist of ki that homes in.');
+// CUMBER
+N('CUMBER','z3_cu1',qSk('Evil Roar',c3('#ff5a1a','#ffd0a0'),280),'A roar of evil that shakes the ground.');
+Ul('CUMBER','z3_cu2',qUB('Evil Blaster',c3('#ff5a1a','#ffd0a0'),46,780),'A massive beam of corrupted power.');
+P('CUMBER','z3_cup',qOb('Evil Core',c3('#ff5a1a','#ffd0a0'),15,340,{hom:6,k:28}),'A burning core that hunts the target.');
+// GOGETA
+N('GOGETA','z3_go1',qBs('Fusion Combo',c3('#7ac8ff','#ffffff'),5,330),'A five-hit fusion combo.');
+Ul('GOGETA','z3_go2',U(qUB('Fusion Kamehameha Max',c3('#3a9bff','#ffffff'),50,860),{aim:120,curve:1}),'A fusion Kamehameha that curves into the target.');
+P('GOGETA','z3_gop',qSl('Spirit Blade',c3('#7ac8ff','#ffffff'),28,360,{hom:6,spd:280}),'A homing blade of fusion energy.');
+// VEGETO
+N('VEGETO','z3_ve1',qBs('Merge Combo',c3('#f08a20','#ffe0a0'),5,330),'A five-hit merged combo.');
+Ul('VEGETO','z3_ve2',U(qUB('Divine Final Flash',c3('#ff3a4a','#ffd070'),52,880),{aim:120}),'A divine Final Flash that follows the target.');
+P('VEGETO','z3_vep',qSl('Fusion Slash',c3('#ff3a4a','#ffd070'),28,360,{hom:6,spd:280}),'A homing slash of divine fusion energy.');
+})();
 // ---- QR encoder: QRCode for JavaScript (c) 2009 Kazuhiko Arase, MIT license ----
 const QRLib=(function(){const defs={},cache={};
 defs['QR8bitByte']=function(module,exports,require){var QRMode = require('./QRMode');
