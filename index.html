@@ -1984,7 +1984,7 @@ function skinAura(f){const s=SKINS[f.sk];return s&&s.aura}
 (function(){const omk2=mkF;mkF=function(id,team){const f=omk2(id,team);if(team===0&&!(NET&&(NET.live||NET.play)))f.sk=SAVE.skin&&SAVE.skin[id]||0;return f}})();
 SAVE.skin=SAVE.skin||{};
 function skinRow(id){const cur=SAVE.skin[id]||0;let h='<div class="loh">SKINS</div><div class="skr"><button data-sk="0" class="'+(cur?'':'on')+'">DEFAULT</button>';
- SKINS.forEach((s,i)=>{if(!s)return;const lk=!UNLOCK_ALL;h+='<button data-sk="'+i+'" class="'+(cur===i?'on ':'')+'t'+s.tier[0]+(lk?' lk':'')+'" style="--c:'+s.aura+'">'+s.n+'<small>'+s.tier+'</small></button>'});return h+'</div>'}
+ SKINS.forEach((s,i)=>{if(!s||(s.fid!==undefined&&s.fid!==id))return;const lk=!UNLOCK_ALL;h+='<button data-sk="'+i+'" class="'+(cur===i?'on ':'')+'t'+s.tier[0]+(lk?' lk':'')+'" style="--c:'+s.aura+'">'+s.n+'<small>'+s.tier+'</small></button>'});return h+'</div>'}
 
 // ---- loadout UI (Characters screen) ----
 function lvBar(id){const x=mxXp(id),l=mxLv(id),a=MXT[l-1],b=MXT[l];return '<div class="mxh"><b>MASTERY Lv '+l+'</b><i><u style="width:'+(b?Math.round(100*(x-a)/(b-a)):100)+'%"></u></i><small>'+(b?x+' / '+b+' XP':'MAX')+'</small></div>'}
@@ -2180,6 +2180,102 @@ P('GOGETA','z3_gop',qSl('Spirit Blade',c3('#7ac8ff','#ffffff'),28,360,{hom:6,spd
 N('VEGETO','z3_ve1',qBs('Merge Combo',c3('#f08a20','#ffe0a0'),5,330),'A five-hit merged combo.');
 Ul('VEGETO','z3_ve2',U(qUB('Divine Final Flash',c3('#ff3a4a','#ffd070'),52,880),{aim:120}),'A divine Final Flash that follows the target.');
 P('VEGETO','z3_vep',qSl('Fusion Slash',c3('#ff3a4a','#ffd070'),28,360,{hom:6,spd:280}),'A homing slash of divine fusion energy.');
+})();
+// ===== batch 4: unique abilities (1 normal Lv3, 1 ultimate Lv5, 1 premium shop) + exclusive skins for the 20 newest fighters =====
+(function(){
+const U=(m,o)=>Object.assign(m,o||{});
+function add(fn,key,lv,u,m,txt,shop){const a={key,fn,lv:shop?99:lv,u:!!u,m:shop?U(PM(m),{hd:1}):PM(m),txt,shop:shop?'SHOP':undefined};a.fid=F.findIndex(f=>f.n===fn);if(a.fid<0)throw new Error('ability fighter '+fn);ABL.push(a);ABM[key]=a;FL[a.m.nm]=txt}
+const N=(fn,key,m,t)=>add(fn,key,3,0,m,t),Ul=(fn,key,m,t)=>add(fn,key,5,1,m,t),P=(fn,key,m,t)=>add(fn,key,99,0,m,t,1);
+const mix=(h,k)=>{const v=hx(h);return '#'+v.map(x=>Math.round(x+(255-x)*k).toString(16).padStart(2,'0')).join('')};
+const C=fn=>{const f=F.find(q=>q.n===fn);return[f.sh,mix(f.sh,.55),'#ffffff']};
+const S=(fn,m,sty)=>sty?st(m,sty):m;
+// ZARKON (magma brawler)
+N('ZARKON','z5_zk1',qDs('Lava Charge',C('ZARKON'),280,{cd:3}),'Charges through the target in a trail of molten rock.');
+Ul('ZARKON','z5_zk2',qUBS('Magma Fury',C('ZARKON'),8,780),'An eight-hit storm of molten fists.');
+P('ZARKON','z5_zkp',qSk('Volcano Quake',C('ZARKON'),340,{cd:4}),'Slams the ground and sends a crushing quake outward.');
+// LYRA (storm)
+N('LYRA','z5_ly1',qDc('Storm Discs',C('LYRA'),3,100),'Three crackling discs that curve toward the target.');
+Ul('LYRA','z5_ly2',U(qUB('Tempest Judgement',C('LYRA'),46,780),{aim:110}),'A towering lightning beam that follows the target.');
+P('LYRA','z5_lyp',qBs('Lightning Raid',C('LYRA'),5,320),'A five-strike raid at the speed of lightning.');
+// CAPTAIN BRINE (tide)
+N('CAPTAIN BRINE','z5_cb1',qWr('Kraken Grip',C('CAPTAIN BRINE'),290),'A tentacle of water grabs the target and slams them down.');
+Ul('CAPTAIN BRINE','z5_cb2',qUPl('Leviathan Rising',C('CAPTAIN BRINE'),34,820,{hits:4,scatter:1,rad:30}),'Geysers burst around the target in a rising wave.');
+P('CAPTAIN BRINE','z5_cbp',qOb('Powder Keg',C('CAPTAIN BRINE'),17,340,{hom:3,boom:30,cd:3.4}),'A heavy keg that rolls in and explodes.');
+// ASHE (hexes)
+N('ASHE','z5_as1',qSl('Hexed Crescent',C('ASHE'),26,250,{hom:6,cd:2.8}),'A cursed blade of energy that curves toward the target.');
+Ul('ASHE','z5_as2',qUPl('Ritual of Ruin',C('ASHE'),32,820,{hits:5,scatter:1,rad:28}),'Cursed seals erupt one after another under the target.');
+P('ASHE','z5_asp',qOb('Hexfire Orb',C('ASHE'),16,330,{hom:5,cd:3.4}),'A burning curse that hunts the target.');
+// VANTA (void)
+N('VANTA','z5_va1',{nm:'Satellite Shards',t:'orbit',c:C('VANTA'),n:3,dur:6,dmg:340,k:28,cd:6,lock:.6},'Shards of void orbit you and slice anything that gets close.');
+Ul('VANTA','z5_va2',{nm:'Singularity Crush',t:'hole',ult:1,crunch:1,c:['#ff3aff','#0a0418','#ffe0ff'],rad:124,pull:230,dur:3,tick:.25,dmg:1000,tel:1,k:58,cd:9,lock:1.9},'A black hole that drags everything in, then collapses.');
+P('VANTA','z5_vap',qBm('Void Lance',C('VANTA'),22,330,{charge:.5,aim:130,k:30}),'A piercing lance of the void.');
+// SERAPH (holy)
+N('SERAPH','z5_se1',{nm:'Mending Wings',t:'heal',c:['#7dff9a','#d8ffe0','#ffffff'],heal:.22,regen:[6,1.2],cleanse:1,dmg:0,k:26,cd:10,lock:.8},'Wings of light heal you over time and cleanse your status effects.');
+Ul('SERAPH','z5_se2',S('SERAPH',qUB("Heaven's Verdict",C('SERAPH'),48,780),'holy'),'A pillar-wide beam of holy light.');
+P('SERAPH','z5_sep',S('SERAPH',qDc('Halo Discs',C('SERAPH'),3,110),'holy'),'Three golden halos that seek the target.');
+// VERDANT (nature)
+N('VERDANT','z5_ve1',S('VERDANT',qWr('Vine Snare',C('VERDANT'),280),'leaf'),'Vines grab the target and squeeze.');
+Ul('VERDANT','z5_ve2',S('VERDANT',qUPl('Overgrowth',C('VERDANT'),34,800,{hits:5,scatter:1,rad:28}),'leaf'),'Roots burst from the ground across the arena.');
+P('VERDANT','z5_vep',{nm:'Spring Surge',t:'heal',c:['#7dff9a','#d8ffe0','#ffffff'],heal:.3,regen:[8,1.4],cleanse:1,dmg:0,k:26,cd:9,lock:.8},'A burst of life that heals a lot and keeps healing.');
+// MORBUS (plague)
+N('MORBUS','z5_mo1',S('MORBUS',qOb('Spore Bomb',C('MORBUS'),16,320,{hom:3,boom:30}),'toxic'),'A bloated spore pod that bursts into poison.');
+Ul('MORBUS','z5_mo2',{nm:'Epidemic',t:'hex',ult:1,c:C('MORBUS'),dmg:560,rad:320,fx:[['poison',9,1.4],['weak',7,1],['slow',6,1]],k:50,cd:9,lock:1.7},'Infects everyone nearby with a deadly plague.');
+P('MORBUS','z5_mop',S('MORBUS',qBm('Corrosive Stream',C('MORBUS'),24,330,{charge:.5,k:30}),'toxic'),'A stream of acid that eats through defenses.');
+// GLACIA (ice)
+N('GLACIA','z5_gl1',S('GLACIA',qBm('Hail Lance',C('GLACIA'),10,290,{charge:.6,aim:110,cd:3.4}),'frost'),'A long, fast lance of ice.');
+Ul('GLACIA','z5_gl2',{nm:'Glacial Era',t:'hex',ult:1,c:C('GLACIA'),dmg:540,rad:330,fx:[['slow',9,1],['weak',7,1],['stun',1.4]],k:50,cd:9,lock:1.8},'The arena freezes over. Anyone caught is slowed and stunned.');
+P('GLACIA','z5_glp',S('GLACIA',qBs('Shatter Strikes',C('GLACIA'),5,320),'frost'),'Five icy strikes that shatter on the last hit.');
+// TEMPUS (time)
+N('TEMPUS','z5_te1',S('TEMPUS',qSl('Temporal Edge',C('TEMPUS'),24,250,{hom:5,cd:2.8}),'time'),'A blade that cuts the moment before it lands.');
+Ul('TEMPUS','z5_te2',{nm:'Time Lock',t:'hex',ult:1,c:C('TEMPUS'),dmg:520,rad:340,fx:[['stun',2.2],['slow',6,1],['weak',6,1]],k:50,cd:10,lock:1.8},'Locks everyone nearby in a single frozen moment.');
+P('TEMPUS','z5_tep',{nm:'Accelerate',t:'buff',self:1,c:C('TEMPUS'),fx:[['haste',9,1.2],['power',9,1.2]],dmg:0,k:28,cd:12,lock:.6},'Speeds up your own time: faster and stronger for a while.');
+// ECLIPSE
+N('ECLIPSE','z5_ec1',S('ECLIPSE',qOb('Umbra Orb',C('ECLIPSE'),17,320,{hom:4}),'corona'),'A dark sun that burns at its edges.');
+Ul('ECLIPSE','z5_ec2',S('ECLIPSE',qUB('Total Eclipse',C('ECLIPSE'),50,800),'corona'),'The sun goes dark and a ring of fire fires out.');
+P('ECLIPSE','z5_ecp',S('ECLIPSE',qSk('Solar Flare Burst',C('ECLIPSE'),340,{cd:4}),'corona'),'A flare of solar fire bursts around you.');
+// PRISMA
+N('PRISMA','z5_pr1',S('PRISMA',qDc('Prism Shards',C('PRISMA'),3,100),'prism'),'Three crystal shards that bend light and homing paths.');
+Ul('PRISMA','z5_pr2',S('PRISMA',qUB('Rainbow Annihilation',C('PRISMA'),50,800),'prism'),'Every colour of light fired as one beam.');
+P('PRISMA','z5_prp',S('PRISMA',qBs('Refraction Rush',C('PRISMA'),5,320),'prism'),'Splits into light and strikes five times.');
+// SHROUD
+N('SHROUD','z5_sh1',S('SHROUD',qDs('Shadow Step Slash',C('SHROUD'),280,{cd:2.6}),'shadow'),'Steps through the shadows and slashes.');
+Ul('SHROUD','z5_sh2',S('SHROUD',qUBS('Thousand Cuts',C('SHROUD'),10,800),'shadow'),'Ten invisible cuts in an instant.');
+P('SHROUD','z5_shp',S('SHROUD',qBm('Dusk Beam',C('SHROUD'),20,330,{charge:.5,k:30}),'shadow'),'A narrow beam of pure darkness.');
+// RESONA
+N('RESONA','z5_re1',S('RESONA',qSk('Shockwave Chord',C('RESONA'),270),'sonic'),'A bass chord that sends a shockwave outward.');
+Ul('RESONA','z5_re2',S('RESONA',qUB('Symphony of Ruin',C('RESONA'),50,800),'sonic'),'The full orchestra fires as one huge sound beam.');
+P('RESONA','z5_rep',{nm:'Encore',t:'buff',self:1,c:C('RESONA'),fx:[['power',9,1.25],['haste',9,1.1],['regen',9,1]],dmg:0,k:28,cd:12,lock:.6},'The crowd roars: more power, speed and healing for a while.');
+// ORRIN (spirits)
+N('ORRIN','z5_or1',{nm:'Ghost Lanterns',t:'summon',kind:'wisp',n:3,hp:80,life:10,dmg:40,rate:1.2,c:C('ORRIN'),k:26,cd:8,lock:.8},'Three lanterns of spirit light that fire at your foe.');
+Ul('ORRIN','z5_or2',{nm:'Army of the Dead',t:'summon',ult:1,kind:'wisp',n:5,hp:90,life:11,dmg:44,rate:1.1,c:C('ORRIN'),k:40,cd:10,lock:1,cap:7},'Summons a swarm of wisps.');
+P('ORRIN','z5_orp',S('ORRIN',qOb('Banshee Wail',C('ORRIN'),15,330,{hom:6}),'spirit'),'A wailing spirit that hunts the target.');
+// VESPER (blood)
+N('VESPER','z5_vs1',S('VESPER',qBs('Fang Flurry',C('VESPER'),4,290,{leech:.4}),'blood'),'Four fast bites that heal you.');
+Ul('VESPER','z5_vs2',S('VESPER',qUO('Blood Tide',C('VESPER'),38,800),'blood'),'A huge orb of blood that crashes down.');
+P('VESPER','z5_vsp',{nm:'Midnight Colony',t:'summon',kind:'bat',n:4,hp:50,life:9,dmg:38,drain:.35,mfx:[['bleed',3,1]],c:C('VESPER'),k:30,cd:9,lock:.8},'A colony of bats that bite and heal you.');
+// MALKOR (runes)
+N('MALKOR','z5_ma1',{nm:'Curse of Weakness',t:'hex',c:C('MALKOR'),dmg:200,rad:230,fx:[['weak',8,1],['slow',6,1]],k:26,cd:6,lock:.8},'A hex that weakens and slows everyone near you.');
+Ul('MALKOR','z5_ma2',S('MALKOR',qUPl('Doom Sigil',C('MALKOR'),32,820,{hits:5,scatter:1,rad:30}),'rune'),'Doom sigils burn into the ground under the target.');
+P('MALKOR','z5_map',{nm:'Imp Legion',t:'summon',kind:'imp',n:4,hp:70,life:10,dmg:60,c:['#ff5a2a','#8a2a1a','#ffe45a'],k:30,cd:9,lock:.8},'Four fire imps rush the target.');
+// KRONOS (boss, time)
+N('KRONOS','z5_kr1',S('KRONOS',qBm('Sandstream',C('KRONOS'),20,300,{charge:.5,k:28}),'time'),'A scouring stream of sand.');
+Ul('KRONOS','z5_kr2',S('KRONOS',qUB('Final Hour',C('KRONOS'),50,800),'time'),'The last hour strikes as a huge beam.');
+P('KRONOS','z5_krp',S('KRONOS',qBs('Time Skip Raid',C('KRONOS'),5,320),'time'),'Skips through time to strike five times.');
+// NYXARA (boss, void)
+N('NYXARA','z5_ny1',S('NYXARA',qBm('Dark Lance',C('NYXARA'),20,300,{charge:.5,aim:110}),'shadow'),'A lance of shadow that tracks.');
+Ul('NYXARA','z5_ny2',{nm:'Black Sun',t:'hole',ult:1,c:['#ff3aff','#0a0418','#ffe0ff'],rad:120,pull:230,dur:3.2,tick:.25,dmg:900,tel:.9,k:55,cd:9,lock:1.8},'A black sun that pulls everything in and burns it.');
+P('NYXARA','z5_nyp',{nm:'Void Mines',t:'mine',c:['#b020ff','#1a0a3a','#ffffff'],n:4,dmg:290,k:26,cd:6,lock:.7},'Four mines of the void.');
+// IGNIROTH (boss, lava)
+N('IGNIROTH','z5_ig1',S('IGNIROTH',qSk('Lava Slam',C('IGNIROTH'),280,{cd:3.4}),'flame'),'Slams the ground and sends a shockwave of lava.');
+Ul('IGNIROTH','z5_ig2',S('IGNIROTH',qUO('Meteor Storm',C('IGNIROTH'),40,820),'flame'),'A huge meteor that crashes through the arena.');
+P('IGNIROTH','z5_igp',S('IGNIROTH',qPl('Magma Geyser',C('IGNIROTH'),26,330,{hits:3,scatter:1,cd:4}),'flame'),'Geysers of magma erupt under the target.');
+// ---- exclusive skins (each only shows for its fighter) ----
+const XS=(fn,n,aura,spark,H,Sx,Lx)=>{const i=F.findIndex(f=>f.n===fn);SKINS.push({n,tier:'MYTHIC',fid:i,aura,spark,fx:(h,s,l)=>[typeof H==='function'?H(h):H,Math.min(1,s*Sx+.05),Math.min(.92,l*Lx)]})};
+XS('ZARKON','OBSIDIAN','#ff4a1a','#ffd0a0',.04,.9,.55);XS('LYRA','AURORA','#7affd0','#e0fff4',.42,1,1.1);XS('CAPTAIN BRINE','DEEP SEA','#3a6aff','#a0c8ff',.62,1.1,.7);XS('ASHE','BLOOD ROSE','#ff2a6a','#ffa0c0',.96,1.2,.8);
+XS('VANTA','EVENT HORIZON','#e03aff','#ffa0ff',.8,1.2,.6);XS('SERAPH','DAWNBRINGER','#fff0a0','#ffffff',.14,.7,1.25);XS('VERDANT','AUTUMN','#ff9a3a','#ffe0a0',.08,1.1,1);XS('MORBUS','NIGHTSHADE','#a03aff','#e0a0ff',.76,1,.8);
+XS('GLACIA','STARFROST','#a0f0ff','#ffffff',.5,.6,1.3);XS('TEMPUS','AMBER AGE','#ffb020','#fff0b0',.1,1.2,1);XS('ECLIPSE','NEW MOON','#c0c0ff','#ffffff',.66,.4,.75);XS('PRISMA','OPAL','#ffffff','#ffe0ff',h=>(h*3+.1)%1,1.2,1.15);
+XS('SHROUD','MIDNIGHT','#4a4aff','#a0a0ff',.68,.9,.55);XS('RESONA','NEON PULSE','#3affff','#e0ffff',.5,1.3,1.1);XS('ORRIN','PHANTOM','#a0ffff','#ffffff',.52,.5,1.3);XS('VESPER','CRIMSON LADY','#ff1a3a','#ff9aa0',.99,1.3,.75);
+XS('MALKOR','HELLBOUND','#ff4a2a','#ffd05a',.02,1.2,.9);XS('KRONOS','FROZEN HOUR','#a0f0ff','#ffffff',.52,.8,1.2);XS('NYXARA','STARLESS','#8a8aff','#d0d0ff',.7,.7,.6);XS('IGNIROTH','SOLAR','#ffe45a','#ffffff',.14,1.1,1.25);
 })();
 // ---- QR encoder: QRCode for JavaScript (c) 2009 Kazuhiko Arase, MIT license ----
 const QRLib=(function(){const defs={},cache={};
@@ -4599,7 +4695,7 @@ const randMap=m=>{const p=normalMaps(m);return p[Math.floor(Math.random()*p.leng
   else if(sel.rnd&&(scene==='menu'||scene==='over')&&!NET.live&&!ST&&!CH&&!EN&&!BB)MAPI=randMap(mode)}
  return os.apply(this,arguments)}}
 // ---- menu ----
-const _rm=renderMenu;renderMenu=function(){_rm();const m=MODES[sel.mode],mp=$$('maps');
+const _rm=renderMenu;renderMenu=function(){_rm();const m=MODES[sel.mode],mp=$$('maps');if(m.xl){$$('sideE').style.display='none';$$('rndE').style.display='none';const v=document.querySelector('#menu .vs');if(v)v.style.display='none'}
  if(m.boss){mp.innerHTML='';BL.forEach((b,i)=>{const e=document.createElement('button');e.className='mb sm2'+(i===sel.boss?' on':'');e.textContent=b.n+((SAVE.bossK||{})[b.n]?' ✓':'');e.onclick=()=>{sfx('ui');sel.boss=i;renderMenu()};mp.appendChild(e)});
   $$('hint').textContent=BL[sel.boss].tag+': '+BL[sel.boss].d+' Pick your fighter, then FIGHT!'}
  else if(m.endless){mp.innerHTML='';const e=document.createElement('div');e.className='sub';e.style.cssText='font-size:.8em;color:#ffe45a;padding:.2em';e.textContent='BEST: LEVEL '+((SAVE.endBest)||0);mp.appendChild(e);
@@ -4815,6 +4911,85 @@ const onm=netMsg;netMsg=function(m){if(m&&m.t==='name'){NET.oname=clean(m.n)||'P
 const oab=afterBattle;afterBattle=function(win){oab.apply(this,arguments);if(!NET.live||!NET.oname)return;
  SAVE.h2h=SAVE.h2h||{};const k=NET.oname,h=SAVE.h2h[k]||(SAVE.h2h[k]={w:0,l:0});if(win)h.w++;else h.l++;save();const el=$$('resS');if(!el)return;
  el.textContent=(win?window.myDisplayName()+' wins!':NET.oname+' wins!')+'  •  Your record vs '+NET.oname+': '+h.w+' - '+h.l};
+})();
+// ===== AI ARENA: watch AI vs AI battles (duel, royale, mega royale) =====
+(function(){
+const $$=id=>document.getElementById(id);
+const css=document.createElement('style');css.textContent='#wt{position:absolute;inset:0;z-index:12;display:none;align-items:center;justify-content:center;background:rgba(4,6,15,.92)}#wt.on{display:flex}#wt .sbox{max-width:30em}#wt .sub{color:#8fa6d8;font-size:.78em;line-height:1.35}#wt select{width:100%;box-sizing:border-box;padding:.5em;border-radius:.5em;border:1px solid #2a3a6a;background:#0b1226;color:#fff;font:inherit;font-size:.85em;margin:.15em 0}#wtP{display:none;flex-direction:column;gap:.3em}#wtP.on{display:flex}#wtbar{position:absolute;left:50%;bottom:calc(24px*var(--s));transform:translateX(-50%);z-index:8;display:none;gap:.4em}#wtbar.on{display:flex}#wtbar .big{font-size:.7em;padding:.4em .8em;min-width:0}body.watch .b,body.watch #joy,body.watch #jb,body.watch #jk,body.watch #res,body.watch #pz{display:none!important}#hWatch{grid-column:auto!important}';document.head.appendChild(css);
+const st=document.getElementById('stage')||document.body;
+const w=document.createElement('div');w.id='wt';w.innerHTML='<div class="sbox"><h2>👁 AI ARENA</h2><div class="sub">Sit back and watch the fighters battle each other. No controls, just the show.</div><div class="lrow"><button class="big" id="wtDuel">RANDOM DUEL</button><button class="big" id="wtPickB">CHOOSE FIGHTERS</button></div><div class="lrow"><button class="big" id="wtBR">BATTLE ROYALE (6)</button><button class="big" id="wtMega">MEGA ROYALE (10)</button></div><div id="wtP"><div class="sub">Fighter 1</div><select id="wtA"></select><div class="sub">Fighter 2</div><select id="wtB"></select><button class="big" id="wtGo">WATCH THIS FIGHT</button></div><button class="big g" id="wtClose">BACK</button></div>';st.appendChild(w);
+const bar=document.createElement('div');bar.id='wtbar';bar.innerHTML='<button class="big g" id="wtNext">NEXT ⏭</button><button class="big g" id="wtSpd">SPEED 1x</button><button class="big g" id="wtAuto">AUTO: ON</button><button class="big g" id="wtExit">EXIT</button>';st.appendChild(bar);
+const opts=F.map((f,i)=>'<option value="'+i+'">'+f.n+'</option>').join('');$$('wtA').innerHTML=opts;$$('wtB').innerHTML=opts;$$('wtB').value=1;
+let WATCH=null,tm=0;window.WATCHX=()=>WATCH;
+const pickMap=()=>{const p=MAPS.map((_,i)=>i).filter(i=>!MAPS[i].top&&!MAPS[i].boss);return p[Math.floor(Math.random()*p.length)]};
+const mode=k=>MODES.find(m=>m.k===k);
+const shuf=n=>{const a=F.map((_,i)=>i);for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,n)};
+function begin(kind,a,b){clearTimeout(tm);WATCH=WATCH||{auto:true,spd:1};WATCH.kind=kind;WATCH.a=a;WATCH.b=b;window.SCNSKIP=true;
+ $$('wt').classList.remove('on');MAPI=pickMap();
+ if(kind==='duel'){let x=a,y=b;if(x==null){[x,y]=shuf(2)}startBattle(MODES[0],[x],[y])}
+ else if(kind==='br'){const ids=shuf(6);startBattle(mode('br'),[ids[0]],ids.slice(1))}
+ else{const ids=shuf(10);startBattle(mode('mbr'),[ids[0]],ids.slice(1))}
+ DEMO=true;document.body.classList.add('watch');bar.classList.add('on');$$('wtSpd').textContent='SPEED '+WATCH.spd+'x';$$('wtAuto').textContent='AUTO: '+(WATCH.auto?'ON':'OFF')}
+function nextW(){if(!WATCH)return;clearTimeout(tm);begin(WATCH.kind,WATCH.kind==='duel'&&WATCH.fixed?WATCH.a:null,WATCH.kind==='duel'&&WATCH.fixed?WATCH.b:null)}
+function stopW(){clearTimeout(tm);WATCH=null;window.SCNSKIP=false;document.body.classList.remove('watch');bar.classList.remove('on')}
+const open=()=>{aud();sfx('ui');$$('wtP').classList.remove('on');$$('wt').classList.add('on')};
+$$('wtClose').onclick=()=>{sfx('ui');$$('wt').classList.remove('on')};
+$$('wtDuel').onclick=()=>{sfx('ui');WATCH={auto:true,spd:1,fixed:false};begin('duel')};
+$$('wtPickB').onclick=()=>{sfx('ui');$$('wtP').classList.add('on')};
+$$('wtGo').onclick=()=>{sfx('ui');const a=+$$('wtA').value;let b=+$$('wtB').value;if(a===b)b=(b+1)%F.length;WATCH={auto:false,spd:1,fixed:true};begin('duel',a,b);WATCH.a=a;WATCH.b=b};
+$$('wtBR').onclick=()=>{sfx('ui');WATCH={auto:true,spd:1};begin('br')};
+$$('wtMega').onclick=()=>{sfx('ui');WATCH={auto:true,spd:1};begin('mega')};
+$$('wtNext').onclick=()=>{sfx('ui');nextW()};
+$$('wtSpd').onclick=()=>{if(!WATCH)return;WATCH.spd=WATCH.spd===1?2:WATCH.spd===2?3:1;$$('wtSpd').textContent='SPEED '+WATCH.spd+'x';sfx('ui')};
+$$('wtAuto').onclick=()=>{if(!WATCH)return;WATCH.auto=!WATCH.auto;$$('wtAuto').textContent='AUTO: '+(WATCH.auto?'ON':'OFF');sfx('ui')};
+$$('wtExit').onclick=()=>{sfx('ui');stopW();toHome()};
+// home button
+const hb=document.createElement('button');hb.id='hWatch';hb.className='big g hb';hb.textContent='👁 WATCH AI';hb.onclick=open;const gr=document.querySelector('#home .hgrid');(gr||$$('home')).appendChild(hb);
+// ---- engine hooks ----
+{const ob=banner;banner=function(t){if(WATCH&&/ELIMINATED|YOU ARE DOWN|VICTORY|DEFEAT/.test(t||''))return;return ob.apply(this,arguments)}}
+{const oa=afterBattle;afterBattle=function(){if(WATCH)return;return oa.apply(this,arguments)}}
+{const oe=endBattle;endBattle=function(wn){if(!WATCH||scene==='over')return oe.apply(this,arguments);const alive=[].concat(...TM).filter(q=>!q.dead);const r=oe.apply(this,arguments);
+  const win=alive[0]||(TM[wn]&&TM[wn][0]);if(win){banner(F[win.id].n+' WINS!','#ffe45a',WATCH.kind==='duel'?'':'Last one standing',2.6)}
+  clearTimeout(tm);tm=setTimeout(()=>{if(WATCH&&scene==='over'&&WATCH.auto)nextW()},4200);return r}}
+{const ou=update;update=function(dt){if(WATCH&&WATCH.spd>1&&scene==='battle'){let r;for(let i=0;i<WATCH.spd;i++)r=ou.call(this,dt);return r}return ou.apply(this,arguments)}}
+{const th=toHome;toHome=function(){if(WATCH)stopW();return th.apply(this,arguments)}}
+{const tmn=toMenu;toMenu=function(){if(WATCH)stopW();return tmn.apply(this,arguments)}}
+})();
+// ---- screen-fit pass: every menu/tab wraps, compacts on short phones and keeps its main button reachable ----
+(function(){
+const c=document.createElement('style');c.textContent=`
+.modes{flex-wrap:wrap!important;justify-content:center!important;max-width:100%!important}
+#modes .mb{white-space:nowrap;line-height:1.1}
+.slots{flex-wrap:wrap}
+.acts{position:sticky;bottom:0;z-index:3;padding:.4em .8em;border-radius:.8em;background:rgba(5,7,16,.88)}
+.lrow .big{flex:1;font-size:.9em}
+.sbox,.lbox{max-height:calc(100% - 6px);overflow-y:auto}
+@media(max-height:430px){
+ #menu{padding:4px 10px!important}
+ #menu h1{font-size:1.3em!important;margin:0!important}
+ #menu h1 small{font-size:.45em!important}
+ .modes{gap:.22em!important;margin:.18em 0!important}
+ #modes{padding-right:calc(104px*var(--s))!important;box-sizing:border-box}
+ #modes .mb{font-size:.6em!important;padding:.28em .5em!important;border-width:1px!important;border-radius:.45em!important}
+ #maps .mb,.mb.sm2{font-size:.58em!important;padding:.22em .45em!important;border-width:1px!important}
+ .teams{gap:.5em!important}
+ .side{padding:.2em .35em!important}.side h3{font-size:.65em!important;margin:0 0 .15em!important}
+ .slot{width:2.9em!important;height:3.2em!important}
+ .slots{gap:.3em!important}
+ .roster{gap:.25em!important;margin-top:.25em!important}
+ .card{width:4.8em!important}
+ .acts{margin-top:.3em!important}
+ #hint{font-size:.62em!important;margin-top:.25em!important}
+ #spo iframe{height:150px!important}#spo iframe.yt{height:100px!important}
+ .sbox h2,.lbox h2{font-size:1.05em!important}
+ .sbox,.lbox{padding:.45em!important;gap:.3em!important}
+ .lrow .big,.sbox .big{padding:.32em .5em!important;font-size:.82em!important}
+}
+@media(max-height:340px){
+ #menu h1{display:none!important}
+ #spo iframe{height:110px!important}#spo iframe.yt{height:80px!important}
+ .card{width:4.4em!important}
+}`;document.head.appendChild(c);
 })();
 // ===== installable app (PWA) =====
 (function(){
