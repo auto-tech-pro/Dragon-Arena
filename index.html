@@ -1708,7 +1708,7 @@ function lvBar(id){const x=mxXp(id),l=mxLv(id),a=MXT[l-1],b=MXT[l];return '<div 
 function opts(id,slot,fm){const i=slot-1,out=[],f=F[id],b0=fm?f.fab0:f.ab0,dk=fm?fKey:defKey;
  out.push({key:dk(i),m:b0[i],lv:1,tag:'SIGNATURE'});
  if(i<3)[0,1,2].forEach(j=>{if(j!==i)out.push({key:dk(j),m:b0[j],lv:1,tag:'SIGNATURE'})});
- ABL.forEach(a=>{if(a.fid===id&&a.u===(i===3))out.push({key:a.key,m:a.m,lv:a.lv,tag:'PREMIUM'})});
+ ABL.forEach(a=>{if(a.fid===id&&a.u===(i===3))out.push({key:a.key,m:a.m,lv:a.lv,tag:'PREMIUM',shop:a.shop?1:0})});
  UNI.forEach(a=>{if(a.u===(i===3))out.push({key:a.key,m:a.m,lv:99,tag:'PREMIUM',shop:1})});
  return out}
 function loPanel(){const id=CV.id,sl=CV.slot;let h='<div class="lo">'+lvBar(id)+(UNLOCK_ALL?'<div class="lom tm">TEST MODE: every ability and skin is unlocked.</div>':'')+skinRow(id);
@@ -1728,6 +1728,60 @@ $('cInfo').addEventListener('click',e=>{const b=e.target.closest('button');if(!b
  if(b.dataset.pv!==undefined){sfx('ui');applyViewer(b.dataset.pv,CV.slot,false);e.stopPropagation()}
  else if(b.dataset.sk!==undefined){const n=+b.dataset.sk;if(SKINS[n]&&!UNLOCK_ALL)return;SAVE.skin[CV.id]=n;save();const f=TM[0][0];if(f){f.sk=n;burst(f.x,f.y,[(SKINS[n]||{}).aura||'#fff','#fff'],24,130,.6,2);ring(f.x,f.y,40,[(SKINS[n]||{}).aura||'#fff','#fff','#fff'],.4)}sfx('power');renderInfo();e.stopPropagation()}
  else if(b.dataset.eq!==undefined){const k=b.dataset.eq;if(!k)return;sfx('power');applyViewer(k,CV.slot,true);e.stopPropagation()}},true);
+// ===== batch 1 of new unique abilities: per fighter 1 normal (Lv3), 1 ultimate (Lv5), 1 premium (shop) =====
+(function(){
+const U=(m,o)=>Object.assign(m,o||{});
+function add(fn,key,lv,u,m,txt,shop){const a={key,fn,lv:shop?99:lv,u:!!u,m:shop?U(PM(m),{hd:1}):PM(m),txt,shop:shop?'SHOP':undefined};a.fid=F.findIndex(f=>f.n===fn);if(a.fid<0)throw new Error('ability fighter '+fn);ABL.push(a);ABM[key]=a;FL[a.m.nm]=txt}
+const N=(fn,key,lv,m,t)=>add(fn,key,lv,0,m,t),Ul=(fn,key,m,t)=>add(fn,key,5,1,m,t),P=(fn,key,m,t)=>add(fn,key,99,0,m,t,1);
+// GOKU
+N('GOKU','z_gk1',3,qDs('Kaioken Rush',c3('#ff3a2a','#ffd0a0'),270,{cd:3,k:24}),'A red Kaioken-powered rush that slams into the target.');
+Ul('GOKU','z_gk2',qUD('Dragon Fist Rising',c3('#ffb400','#fff08a'),780),'Goku charges through the target in a rising dragon of golden ki.');
+P('GOKU','z_gkp',qBm('Warp Kamehameha',c3('#2a8bff','#e8fbff'),22,300,{charge:.5,aim:140,curve:1,k:30,lock:1.4}),'A Kamehameha that bends and follows the target.');
+// VEGETA
+N('VEGETA','z_vg1',3,qOb('Big Bang Attack',c3('#4ab8ff','#e8fbff'),16,310,{hom:4,spd:170,cd:3.6,k:28}),'A fast, heavy blue ki ball that curves toward the target.');
+Ul('VEGETA','z_vg2',U(qUB('Galick Gun Max',c3('#b060ff','#ffe8ff'),46,760),{aim:110}),'A huge Galick Gun that tracks the target.');
+P('VEGETA','z_vgp',qBm('Final Flash',c3('#ffe45a','#ffffff'),28,340,{charge:.7,aim:120,k:32}),'The Prince of all Saiyans fires a blinding golden beam.');
+// PICCOLO
+N('PICCOLO','z_pc1',3,qBm('Special Beam Cannon',c3('#ffb400','#ffe8a0'),9,300,{charge:.7,aim:100,k:30,cd:3.6}),'A thin, piercing drill beam that tracks.');
+Ul('PICCOLO','z_pc2',qUWr('Namekian Grasp',c3('#4fa24a','#c8f0b8'),720),'Stretches out, wraps the target and slams them.');
+P('PICCOLO','z_pcp',qOb('Light Grenade',c3('#ffe85a','#ffffff'),15,340,{hom:5,boom:28,cd:3.4,k:28}),'A glowing grenade that hunts the target, then detonates.');
+// BROLY
+N('BROLY','z_br1',3,qSk('Omega Roar',c3('#4aff4a','#e8ffe0'),260),'A roar that sends out a crushing green shockwave.');
+Ul('BROLY','z_br2',qUO('Gigantic Meteor',c3('#4aff4a','#e8ffe0'),40,820),'A massive green meteor of legendary power.');
+P('BROLY','z_brp',qBm('Eraser Cannon',c3('#4aff4a','#ffffff'),20,320,{charge:.5,k:30,cd:3.4}),'A fast, heavy emerald cannon blast.');
+// JIREN
+N('JIREN','z_ji1',3,qDs('Pride Tackle',c3('#ff3b3b','#ffd0c0'),280),'A massive tackle fueled by pride.');
+Ul('JIREN','z_ji2',qUBS('Meteor Punch Barrage',c3('#ff1a1a','#fff0e0'),8,780),'An eight-hit barrage of crushing punches.');
+P('JIREN','z_jip',qSk('Pride Shockwave',c3('#ff4040','#ffffff'),280,{cd:3.2}),'A ring of red shock that rolls out from Jiren.');
+// GOKU BLACK
+N('GOKU BLACK','z_gb1',3,qSl('Scythe Slash',c3('#ff6aa8','#ffe0f0'),26,300,{boom:24,spd:240,hom:4}),'A curved ki scythe that homes in and slices.');
+Ul('GOKU BLACK','z_gb2',qUBS('Rampage Rush',c3('#ff6aa8','#ffe0f0'),8,800),'A furious eight-hit rampage.');
+P('GOKU BLACK','z_gbp',qBm('Rose Beam',c3('#ff6aa8','#ffffff'),18,330,{aim:110,charge:.5,k:30}),'A rose-pink beam that follows the target.');
+// BEERUS
+N('BEERUS','z_be1',3,qSl('Destruction Disc',DKP,24,300,{hom:5}),'A disc of destruction that hunts the target.');
+Ul('BEERUS','z_be2',qUD('Destroyer Strike',DKP,780),'A single, devastating strike from the God of Destruction.');
+P('BEERUS','z_bep',qOb('Hakai Seed',DKP,12,340,{hom:7,cd:3.2}),'A small dark seed that homes in and erases what it touches.');
+// WHIS
+N('WHIS','z_wh1',3,qBs('Angel Flurry',c3('#8ad8ff','#ffffff'),5,300),'A graceful five-hit flurry.');
+Ul('WHIS','z_wh2',U(qUB('Angelic Beam',c3('#8ad8ff','#ffffff'),44,760),{aim:120,curve:1}),'A heavenly beam that curves into the target.');
+P('WHIS','z_whp',qSk('Time Rewind Pulse',c3('#9ae8ff','#ffffff'),270,{cd:3.2,fx:'freeze'}),'A pulse that freezes the target in place.');
+// HIT
+N('HIT','z_hi1',3,qBs('Time Cage Combo',c3('#a87aff','#e8d8ff'),4,300),'Hit skips through time, striking from all sides.');
+Ul('HIT','z_hi2',qUBS('Time Slip Barrage',c3('#7a3aff','#e8d8ff'),9,820),'A nine-hit barrage across stolen seconds.');
+P('HIT','z_hip',qSl('Void Piercer',c3('#8a4aff','#ffffff'),20,330,{hom:6,spd:300}),'A needle of void ki that homes in and pierces.');
+// FRIEZA
+N('FRIEZA','z_fr1',3,qBm('Finger Beam',c3('#ff3aa0','#ffd0f0'),6,250,{charge:.3,dur:.7,cd:2.4,k:22,aim:700,cnt:1}),'A quick finger beam that never misses its mark.');
+Ul('FRIEZA','z_fr2',qUO('Planet Burst',c3('#b020ff','#ff5ac0'),34,800),'A huge ball that bursts like a dying planet.');
+P('FRIEZA','z_frp',qWr('Psycho Grip',c3('#c070ff','#f0d0ff'),340,{hold:1.4,k:28,cd:4}),'Frieza grips the target with psychic force and slams them.');
+// GOLDEN FRIEZA
+N('GOLDEN FRIEZA','z_gf1',3,qSl('Golden Edge',c3('#ffd83a','#fff3a0'),24,320,{hom:5,boom:22}),'A golden slash of ki that follows its target.');
+Ul('GOLDEN FRIEZA','z_gf2',qUO('Golden Supernova',c3('#ffb400','#fff0a0'),38,860),'A golden ball raised overhead and dropped on the target.');
+P('GOLDEN FRIEZA','z_gfp',qPl('Golden Spire',c3('#ffd83a','#ffffff'),20,340),'A spire of golden ki erupts under the target.');
+// FRIEZA 1ST FORM
+N('FRIEZA 1ST','z_f11',3,qBs('Tail Lash Combo',c3('#d8a0e8','#f6e0ff'),3,250),'A three-hit tail combo.');
+Ul('FRIEZA 1ST','z_f12',qUPl('Psycho Eruption',c3('#c070ff','#f0d0ff'),24,780),'Three psychic eruptions burst up under the target.');
+P('FRIEZA 1ST','z_f1p',qDs('Horn Impaler',c3('#e0b0ff','#ffffff'),330,{k:24}),'A charge that drives the horns into the target.');
+})();
 // ---- QR encoder: QRCode for JavaScript (c) 2009 Kazuhiko Arase, MIT license ----
 const QRLib=(function(){const defs={},cache={};
 defs['QR8bitByte']=function(module,exports,require){var QRMode = require('./QRMode');
