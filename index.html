@@ -3583,8 +3583,10 @@ const oLO=lanOpen;lanOpen=function(){oLO();c3.style.display='flex';fp.classList.
 const oLC=lanClose;lanClose=function(){if(!NET.live)closeRP();oLC()};
 // --- PeerJS loading ---
 let PL=null;function loadPJ(){if(window.Peer)return Promise.resolve();if(PL)return PL;PL=new Promise((res,rej)=>{const s=document.createElement('script');s.src=window.PJ_SRC||'https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js';s.onload=res;s.onerror=()=>{PL=null;rej(new Error('Could not load the online service. Check your internet.'))};document.head.appendChild(s)});return PL}
-const OPT=()=>Object.assign({config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'},{urls:['turn:openrelay.metered.ca:80','turn:openrelay.metered.ca:443','turns:openrelay.metered.ca:443'],username:'openrelayproject',credential:'openrelayproject'}]}},window.PEER_OPTS||{});
+const OPT=()=>Object.assign({config:{iceServers:[{urls:'stun:stun.l.google.com:19302'},{urls:'stun:stun1.l.google.com:19302'},{urls:'stun:stun.cloudflare.com:3478'},{urls:'stun:global.stun.twilio.com:3478'},{urls:'stun:stun.relay.metered.ca:80'},{urls:['turn:openrelay.metered.ca:80','turn:openrelay.metered.ca:443','turns:openrelay.metered.ca:443'],username:'openrelayproject',credential:'openrelayproject'}]}},window.PEER_OPTS||{});
 let RP=null,FP=null,pending=null;
+function watchIce(c,who,onFail){let n=0;const iv=setInterval(()=>{const pc=c.peerConnection;if(!pc){if(++n>40)clearInterval(iv);return}clearInterval(iv);
+  pc.addEventListener('iceconnectionstatechange',()=>{const s=pc.iceConnectionState;if(NET.live)return;if(s==='checking')lStat('Connecting to '+who+'\u2026 (finding a route between your phones)');else if(s==='failed'||s==='disconnected'){lStat('Could not find a route between your two phones. This usually means one of you is on cellular data or a strict network. Put BOTH phones on the same Wi-Fi (or turn on a phone hotspot for the other) and try again.');if(onFail)onFail()}})},250)}
 function closeRP(){try{RP&&RP.destroy()}catch(e){}RP=null}
 function adopt(conn,role){const dc={readyState:'open',send:s=>{try{conn.send(s)}catch(e){}},close:()=>{try{conn.close()}catch(e){}}};
  NET.role=role;NET.pc=null;setupDc(dc);conn.on('data',d=>{if(dc.onmessage)dc.onmessage({data:typeof d==='string'?d:new TextDecoder().decode(d)})});
@@ -3594,12 +3596,12 @@ function showCode(c){$$('lRbig').style.display='block';$$('lRbig').textContent=c
 async function hostRoom(){lStat('Connecting…');try{await loadPJ()}catch(e){lStat(e.message);return}
  closeRP();const code=genRoom(),p=new Peer(PRE+code,OPT());RP=p;
  p.on('open',()=>{showCode(code);lStat('Room is open. Tell the other player this code and wait…')});
- p.on('connection',c=>{c.on('open',()=>{if(NET.live){c.close();return}adopt(c,'host')})});
+ p.on('connection',c=>{lStat('Someone is joining\u2026');watchIce(c,'the other player');c.on('open',()=>{if(NET.live){c.close();return}adopt(c,'host')})});
  p.on('error',e=>{if(e.type==='unavailable-id'){closeRP();hostRoom()}else lStat('Online service problem ('+e.type+'). Try again in a moment.')});
  p.on('disconnected',()=>{try{p.reconnect()}catch(e){}})}
 async function joinRoom(code){lStat('Joining…');try{await loadPJ()}catch(e){lStat(e.message);return}
  closeRP();const p=new Peer(OPT());RP=p;let done=false;
- p.on('open',()=>{const c=p.connect(PRE+code,{reliable:true,serialization:'none'});const t=setTimeout(()=>{if(!done)lStat('Could not connect. Check the code. If it is right, one of you may be on a network that blocks direct play. Try Wi-Fi.')},20000);
+ p.on('open',()=>{const c=p.connect(PRE+code,{reliable:true,serialization:'none'});lStat('Room found. Connecting\u2026');watchIce(c,'the host');const t=setTimeout(()=>{if(!done)lStat('Could not connect. If the code is right, your networks are probably blocking direct play. Put both phones on the same Wi-Fi (or use a hotspot) and try again.')},25000);
   c.on('open',()=>{done=true;clearTimeout(t);adopt(c,'client')});c.on('error',()=>{})});
  p.on('error',e=>{lStat(e.type==='peer-unavailable'?'No room with that code. Check it and make sure the host is waiting.':'Online service problem ('+e.type+'). Try again.')})}
 $$('lRHost').onclick=()=>{aud();sfx('ui');$$('lChoose').style.display='none';$$('lChoose2').style.display='none';c3.style.display='none';$$('lR').classList.add('on');$$('lRi').style.display='none';$$('lRgo').style.display='none';$$('lRbig').textContent='';hostRoom()};
