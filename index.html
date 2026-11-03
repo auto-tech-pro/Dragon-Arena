@@ -1363,7 +1363,7 @@ if(f.stun>0||f.ent>0||tg.down>0){A.tele=0;return}
 const z=zoneX(f);
 if(f.lock<=0&&!f.charging&&!(A.tele>0&&A.tele<.2)){A.mv-=dt;if(A.mv<=0){A.mv=rnd(.5,1.4);A.tx=clamp(f.x+rnd(-40,40),z[0],z[1]);A.ty=clamp(tg.y+rnd(-45,45),YMIN,YMAX);if(BR)brAim(f,tg)}
  if(A.tele>.2){A.ty=tg.y}
- const dx=A.tx-f.x,dy=A.ty-f.y,l=Math.hypot(dx,dy);if(l>2){const sp=Math.min(l,(f.block?25:62)*(F[f.id].mv||1)*(f.form?FP(f,'mv',1):1)*(f.spdT>0?f.spdM:1)*dt);f.x+=dx/l*sp;f.y+=dy/l*sp}}
+ const dx=A.tx-f.x,dy=A.ty-f.y,l=Math.hypot(dx,dy);if(l>2){const sp=Math.min(l,(f.block?23:56)*(F[f.id].mv||1)*(f.form?FP(f,'mv',1):1)*(f.spdT>0?f.spdM:1)*dt);f.x+=dx/l*sp;f.y+=dy/l*sp}}
 A.def=(A.def||0)-dt;const th=scan(f);
 if(th&&A.def<=0&&f.lock<=0){A.def=1.1;const r=Math.random();
  if(r<.3&&f.gl<=0&&f.g>20&&th.kind!=='ult'){f.block=true;f.sAge=0;A.rel=T+rnd(.45,.8)}
@@ -1443,7 +1443,7 @@ p.charging=hold.charge&&ok&&!p.block;
 let mx=0,my=0;if(keys.a||keys.arrowleft)mx-=1;if(keys.d||keys.arrowright)mx+=1;if(keys.w||keys.arrowup)my-=1;if(keys.s||keys.arrowdown)my+=1;
 if(joy.on){mx=joy.x;my=joy.y}
 const l=Math.hypot(mx,my);if(l>1){mx/=l;my/=l}
-if(ok&&!p.charging&&l>.08){const sp=(p.block?45:92)*(F[p.id].mv||1)*(p.form?FP(p,'mv',1):1)*(p.spdT>0?p.spdM:1)*dt;p.x+=mx*sp;p.y+=my*sp}}
+if(ok&&!p.charging&&l>.08){const sp=(p.block?41:83)*(F[p.id].mv||1)*(p.form?FP(p,'mv',1):1)*(p.spdT>0?p.spdM:1)*dt;p.x+=mx*sp;p.y+=my*sp}}
 
 // ================= rendering =================
 function flame(x,y,col,k){k=k||1;ctx.save();ctx.translate(Math.round(x),Math.round(y+14));ctx.scale(k,k);x=0;y=-14;ctx.fillStyle=col;for(let i=-4;i<=4;i++){const h=10+Math.abs(Math.sin(T*14+i*1.7))*14-Math.abs(i)*1.6;ctx.globalAlpha=.34;ctx.fillRect(Math.round(x+i*2.6-1),Math.round(y+14-h),3,Math.round(h+4))}ctx.globalAlpha=1;disc(x,y+2,15,col,.16);ctx.restore()}
@@ -5386,6 +5386,11 @@ cb.onclick=async()=>{if(!CL.blob)return;const name='dragon-arena-replay.webm',fi
  const a=document.createElement('a');a.href=URL.createObjectURL(CL.blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},4000)};
 {const tm=toMenu;toMenu=function(){stop();return tm.apply(this,arguments)}}
 })();
+// ===== COMBAT PACE: longer time-to-kill (more HP), slightly longer cooldowns, slightly slower movement =====
+window.PACE={hp:2,bossHp:1.4,cd:1.2};
+window.HPX=id=>(F[id]&&F[id].g==='BOSS')?PACE.bossHp:PACE.hp;
+{const om=mkF;mkF=function(id,team){const f=om.apply(this,arguments);const k=HPX(id);f.max=Math.round(f.max*k);f.hp=f.max;return f}}
+{const oc=cast;cast=function(f,i,free){const b4=f&&f.cd?f.cd[i]:0;const r=oc.apply(this,arguments);if(r&&f&&f.cd&&!free&&f.cd[i]>(b4||0))f.cd[i]*=PACE.cd;return r}}
 // ===== SKY CRASH (shoots straight up, then a meteor tracks the target and crashes down) + SPIRAL (corkscrew lance) =====
 // + extras for ASTRAX / NAIAD / GRAVITON / SOLARIS (swap abilities, skins, perks, lines)
 (function(){
@@ -5670,7 +5675,7 @@ const needP=()=>{const m=MODES[modeIdx(ST.mode)];return m?Math.max(1,m.p||1):1};
 const isSpecial=k=>['story','lan','watch'].includes(k);
 const mapsFor=()=>{const xl=ST.mode==='mbr';return MAPS.map((m,i)=>[m,i]).filter(([m])=>!m.top&&!m.boss&&(xl?m.xl:!m.xl))};
 let STATS=null;
-function stats(){if(STATS)return STATS;const raw=F.map((f,i)=>{const ab=f.ab,hp=f.hp||HPS[i]||1200;const pw=ab.slice(0,4).reduce((a,m)=>a+(m.dmg||0)*(m.cnt&&m.t!=='beam'?Math.min(m.cnt,4):1),0)/4;
+function stats(){if(STATS)return STATS;const raw=F.map((f,i)=>{const ab=f.ab,hp=Math.round((f.hp||HPS[i]||1200)*(window.HPX?HPX(i):1));const pw=ab.slice(0,4).reduce((a,m)=>a+(m.dmg||0)*(m.cnt&&m.t!=='beam'?Math.min(m.cnt,4):1),0)/4;
   const rg=ab.filter(m=>['volley','orb','slash','beam','discs','pillar','hole'].includes(m.t)).length/4;const mb=ab.filter(m=>['dash','bstrike','wrap'].includes(m.t)).length/4+(((PK[f.n]||{}).f||{}).mv?.4:0);
   const ut=ab.filter(m=>['heal','buff','hex','summon','mine','orbit','hole','sacrifice','command'].includes(m.t)).length/4;return{hp,pw,rg,mb,ut}});
  const mx={hp:1,pw:1,rg:.01,mb:.01,ut:.01};raw.forEach(r=>{for(const k in mx)mx[k]=Math.max(mx[k],r[k])});STATS={raw,mx};return STATS}
@@ -5712,7 +5717,7 @@ function movesPanel(id){const fm=ST.form,cur=eqMoves(id,fm),mel=melOf(id)[fm?1:0
 function skinsPanel(id){const cur=SAVE.skin[id]||0;return '<div class="sk">'+skinList(id).map(s=>'<button data-sk="'+s[0]+'" class="'+(cur===s[0]?'on':'')+'" style="--c:'+s[2]+'"><i></i>'+s[1]+(s[3]?'<small>'+s[3]+'</small>':'')+'</button>').join('')+'</div>'}
 function cardHTML(){const id=ST.cur,f=F[id];if(!f)return '<div class="cd"></div>';const q=(LINES[f.n]||{}).o;const sh=(skinList(id).find(s=>s[0]===(SAVE.skin[id]||0))||[])[2]||f.sh||'#889';
  const ph=ST.team.includes(id);
- return '<div class="cd"><div class="top"><div class="cu" style="--ac:'+sh+'66"><canvas id="nmCu" width="140" height="170"></canvas><button class="'+(ST.form?'on':'')+'" data-form="1">'+(ST.form?'TRANSFORMED':'NORMAL')+' ⟳</button></div><div class="ti"><h2>'+f.s+(isNew(f)?'<em class="nwt">NEW</em>':'')+'</h2><small>'+grpLabel(f.g)+' · HP '+(f.hp||HPS[id]||1200)+' · '+f.form.name+'</small>'+(q?'<em>“'+q+'”</em>':'')+
+ return '<div class="cd"><div class="top"><div class="cu" style="--ac:'+sh+'66"><canvas id="nmCu" width="140" height="170"></canvas><button class="'+(ST.form?'on':'')+'" data-form="1">'+(ST.form?'TRANSFORMED':'NORMAL')+' ⟳</button></div><div class="ti"><h2>'+f.s+(isNew(f)?'<em class="nwt">NEW</em>':'')+'</h2><small>'+grpLabel(f.g)+' · HP '+Math.round((f.hp||HPS[id]||1200)*(window.HPX?HPX(id):1))+' · '+f.form.name+'</small>'+(q?'<em>“'+q+'”</em>':'')+
   '<span class="sp"></span><div style="display:flex;gap:5px;flex-wrap:wrap"><button class="fv'+(SAVE.favs[id]?' on':'')+'" data-fav="1">'+(SAVE.favs[id]?'★ FAVORITE':'☆ FAVORITE')+'</button><button class="ngo" style="padding:3px 12px;font-size:11px" data-pick="1">'+(needP()===1?'SELECT':ph?'REMOVE':'ADD TO TEAM')+'</button></div></div></div>'+
   '<div class="nav"><button class="ar" data-ar="-1">‹</button>'+['STATS','MOVES','SKINS'].map((t,i)=>'<button class="ct'+(ST.card===i?' on':'')+'" data-card="'+i+'">'+t+'</button>').join('')+'<button class="ar" data-ar="1">›</button></div>'+
   '<div class="vw"><div class="tk" style="transform:translateX(-'+ST.card*33.3333+'%)"><div class="pn">'+statsPanel(id)+'</div><div class="pn">'+movesPanel(id)+'</div><div class="pn">'+skinsPanel(id)+'</div></div></div></div>'}
