@@ -5090,7 +5090,7 @@ const okScene=()=>scene==='intro'||scene==='home'||scene==='chars'||scene==='men
 const vol=()=>Math.round(100*Math.min(1,.6*AUDV.ma*AUDV.mu));
 function loadYT(){if(window.YT&&YT.Player)return Promise.resolve();if(YL)return YL;YL=new Promise((res,rej)=>{window.onYouTubeIframeAPIReady=res;const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';s.onerror=()=>{YL=null;rej()};document.head.appendChild(s)});return YL}
 function stopYT(){try{YP&&YP.pauseVideo&&YP.pauseVideo()}catch(e){}}
-function pick(){const pool=['T'].concat((window.SONGS?SONGS():[]).map(s=>s.id));let c=pool.filter(x=>x!==BGT.last);if(!c.length)c=pool;return c[Math.floor(Math.random()*c.length)]}
+function pick(){return 'T'} // built-in theme only: no hidden YouTube player in the background (it played ads that could not be muted)
 function play(id){BGT.cur=id;BGT.last=id;
  if(id==='T'){BGT.yt=null;stopYT();try{TH.currentTime=0}catch(e){}return}
  BGT.yt=id;try{TH.pause()}catch(e){}
@@ -5169,6 +5169,7 @@ $$('wtBR').onclick=()=>{sfx('ui');WATCH={auto:true,spd:1};begin('br')};
 $$('wtMega').onclick=()=>{sfx('ui');WATCH={auto:true,spd:1};begin('mega')};
 $$('wtNext').onclick=()=>{sfx('ui');nextW()};
 $$('wtSpd').onclick=()=>{if(!WATCH)return;WATCH.spd=WATCH.spd===1?2:WATCH.spd===2?3:1;$$('wtSpd').textContent='SPEED '+WATCH.spd+'x';sfx('ui')};
+['wtBR','wtMega'].forEach(i=>{const e=$$(i);if(e)e.style.display='none'}); // one AI-only mode only: random/chosen duels
 $$('wtAuto').onclick=()=>{if(!WATCH)return;WATCH.auto=!WATCH.auto;$$('wtAuto').textContent='AUTO: '+(WATCH.auto?'ON':'OFF');sfx('ui')};
 $$('wtExit').onclick=()=>{sfx('ui');stopW();toHome()};
 // home button
